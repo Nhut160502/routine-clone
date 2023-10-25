@@ -66,16 +66,16 @@ const Header = () => {
           <Nav>
             <ul>
               <li>
-                <Link>Nam</Link>
+                <Link to="/c/thoi-trang-nam">Nam</Link>
               </li>
               <li>
-                <Link>Nữ</Link>
+                <Link to="/c/thoi-trang-nu">Nữ</Link>
               </li>
               <li>
-                <Link>New</Link>
+                <Link to="/c/nam">New</Link>
               </li>
               <li>
-                <Link>Best</Link>
+                <Link to="/c/nam">Best</Link>
               </li>
             </ul>
           </Nav>

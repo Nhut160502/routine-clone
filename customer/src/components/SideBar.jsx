@@ -36,16 +36,20 @@ const SideBar = (props) => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
         setSideBar(false);
-        setL0(false);
+        if (location.pathname === "/") {
+          setL0(false);
+        }
       } else {
         setSideBar(true);
-        setL0(true);
+        if (location.pathname === "/") {
+          setL0(true);
+        }
       }
     };
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location]);
 
   const handleActiveSideBar = () => setSideBar(false);
   return (
