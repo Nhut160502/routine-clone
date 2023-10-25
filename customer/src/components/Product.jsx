@@ -142,21 +142,23 @@ const Product = (props) => {
         onMouseOver={() => setOnmouse(true)}
         onMouseLeave={() => setOnmouse(false)}
       >
-        {onMouse ? (
-          <img
-            src="https://routine.vn/media/catalog/product/cache/d0cf4470db45e8932c69fc124d711a7e/q/u/quan-nu-10f23pknw002_brown_5__1.jpg"
-            alt=""
-          />
-        ) : (
-          <img
-            src="https://routine.vn/media/catalog/product/cache/d0cf4470db45e8932c69fc124d711a7e/q/u/quan-nu-10f23pknw002_brown_1__1.jpg"
-            alt=""
-          />
-        )}
+        <Link to="/p/quan-sweatpants-nu-ni-tui-op-truoc-ong-rong-form-wide-leg">
+          {onMouse ? (
+            <img
+              src="https://routine.vn/media/catalog/product/cache/d0cf4470db45e8932c69fc124d711a7e/q/u/quan-nu-10f23pknw002_brown_5__1.jpg"
+              alt=""
+            />
+          ) : (
+            <img
+              src="https://routine.vn/media/catalog/product/cache/d0cf4470db45e8932c69fc124d711a7e/q/u/quan-nu-10f23pknw002_brown_1__1.jpg"
+              alt=""
+            />
+          )}
+        </Link>
       </Image>
       <Infor>
         <div className="name">
-          <Link>
+          <Link to="/p/quan-sweatpants-nu-ni-tui-op-truoc-ong-rong-form-wide-leg">
             Quần Sweatpants Nữ Nỉ Túi Ốp Trước Ống Rộng Form Wide Leg -
             10F23PKNW002
           </Link>
