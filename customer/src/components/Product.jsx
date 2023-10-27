@@ -253,8 +253,9 @@ const Infor = styled.div`
     justify-content: space-between;
     margin-bottom: 10px;
     gap: 1rem;
+    line-height: 21px;
     a {
-      font-size: 15px;
+      font-size: 13px;
       text-transform: capitalize;
     }
 

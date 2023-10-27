@@ -61,6 +61,16 @@ table {
 input{
     outline: none;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 li{
     list-style: none;
 }
@@ -109,5 +119,41 @@ a{
   .react-tooltip-arrow{
 	border-bottom: 1px solid #dadada;
     border-right: 1px solid #dadada;
+  }
+
+  
+
+  .wrapper-layout{
+    position: relative;
+    .sticky {
+      position: sticky;
+      top: 45px;
+    }
+    .banner {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+    .content-layout-product{
+      padding-left: 14px;
+      padding-bottom: 44px;
+    }
+    .content-layout{
+      margin-top: 50px;
+      width: 100%;
+      overflow-x: hidden;
+      padding: 0 50px;
+      position: relative;
+    }
+    .title-layout{
+      h1 {
+        text-transform: uppercase;
+        margin: 0 0 40px;
+        font-size: 32px;
+        line-height: 38px;
+        display: block;
+        text-align: center;
+        font-weight: 700;
+      }
+    }
   }
  

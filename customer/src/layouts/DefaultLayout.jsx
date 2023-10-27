@@ -14,6 +14,8 @@ const DefaultLayout = (props) => {
   useEffect(() => {
     if (location.pathname === "/") {
       setFixed(true);
+    } else {
+      setFixed(false);
     }
   }, [location]);
 

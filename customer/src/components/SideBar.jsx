@@ -88,7 +88,7 @@ const SideBar = (props) => {
           <div className="content">
             <ul>
               <li>
-                <Link onMouseOver={handleActiveSideBar} to="/">
+                <Link onMouseOver={handleActiveSideBar} to="/c/thoi-trang-nam">
                   Xem Tất Cả
                 </Link>
               </li>
@@ -186,7 +186,7 @@ const SideBar = (props) => {
           <div className="submenu">
             <ul>
               <li className="title">
-                <Link>Xem tất cả áo nam</Link>
+                <Link to="/c/thoi-trang-nam/ao-nam">Xem tất cả áo nam</Link>
               </li>
               <li>
                 <Link>Áo Tank Top Nam</Link>

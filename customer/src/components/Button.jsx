@@ -6,9 +6,9 @@ const Button = (props) => {
   return (
     <Wrapper
       {...props}
-      className={`${transparent && "transparent"} ${outline && "outline"} ${
-        border && "border"
-      } ${white && "white"}`}
+      className={`${transparent ? "transparent" : ""} ${
+        outline ? "outline" : ""
+      } ${border ? "border" : ""} ${white ? "white" : ""}`}
     >
       {children}
     </Wrapper>
@@ -42,6 +42,7 @@ const Wrapper = styled.button`
   &.outline {
     background-color: transparent !important;
     color: #000;
+    border: 1px solid #000 !important;
   }
   &.border {
     border-radius: 10px;
