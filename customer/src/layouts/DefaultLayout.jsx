@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Footer from "src/components/Footer";
-import Header from "src/components/Header/Header";
+import Header from "src/components/Header";
 import { PropTypes } from "prop-types";
 import SideBar from "src/components/SideBar";
 import styled from "styled-components";

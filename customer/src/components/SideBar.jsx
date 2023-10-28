@@ -11,13 +11,20 @@ import {
   IconUserBlack,
 } from "./Icon";
 import Button from "./Button";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  disableTransparent,
+  enbleTransparent,
+  hiddenSidebar,
+  openSidebar,
+} from "src/providers/sidebarSlice";
 
 const SideBar = (props) => {
   const [types, setTypes] = useState("men");
   const [subMenu, setSubmenu] = useState();
-  const [sideBar, setSideBar] = useState(false);
-  const [l0, setL0] = useState(false);
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { open, transparent } = useSelector((state) => state?.sidebar);
 
   const handleMenu = (type) => {
     setTypes(type);
@@ -28,25 +35,31 @@ const SideBar = (props) => {
   useEffect(() => {
     setSubmenu();
     if (location.pathname === "/") {
-      setSideBar(true);
-      setL0(true);
+      if (window.scrollY <= 0) {
+        dispatch(openSidebar());
+        dispatch(enbleTransparent());
+        return;
+      }
     } else {
-      setSideBar(false);
-      setL0(false);
+      dispatch(disableTransparent());
+      dispatch(hiddenSidebar());
+      return;
     }
   }, [location]);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setSideBar(false);
+      if (window.scrollY > 1) {
         if (location.pathname === "/") {
-          setL0(false);
+          dispatch(hiddenSidebar());
+          disableTransparent(disableTransparent());
+          return;
         }
       } else {
-        setSideBar(true);
         if (location.pathname === "/") {
-          setL0(true);
+          dispatch(openSidebar());
+          dispatch(enbleTransparent());
+          return;
         }
       }
     };
@@ -55,12 +68,23 @@ const SideBar = (props) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [location]);
 
-  const handleActiveSideBar = () => setSideBar(false);
+  const handleActiveSideBar = () => {
+    dispatch(disableTransparent());
+  };
+  const handleOnmouseLeave = () => {
+    if (location.pathname === "/" && window.scrollY <= 0) {
+      dispatch(enbleTransparent());
+    } else {
+      dispatch(hiddenSidebar());
+    }
+    setSubmenu();
+  };
   return (
     <Wrapper
-      className={sideBar && "active"}
-      style={{ left: l0 && "0" }}
-      onMouseLeave={() => setSideBar(true)}
+      className={`${open === true ? "active" : ""} ${
+        transparent === true ? "transparent" : ""
+      }`}
+      onMouseLeave={handleOnmouseLeave}
     >
       <Top className="sideTop">
         <ul>
@@ -98,23 +122,23 @@ const SideBar = (props) => {
               </li>
               <li onClick={() => handleSubMenu("ao-nam")}>
                 <span onMouseOver={handleActiveSideBar}>Áo Nam</span>
-                {sideBar ? <IconPlusWhite /> : <IconPlusBlack />}
+                {transparent ? <IconPlusWhite /> : <IconPlusBlack />}
               </li>
               <li onClick={() => handleSubMenu("quan-nam")}>
                 <span onMouseOver={handleActiveSideBar}>Quần Nam</span>
-                {sideBar ? <IconPlusWhite /> : <IconPlusBlack />}
+                {transparent ? <IconPlusWhite /> : <IconPlusBlack />}
               </li>
               <li>
                 <span onMouseOver={handleActiveSideBar}>đồ lót Nam</span>
-                {sideBar ? <IconPlusWhite /> : <IconPlusBlack />}
+                {transparent ? <IconPlusWhite /> : <IconPlusBlack />}
               </li>
               <li>
                 <span onMouseOver={handleActiveSideBar}>Phụ kiện</span>
-                {sideBar ? <IconPlusWhite /> : <IconPlusBlack />}
+                {transparent ? <IconPlusWhite /> : <IconPlusBlack />}
               </li>
               <li>
                 <span onMouseOver={handleActiveSideBar}>ưu đãi</span>
-                {sideBar ? <IconPlusWhite /> : <IconPlusBlack />}
+                {transparent ? <IconPlusWhite /> : <IconPlusBlack />}
               </li>
             </ul>
           </div>
@@ -254,7 +278,7 @@ const SideBar = (props) => {
           </div>
         )}
 
-        {!sideBar && (
+        {!location.pathname === "/" && (
           <div className="more">
             <ul>
               <li>
@@ -285,7 +309,7 @@ const SideBar = (props) => {
           </div>
         )}
       </Content>
-      {!sideBar && (
+      {!location.pathname === "/" && (
         <Bottom>
           <Button transparent>
             <IconUserBlack />
@@ -310,9 +334,13 @@ const Wrapper = styled.div`
   width: 650px;
   padding: 25px 50px;
   z-index: 1;
+  transition: all 0.3s;
 
   &.active {
     z-index: 1;
+    left: 0;
+  }
+  &.transparent {
     background-color: transparent;
     .sideTop {
       li {

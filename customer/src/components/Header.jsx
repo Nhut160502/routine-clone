@@ -5,56 +5,69 @@ import {
   IconHeartBlack,
   IconHeartWhite,
   IconMenuBar,
+  IconSearch,
+  IconSearchWhite,
   IconShoppingCartBlack,
   IconShoppingCartWhite,
   IconUseWhite,
   IconUserBlack,
   LogoBlack,
   LogoWhite,
-} from "../Icon";
+} from "./Icon";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { openSidebar } from "src/providers/sidebarSlice";
 
 const Header = () => {
   const [nav, setNav] = useState(false);
   const location = useLocation();
-  const [transparent, setTransparent] = useState(false);
+  const [transparent, setTransparent] = useState();
+  const dispatch = useDispatch();
+
+  const state = useSelector((state) => state);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 0) {
+      if (window.scrollY > 1) {
         setNav(true);
         if (location.pathname === "/") {
-          setTransparent(false);
+          return setTransparent(false);
         }
-        return;
       } else {
         setNav(false);
         if (location.pathname === "/") {
-          setTransparent(true);
+          return setTransparent(true);
         }
-        return;
       }
     };
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [location]);
 
   useEffect(() => {
     if (location.pathname === "/") {
-      setTransparent(true);
+      if (window.scrollY <= 0) {
+        setTransparent(true);
+      }
+      return;
     } else {
       setTransparent(false);
+      return;
     }
   }, [location]);
+
+  const handleClickOpenSidebar = () => {
+    dispatch(openSidebar());
+  };
 
   return (
     <Wrapper className={transparent && "transparent"}>
       {(nav && (
         <>
           <Col sm="1">
-            <LogoBlack className="logo" />
+            <Link to="/">
+              <LogoBlack className="logo" />
+            </Link>
           </Col>
           <Col sm="6">
             <Nav>
@@ -79,19 +92,29 @@ const Header = () => {
         <>
           <Col sm="5">
             {location.pathname !== "/" && (
-              <div className="menu-bar" onClick={console.log("clicked")}>
-                <IconMenuBar className="icon" />
+              <div className="menu-bar">
+                <IconMenuBar
+                  className="icon"
+                  onClick={handleClickOpenSidebar}
+                />
               </div>
             )}
           </Col>
           <Col sm="2">
-            <LogoBlack className="logo" />
+            <Link to="/">
+              {transparent ? (
+                <LogoWhite className="logo" />
+              ) : (
+                <LogoBlack className="logo" />
+              )}
+            </Link>
           </Col>
         </>
       )}
       <Col sm="5">
         <Right>
           <Search className="icon">
+            {transparent === false ? <IconSearch /> : <IconSearchWhite />}
             <span>Tiềm kiếm</span>
           </Search>
           {!transparent ? (
@@ -157,11 +180,15 @@ const Search = styled.div`
   border-bottom: 1px solid #cdcdcd;
   height: 36px;
   color: #a3a3a3;
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE4LjM1NzYgOS4xOTIwNUMxOC4zNTc2IDQuMTMwNTYgMTQuMjI1MiAwIDkuMTY1NTYgMEM0LjEwNTk2IDAgMCA0LjEwNTk2IDAgOS4xOTIwNUMwIDE0LjI3ODEgNC4xMDU5NiAxOC4zNTc2IDkuMTkyMDUgMTguMzU3NkMxMS4yNTgzIDE4LjM1NzYgMTMuMTM5MSAxNy42Njg5IDE0LjY3NTUgMTYuNTI5OEwxOC4xNDU3IDIwTDIwIDE4LjE0NTdMMTYuNTI5OCAxNC42NzU1QzE3LjcyMjggMTMuMDk3IDE4LjM2NDkgMTEuMTcwNiAxOC4zNTc2IDkuMTkyMDVaTTkuMTkyMDUgMTUuNzA4NkM1LjU4OTQgMTUuNzA4NiAyLjY0OTAxIDEyLjc2ODIgMi42NDkwMSA5LjE2NTU2QzIuNjQ5MDEgNS41NjI5MSA1LjU4OTQgMi42MjI1MiA5LjE5MjA1IDIuNjIyNTJDMTIuNzk0NyAyLjYyMjUyIDE1LjczMzIgNS41NjI5MSAxNS43MzMyIDkuMTY1NTZDMTUuNzA4NiAxMi43OTQ3IDEyLjc5NDcgMTUuNzA4NiA5LjE5MjA1IDE1LjcwODZaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4K");
+  position: relative;
   span {
     font-size: 15px;
+  }
+  img {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `;
 
