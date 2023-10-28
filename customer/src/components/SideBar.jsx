@@ -26,9 +26,13 @@ const SideBar = (props) => {
   const handleSubMenu = (type) => setSubmenu(type);
 
   useEffect(() => {
+    setSubmenu();
     if (location.pathname === "/") {
       setSideBar(true);
       setL0(true);
+    } else {
+      setSideBar(false);
+      setL0(false);
     }
   }, [location]);
 

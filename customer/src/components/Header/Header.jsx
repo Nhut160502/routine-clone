@@ -44,42 +44,50 @@ const Header = () => {
   useEffect(() => {
     if (location.pathname === "/") {
       setTransparent(true);
+    } else {
+      setTransparent(false);
     }
   }, [location]);
 
   return (
     <Wrapper className={transparent && "transparent"}>
-      {!nav && (
-        <Col sm="5">
-          {location.pathname !== "/" && <IconMenuBar className="icon" />}
-        </Col>
-      )}
-      <Col sm={!nav ? "2" : "1"}>
-        {!transparent ? (
-          <LogoBlack className="logo" />
-        ) : (
-          <LogoWhite className="logo" />
-        )}
-      </Col>
-      {nav && (
-        <Col sm="6">
-          <Nav>
-            <ul>
-              <li>
-                <Link to="/c/thoi-trang-nam">Nam</Link>
-              </li>
-              <li>
-                <Link to="/c/thoi-trang-nu">Nữ</Link>
-              </li>
-              <li>
-                <Link to="/c/nam">New</Link>
-              </li>
-              <li>
-                <Link to="/c/nam">Best</Link>
-              </li>
-            </ul>
-          </Nav>
-        </Col>
+      {(nav && (
+        <>
+          <Col sm="1">
+            <LogoBlack className="logo" />
+          </Col>
+          <Col sm="6">
+            <Nav>
+              <ul>
+                <li>
+                  <Link to="/c/thoi-trang-nam">Nam</Link>
+                </li>
+                <li>
+                  <Link to="/c/thoi-trang-nu">Nữ</Link>
+                </li>
+                <li>
+                  <Link to="/c/nam">New</Link>
+                </li>
+                <li>
+                  <Link to="/c/nam">Best</Link>
+                </li>
+              </ul>
+            </Nav>
+          </Col>
+        </>
+      )) || (
+        <>
+          <Col sm="5">
+            {location.pathname !== "/" && (
+              <div className="menu-bar" onClick={console.log("clicked")}>
+                <IconMenuBar className="icon" />
+              </div>
+            )}
+          </Col>
+          <Col sm="2">
+            <LogoBlack className="logo" />
+          </Col>
+        </>
       )}
       <Col sm="5">
         <Right>

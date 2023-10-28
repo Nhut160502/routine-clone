@@ -34,6 +34,8 @@ const Wrapper = styled.button`
   font-weight: 500;
   border: 1px solid #000 !important;
   transition: all 0.3s;
+  background-color: #000;
+  color: #fff;
   &.transparent {
     background-color: transparent !important;
     border: none !important;
