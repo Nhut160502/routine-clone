@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import Cart from "src/components/Cart";
 import Overlay from "src/components/Overlay";
 import Favourite from "src/components/Favourite";
+import Login from "src/components/Login";
 
 const DefaultLayout = (props) => {
   const { children } = props;
@@ -24,6 +25,7 @@ const DefaultLayout = (props) => {
 
   return (
     <>
+      <Login />
       <Overlay />
       <Favourite />
       <Header />

@@ -223,7 +223,7 @@ export const IconFaceBook = (props) => {
   return (
     <img
       {...props}
-      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDkgMTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik04LjQxMDgyIDguOTk5NDNMOC44ODU3NSA2LjEwNTE0SDUuOTY5NjVWNC4yMjM4NkM1Ljk2OTY1IDMuNDMyNDUgNi4zNzgwOSAyLjY1OTEzIDcuNjg0MTYgMi42NTkxM0g5LjAwOTIzVjAuMTk0NDZDOC4yMjM3NCAwLjA3NDMyMDcgNy40MzAwNSAwLjAwOTMyNTM5IDYuNjM0NTYgMEM0LjIzMTM5IDAgMi42NjQxMiAxLjM4ODM2IDIuNjY0MTIgMy44OTgyNVY2LjEwNTE0SC0wLjAwOTc2NTYyVjguOTk5NDNIMi42NjQxMlYxNkg1Ljk2OTY1VjguOTk5NDNIOC40MTA4MloiIGZpbGw9ImJsYWNrIi8+Cjwvc3ZnPgo="
+      src="https://routine.vn/static/version1698319055/frontend/Magenest/routine/vi_VN/images/F_icon_reversed.svg"
       alt=""
     />
   );
@@ -233,7 +233,7 @@ export const IconLazada = (props) => {
   return (
     <img
       {...props}
-      src="https://routine.vn/static/version1698212050/frontend/Magenest/routine/vi_VN//images/routine-lazada-logo.png"
+      src="https://routine.vn/static/version1698319055/frontend/Magenest/routine/vi_VN/images/F_icon_reversed.svg"
       alt=""
     />
   );
@@ -436,6 +436,36 @@ export const IconArrowDown = (props) => {
     <img
       {...props}
       src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00Ljk5OTk3IDUuODQ5NjlDNC44MjA3NSA1Ljg0OTY5IDQuNjQxNTUgNS43ODEyNiA0LjUwNDkxIDUuNjQ0NjlMMC4yMDUxNDEgMS4zNDQ4N0MtMC4wNjgzODA0IDEuMDcxMzUgLTAuMDY4MzgwNCAwLjYyNzg4MyAwLjIwNTE0MSAwLjM1NDQ3MkMwLjQ3ODU1MiAwLjA4MTA2MTMgMC45MjE5MzIgMC4wODEwNjEzIDEuMTk1NDggMC4zNTQ0NzJMNC45OTk5NyA0LjE1OTE5TDguODA0NDkgMC4zNTQ2MDVDOS4wNzgwMSAwLjA4MTE5NDIgOS41MjEzNSAwLjA4MTE5NDIgOS43OTQ3MyAwLjM1NDYwNUMxMC4wNjg0IDAuNjI4MDE2IDEwLjA2ODQgMS4wNzE0OCA5Ljc5NDczIDEuMzQ1MDFMNS40OTUwMyA1LjY0NDgyQzUuMzU4MzIgNS43ODE0MiA1LjE3OTEyIDUuODQ5NjkgNC45OTk5NyA1Ljg0OTY5WiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+Cg=="
+      alt=""
+    />
+  );
+};
+
+export const IconFacebook = (props) => {
+  return (
+    <img
+      {...props}
+      src="https://routine.vn/static/version1698319055/frontend/Magenest/routine/vi_VN/images/F_icon_reversed.svg"
+      alt=""
+    />
+  );
+};
+
+export const IconGoogle = (props) => {
+  return (
+    <img
+      {...props}
+      src="https://routine.vn/static/version1698319055/frontend/Magenest/routine/vi_VN/images/Google__G__Logo.svg"
+      alt=""
+    />
+  );
+};
+
+export const IconArrowRight = (props) => {
+  return (
+    <img
+      {...props}
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNy44NzIxMyAzLjY4OTI1TDQuOTgzMDUgMC44MDAxMDJDNC45MDA1OCAwLjcxNzYzMSA0Ljc5MDY2IDAuNjcyMzYzIDQuNjczNDYgMC42NzIzNjNDNC41NTYxMyAwLjY3MjM2MyA0LjQ0NjI3IDAuNzE3Njk2IDQuMzYzOCAwLjgwMDEwMkw0LjEwMTQ5IDEuMDYyNDdDNC4wMTkwOSAxLjE0NDgxIDMuOTczNjkgMS4yNTQ4IDMuOTczNjkgMS4zNzIwNkMzLjk3MzY5IDEuNDg5MjcgNC4wMTkwOSAxLjYwMjk2IDQuMTAxNDkgMS42ODUzTDUuNzg2OTQgMy4zNzQ0NkgwLjQzMjE5MkMwLjE5MDc2MyAzLjM3NDQ2IDAgMy41NjM0NiAwIDMuODA0OTZWNC4xNzU4OEMwIDQuNDE3MzcgMC4xOTA3NjMgNC42MjU0NCAwLjQzMjE5MiA0LjYyNTQ0SDUuODA2MDdMNC4xMDE1NiA2LjMyNDAyQzQuMDE5MTUgNi40MDY1IDMuOTczNzYgNi41MTM0OSAzLjk3Mzc2IDYuNjMwNzVDMy45NzM3NiA2Ljc0Nzg5IDQuMDE5MTUgNi44NTY0NCA0LjEwMTU2IDYuOTM4ODVMNC4zNjM4NyA3LjIwMDM4QzQuNDQ2MzQgNy4yODI4NSA0LjU1NjE5IDcuMzI3NzkgNC42NzM1MiA3LjMyNzc5QzQuNzkwNzIgNy4zMjc3OSA0LjkwMDY0IDcuMjgyMjYgNC45ODMxMSA3LjE5OTc5TDcuODcyMiA0LjMxMDcxQzcuOTU0ODYgNC4yMjc5OCA4LjAwMDMyIDQuMTE3NTQgOCA0LjAwMDE0QzguMDAwMjYgMy44ODIzNSA3Ljk1NDg2IDMuNzcxODUgNy44NzIxMyAzLjY4OTI1WiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+Cg=="
       alt=""
     />
   );

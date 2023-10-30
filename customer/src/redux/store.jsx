@@ -11,6 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import cartSlice from "src/providers/cartSlice";
+import favouriteSlice from "src/providers/favouriteSlice";
 import overlaySlice from "src/providers/overlaySlice";
 import sidebarSlice from "src/providers/sidebarSlice";
 import subUserSlice from "src/providers/subUserSlice";
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   cart: cartSlice,
   overlay: overlaySlice,
   subUser: subUserSlice,
+  favourite: favouriteSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
