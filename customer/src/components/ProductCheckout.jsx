@@ -32,7 +32,7 @@ const ProductCheckout = (props) => {
               <span className="values"> S</span>
             </div>
           </div>
-          <Quantity className="quantity" />
+          <Quantity small />
           <div className="price">
             <span>569.000&nbsp;₫</span>
           </div>
@@ -99,17 +99,6 @@ const Wrapper = styled.div`
       font-weight: 400;
       font-size: 15px;
       color: #6f6f6f;
-    }
-  }
-  .quantity {
-    width: 80px;
-    > div,
-    input {
-      width: 30px;
-      height: 30px;
-      margin: 0;
-      min-width: 20px;
-      font-size: 14px;
     }
   }
   .price {

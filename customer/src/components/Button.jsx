@@ -6,9 +6,9 @@ const Button = (props) => {
   return (
     <Wrapper
       {...props}
-      className={`${transparent ? "transparent" : ""} ${
-        outline ? "outline" : ""
-      } ${border ? "border" : ""} ${white ? "white" : ""}`}
+      className={`${transparent ? "transparent " : ""}${
+        outline ? "outline " : ""
+      }${border ? "border" : ""}${white ? "white" : ""}`}
     >
       {children}
     </Wrapper>

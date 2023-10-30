@@ -45,7 +45,7 @@ const SideBar = (props) => {
       dispatch(hiddenSidebar());
       return;
     }
-  }, [location]);
+  }, [location, dispatch]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,7 +66,7 @@ const SideBar = (props) => {
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [location]);
+  }, [location, dispatch]);
 
   const handleActiveSideBar = () => {
     dispatch(disableTransparent());

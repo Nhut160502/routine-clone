@@ -17,6 +17,10 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar } from "src/providers/sidebarSlice";
+import { openCart } from "src/providers/cartSlice";
+import { openOverlay } from "src/providers/overlaySlice";
+import SubUser from "./SubUser";
+import { hiddeSubUser, openSubUser } from "src/providers/subUserSlice";
 
 const Header = () => {
   const [nav, setNav] = useState(false);
@@ -24,7 +28,8 @@ const Header = () => {
   const [transparent, setTransparent] = useState();
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => state);
+  const { open } = useSelector((state) => state?.cart);
+  const subUser = useSelector((state) => state?.subUser);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +63,18 @@ const Header = () => {
 
   const handleClickOpenSidebar = () => {
     dispatch(openSidebar());
+  };
+
+  // cart
+  const handleClickActiveCart = () => {
+    !open && dispatch(openCart());
+    dispatch(openOverlay());
+  };
+
+  // sub user
+  const handleAciveSubUser = () => {
+    subUser.open && dispatch(hiddeSubUser());
+    !subUser.open && dispatch(openSubUser());
   };
 
   return (
@@ -119,17 +136,24 @@ const Header = () => {
           </Search>
           {!transparent ? (
             <>
-              <IconUserBlack className="icon" />
+              <IconUserBlack className="icon" onClick={handleAciveSubUser} />
               <IconHeartBlack className="icon" />
-              <IconShoppingCartBlack className="icon" />
+              <IconShoppingCartBlack
+                className="icon"
+                onClick={handleClickActiveCart}
+              />
             </>
           ) : (
             <>
-              <IconUseWhite className="icon" />
+              <IconUseWhite className="icon" onClick={handleAciveSubUser} />
               <IconHeartWhite className="icon" />
-              <IconShoppingCartWhite className="icon" />
+              <IconShoppingCartWhite
+                className="icon"
+                onClick={handleClickActiveCart}
+              />
             </>
           )}
+          <SubUser />
         </Right>
       </Col>
     </Wrapper>
@@ -173,6 +197,7 @@ const Wrapper = styled.div`
 const Right = styled.div`
   display: flex;
   justify-content: flex-end;
+  position: relative;
 `;
 const Search = styled.div`
   width: 350px;

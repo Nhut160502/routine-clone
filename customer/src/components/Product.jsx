@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { IconHeartBlack } from "./Icon";
@@ -6,19 +6,19 @@ import { Tooltip } from "react-tooltip";
 
 const colors = [
   {
-    id: 1,
+    id: "color-1",
     name: "Black",
     url1: "https://routine.vn/media/catalog/product/cache/8ee0d41a0522a757b6f54f9321607fdf/1/0/10f23pknw002-black-_1__1_1.jpg",
     url2: "https://routine.vn/media/catalog/product/cache/d6ec37e98cd5482d3197d29f912fea48/1/0/10f23pknw002-black-_1__1_1.jpg",
   },
   {
-    id: 2,
+    id: "color-2",
     name: "Cappuccino",
     url1: "https://routine.vn/media/catalog/product/cache/8ee0d41a0522a757b6f54f9321607fdf/1/0/10f23pknw002-brown-_1__2_1.jpg",
     url2: "https://routine.vn/media/catalog/product/cache/d6ec37e98cd5482d3197d29f912fea48/1/0/10f23pknw002-brown-_1__2_1.jpg",
   },
   {
-    id: 3,
+    id: "color-3",
     name: "Beige",
     url1: "https://routine.vn/media/catalog/product/cache/d6ec37e98cd5482d3197d29f912fea48/1/0/10f23pknw002-beige-_1__1_1.jpg",
     url2: "https://routine.vn/media/catalog/product/cache/d6ec37e98cd5482d3197d29f912fea48/1/0/10f23pknw002-beige-_1__1_1.jpg",
@@ -27,104 +27,104 @@ const colors = [
 
 const sizes = [
   {
-    colorId: 1,
+    colorId: "color-1",
     id: "size-1",
     name: "XS",
     stock: 10,
   },
   {
-    colorId: 1,
+    colorId: "color-1",
     id: "size-2",
     name: "S",
     stock: 10,
   },
   {
-    colorId: 1,
+    colorId: "color-1",
     id: "size-3",
     name: "M",
     stock: 10,
   },
   {
-    colorId: 1,
+    colorId: "color-1",
     id: "size-4",
     name: "L",
     stock: 10,
   },
   {
-    colorId: 1,
+    colorId: "color-1",
     id: "size-5",
     name: "XL",
     stock: 0,
   },
   {
-    colorId: 1,
+    colorId: "color-1",
     id: "size-6",
     name: "XXL",
     stock: 0,
   },
 
   {
-    colorId: 2,
+    colorId: "color-2",
     id: "size-7",
     name: "XS",
     stock: 10,
   },
   {
-    colorId: 2,
+    colorId: "color-2",
     id: "size-8",
     name: "S",
     stock: 10,
   },
   {
-    colorId: 2,
+    colorId: "color-2",
     id: "size-9",
     name: "M",
     stock: 10,
   },
   {
-    colorId: 2,
+    colorId: "color-2",
     id: "size-10",
     name: "L",
     stock: 10,
   },
   {
-    colorId: 2,
+    colorId: "color-2",
     id: "size-11",
     name: "XL",
     stock: 0,
   },
   {
-    colorId: 2,
+    colorId: "color-2",
     id: "size-12",
     name: "XXL",
     stock: 0,
   },
   {
-    colorId: 3,
+    colorId: "color-3",
     id: "size-13",
     name: "S",
     stock: 0,
   },
   {
-    colorId: 3,
+    colorId: "color-3",
     id: "size-14",
     name: "M",
     stock: 0,
   },
   {
-    colorId: 3,
+    colorId: "color-3",
     id: "size-15",
     name: "L",
     stock: 10,
   },
   {
-    colorId: 3,
+    colorId: "color-3",
     id: "size-16",
     name: "XL",
     stock: 0,
   },
   {
-    colorId: 3,
+    colorId: "color-3",
     id: "size-17",
     name: "XXL",
     stock: 0,
@@ -169,27 +169,33 @@ const Product = (props) => {
         </div>
         <Attribute>
           <div className="color">
-            {colors.map((item) => (
-              <>
-                <div
-                  id={item.id}
-                  onClick={() => handleClickColor(item.id)}
-                  className={colorId === item.id ? "item active" : "item"}
-                  style={{
-                    backgroundImage: `url(${item.url1})`,
-                  }}
-                />
-                <Tooltip anchorSelect={item.id} variant="light">
+            {colors.map((item, index) => {
+              return (
+                <Fragment key={`${item.id}-${index}`}>
                   <div
-                    className="image"
+                    id={item.id}
+                    onClick={() => handleClickColor(item.id)}
+                    className={colorId === item.id ? "item active" : "item"}
                     style={{
-                      backgroundImage: `url(${item.url2})`,
+                      backgroundImage: `url(${item.url1})`,
                     }}
                   />
-                  <span>{item.name}</span>
-                </Tooltip>
-              </>
-            ))}
+                  <Tooltip
+                    anchorSelect={`#${item.id}`}
+                    variant="light"
+                    place="top"
+                  >
+                    <div
+                      className="image"
+                      style={{
+                        backgroundImage: `url(${item.url2})`,
+                      }}
+                    />
+                    <span>{item.name}</span>
+                  </Tooltip>
+                </Fragment>
+              );
+            })}
           </div>
           {colorId && (
             <div className="size">

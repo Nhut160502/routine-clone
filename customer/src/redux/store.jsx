@@ -10,7 +10,10 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import cartSlice from "src/providers/cartSlice";
+import overlaySlice from "src/providers/overlaySlice";
 import sidebarSlice from "src/providers/sidebarSlice";
+import subUserSlice from "src/providers/subUserSlice";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +22,9 @@ const persistConfig = {
 };
 const rootReducer = combineReducers({
   sidebar: sidebarSlice,
+  cart: cartSlice,
+  overlay: overlaySlice,
+  subUser: subUserSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { PropTypes } from "prop-types";
 
 const Quantity = (props) => {
-  const { value, max, getValue } = props;
+  const { value, max, getValue, small } = props;
   const [val, setVal] = useState(value || 1);
   const handleChange = (e) => {
     setVal(e.target.value);
@@ -22,7 +22,7 @@ const Quantity = (props) => {
   };
 
   return (
-    <Wrapper {...props}>
+    <Wrapper {...props} className={small && "small"}>
       <Minus onClick={handleMinus}>-</Minus>
       <Qty>
         <input
@@ -42,6 +42,7 @@ Quantity.propTypes = {
   value: PropTypes.number,
   getValue: PropTypes.func,
   max: PropTypes.number,
+  small: PropTypes.bool,
 };
 
 const Wrapper = styled.div`
@@ -62,6 +63,17 @@ const Wrapper = styled.div`
     align-items: center;
     font-weight: 700;
     font-size: 18px;
+  }
+  &.small {
+    width: 80px;
+    > div,
+    input {
+      width: 30px;
+      height: 30px;
+      margin: 0;
+      min-width: 20px;
+      font-size: 14px;
+    }
   }
 `;
 const Minus = styled.div``;

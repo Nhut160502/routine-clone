@@ -5,6 +5,9 @@ import { PropTypes } from "prop-types";
 import SideBar from "src/components/SideBar";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import Cart from "src/components/Cart";
+import Overlay from "src/components/Overlay";
+import Favourite from "src/components/Favourite";
 
 const DefaultLayout = (props) => {
   const { children } = props;
@@ -21,7 +24,10 @@ const DefaultLayout = (props) => {
 
   return (
     <>
+      <Overlay />
+      <Favourite />
       <Header />
+      <Cart />
       <SideBar />
       <Content className={fixed && "pt0"}>{children}</Content>
       <Footer />
