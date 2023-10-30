@@ -9,6 +9,7 @@ import Cart from "src/components/Cart";
 import Overlay from "src/components/Overlay";
 import Favourite from "src/components/Favourite";
 import Login from "src/components/Login";
+import Register from "src/components/Register";
 
 const DefaultLayout = (props) => {
   const { children } = props;
@@ -26,6 +27,7 @@ const DefaultLayout = (props) => {
   return (
     <>
       <Login />
+      <Register />
       <Overlay />
       <Favourite />
       <Header />

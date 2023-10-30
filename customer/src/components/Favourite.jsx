@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 const Favourite = () => {
   const { open } = useSelector((state) => state?.favourite);
-  console.log(open);
   return (
     <Wrapper className={open && "active"}>
       <FavouriteItem />

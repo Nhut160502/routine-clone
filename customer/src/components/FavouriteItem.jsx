@@ -26,7 +26,6 @@ const colors = [
 const FavouriteItem = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(isOpen);
   return (
     <Wrapper>
       <Row>

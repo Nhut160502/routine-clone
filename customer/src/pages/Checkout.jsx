@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "src/components/Breadcrumbs";
 import Button from "src/components/Button";
-import Checkbox from "src/components/Checkbox";
+import Radio from "src/components/Radio";
 import {
   IconLocationBig,
   IconMethodPayment,
@@ -12,6 +12,7 @@ import {
 } from "src/components/Icon";
 import ProductCheckout from "src/components/ProductCheckout";
 import { styled } from "styled-components";
+import Control from "src/components/Control";
 
 const Checkout = () => {
   const [data, setData] = useState([]);
@@ -130,7 +131,7 @@ const Checkout = () => {
             </Summary>
             <Payment>
               <div className="company">
-                <Checkbox label="Xuất hoá đơn công ty" bold />
+                <Radio label="Xuất hoá đơn công ty" bold />
               </div>
               <div className="method-shiping">
                 <div className="title">
@@ -138,7 +139,7 @@ const Checkout = () => {
                   <h1>Phương thức vận chuyển</h1>
                 </div>
                 <div className="method">
-                  <Checkbox
+                  <Radio
                     checked
                     label={
                       <span>
@@ -155,10 +156,10 @@ const Checkout = () => {
                   <h1>Phương thức thanh toán</h1>
                 </div>
                 <div className="method">
-                  <Checkbox label="Thanh toán khi nhận hàng" checked />
+                  <Radio label="Thanh toán khi nhận hàng" checked />
                 </div>
                 <div className="method">
-                  <Checkbox
+                  <Radio
                     label={
                       <>
                         <span>Thẻ ATM/Visa/Master/JCB/QRCode qua Payoo</span>

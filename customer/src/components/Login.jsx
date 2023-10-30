@@ -2,12 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./Button";
-import { IconArrowRight, IconFaceBook, IconGoogle } from "./Icon";
+import { IconArrowRight, IconClose, IconFaceBook, IconGoogle } from "./Icon";
+import { useDispatch, useSelector } from "react-redux";
+import { hiddenLogin } from "src/providers/loginSlice";
+import { hiddeOverlay } from "src/providers/overlaySlice";
+import Control from "./Control";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const { open } = useSelector((state) => state?.login);
+  const handleCloseLogin = () => {
+    dispatch(hiddenLogin());
+    dispatch(hiddeOverlay());
+  };
   return (
-    <Wrapper>
+    <Wrapper className={open && "active"}>
       <Content>
+        <IconClose className="btn-close" onClick={handleCloseLogin} />
         <Title>
           <h3>Đăng nhập</h3>
           <span>
@@ -17,14 +28,8 @@ const Login = () => {
         </Title>
         <Form>
           <form>
-            <div className="control">
-              <label htmlFor="email">Email/Số điện thoại</label>
-              <input type="text" />
-            </div>
-            <div className="control">
-              <label htmlFor="password">Mật khẩu</label>
-              <input type="password" />
-            </div>
+            <Control id="email" label="Email/Số điện thoại" />
+            <Control id="password" label="Mật khẩu" type="password" />
             <Link>Quên mật khẩu?</Link>
             <Button>Đăng nhập</Button>
             <div className="title">
@@ -98,16 +103,30 @@ const Content = styled.div`
   padding: 68px 70px;
   max-width: 500px;
   background-color: #fff;
+  position: relative;
+  .btn-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    cursor: pointer;
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
+  transition: all 0.3s;
   justify-content: center;
   align-items: center;
   width: 100%;
   margin: auto;
-  position: absolute;
-  top: 0;
-  z-index: 2;
+  position: fixed;
+  top: -100%;
+  z-index: 3;
+  height: 100vh;
+  overflow-y: auto;
+
+  &.active {
+    top: 0;
+  }
 `;
 const Title = styled.div`
   text-align: center;
@@ -126,44 +145,8 @@ const Title = styled.div`
   }
 `;
 const Form = styled.div`
-  .control {
-    margin-bottom: 16px;
-    label {
-      display: block;
-      font-weight: 400;
-      font-size: 15px;
-      line-height: 19px;
-      color: #000;
-      margin: 0 0 10px;
-
-      &::after {
-        content: "*";
-        color: #e40a0a;
-        font-size: 15px;
-        margin-left: 4px;
-      }
-    }
-
-    input {
-      width: 100%;
-      background: #f1f1f1;
-      border: 1px solid #e4e4e4;
-      height: 48px;
-    }
-  }
-  a {
-    display: block;
-    margin-bottom: 30px;
-    text-align: center;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 19px;
-    text-decoration: underline;
-  }
   button {
     width: 100%;
-    height: 48px;
   }
   .title {
     margin-top: 30px;

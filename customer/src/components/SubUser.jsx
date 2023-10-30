@@ -2,14 +2,32 @@ import React from "react";
 import { styled } from "styled-components";
 import Button from "./Button";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openLogin } from "src/providers/loginSlice";
+import { openOverlay } from "src/providers/overlaySlice";
+import { hiddeSubUser } from "src/providers/subUserSlice";
+import { openRegister } from "src/providers/registerSlice";
 
 const SubUser = () => {
   const { open } = useSelector((state) => state?.subUser);
+  const dispatch = useDispatch();
+  const handleActiveLogin = () => {
+    dispatch(openLogin());
+    dispatch(openOverlay());
+    dispatch(hiddeSubUser());
+  };
+  const handleActiveRegister = () => {
+    dispatch(openRegister());
+    dispatch(hiddeSubUser());
+    dispatch(openOverlay());
+  };
+
   return (
     <Wrapper className={open && "active"}>
-      <Button>Đăng nhập</Button>
-      <Button outline>Đăng Ký</Button>
+      <Button onClick={handleActiveLogin}>Đăng nhập</Button>
+      <Button outline onClick={handleActiveRegister}>
+        Đăng Ký
+      </Button>
       <ul>
         <li>
           <Link>Theo dõi đơn hàng</Link>

@@ -1,4 +1,5 @@
 import DefaultLayout from "./layouts/DefaultLayout";
+import Account from "./pages/Account";
 import BestSeller from "./pages/BestSeller";
 import Category from "./pages/Category";
 import CategoryChild from "./pages/CategoryChild";
@@ -40,6 +41,11 @@ const routes = [
   {
     path: "/checkout",
     element: Checkout,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/customer/account",
+    element: Account,
     layout: DefaultLayout,
   },
 ];
