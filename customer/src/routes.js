@@ -4,8 +4,10 @@ import BestSeller from "./pages/BestSeller";
 import Category from "./pages/Category";
 import CategoryChild from "./pages/CategoryChild";
 import Checkout from "./pages/Checkout";
+import Collection from "./pages/Collection";
 import GroupProduct from "./pages/GroupProduct";
 import Home from "./pages/Home";
+import News from "./pages/News";
 import Product from "./pages/Product";
 const routes = [
   {
@@ -46,6 +48,16 @@ const routes = [
   {
     path: "/customer/account",
     element: Account,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/news",
+    element: News,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/collection/:slugCollection",
+    element: Collection,
     layout: DefaultLayout,
   },
 ];

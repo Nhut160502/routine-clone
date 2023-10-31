@@ -1,0 +1,91 @@
+parent:[
+    name,
+    banner,
+]
+
+collection:[
+    name, 
+]
+
+category:[
+    parent,
+    name, 
+    banner,
+]
+category child:[
+    category,
+    name, 
+]
+
+
+product[
+    parent //objectId
+    collection //objectId
+    category //objectId
+    category child//objectId
+    name //string
+    media //arr => color //objectId, thumbbail //arr[string], gallery => //arr[string] 
+    colors //arr[objectId]
+    sizes //arr[objectId]
+    stock // arr => color //objectId, size //objectId, qty //number,
+    price //number
+    sale // number
+    sold // number
+    isActive // bool
+    attribute // arr[objectId]
+    description //sting
+]
+
+customer[
+    
+]
+
+cart[
+    customerId //objectId
+    products //arr[objectId]
+]
+order[
+    firstName //string
+    lastName //string
+    phoneNumber //string
+    address //string
+    email 
+    products //arr[objectId]
+    COUPON //objectId 
+    discount //objectId
+    total //number
+    method //objectId
+    invoices [
+        {
+            companyName
+            companyAddress
+            taxCode
+            email
+        }
+    ]
+    note //string
+    status // bool
+]
+
+colors[
+    name
+    img
+]
+sizes[
+    name
+]
+form[
+    name
+]
+material[
+    name
+]
+sex[
+    name
+]
+handType[
+    name
+]
+design[
+    name
+]

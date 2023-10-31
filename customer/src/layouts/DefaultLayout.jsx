@@ -45,6 +45,7 @@ DefaultLayout.propTypes = {
 
 const Content = styled.div`
   padding-top: 75px;
+  padding-bottom: 80px;
   &.pt0 {
     padding-top: 0 !important;
   }
