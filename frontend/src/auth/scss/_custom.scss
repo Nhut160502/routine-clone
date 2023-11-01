@@ -1,1 +1,14 @@
 // Here you can add other styles
+.btn-add-dash{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+.wrapper-form{
+    display: flex;
+    justify-content: center;
+
+    form {
+        width: 600px;
+    }
+}

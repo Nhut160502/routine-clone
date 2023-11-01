@@ -32,14 +32,20 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: "Collection",
-    to: "/collection",
+    name: "Group Product",
+    to: "/dashboard/group-product",
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: "Collection",
     to: "/collection",
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Category",
+    to: "/category",
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
   {
