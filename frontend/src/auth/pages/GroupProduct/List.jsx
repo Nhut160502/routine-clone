@@ -40,7 +40,7 @@ const GroupProduct = () => {
   return (
     <>
       <div className="btn-add-dash">
-        <Link to="/dashboard/group-product/add">
+        <Link to="/dashboard/group-product/store">
           <Button type="primary" icon={<PlusOutlined />} />
         </Link>
       </div>

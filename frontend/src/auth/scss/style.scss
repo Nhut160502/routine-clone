@@ -1,3 +1,4 @@
+@import '../../../node_modules/react-quill/dist/quill.snow.css';
 // If you want to override variables do it here
 @import "variables";
 
@@ -16,6 +17,9 @@ $enable-rtl: true;
 // If you want to add custom CSS you can put it here.
 @import "custom";
 
+.e-icons {
+  font-family: "e-icons" !important;
+}
 *{
     margin: 0;
     padding: 0;
