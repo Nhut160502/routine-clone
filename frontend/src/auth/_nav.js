@@ -1,15 +1,19 @@
 import React from "react";
 import CIcon from "@coreui/icons-react";
 import {
+  cilApplications,
   cilBell,
+  cilBook,
   cilCalculator,
   cilChartPie,
+  cilClearAll,
+  cilColumns,
   cilCursor,
   cilDescription,
   cilDrop,
   cilNotes,
-  cilPencil,
   cilPuzzle,
+  cilRectangle,
   cilSpeedometer,
   cilStar,
 } from "@coreui/icons";
@@ -34,30 +38,52 @@ const _nav = [
     component: CNavItem,
     name: "Group Product",
     to: "/dashboard/group-product",
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilApplications} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: "Collection",
     to: "/dashboard/collection",
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: "Category",
     to: "/dashboard/category",
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilColumns} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: "Typography",
-    to: "/theme/typography",
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    name: "Category Child",
+    to: "/dashboard/category-child",
+    icon: <CIcon icon={cilClearAll} customClassName="nav-icon" />,
   },
   {
-    component: CNavTitle,
-    name: "Components",
+    component: CNavItem,
+    name: "Product",
+    to: "/dashboard/product",
+    icon: <CIcon icon={cilRectangle} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: "Attribute",
+    to: "/dashboard/attribute",
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+
+  // //////////////////////////////////////////////////////////////
+
+  {
+    component: CNavTitle,
+    name: "Order",
+  },
+  {
+    component: CNavItem,
+    name: "Orders",
+    to: "/dashboard/orders",
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+
   {
     component: CNavGroup,
     name: "Base",

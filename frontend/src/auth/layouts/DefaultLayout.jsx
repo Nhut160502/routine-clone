@@ -1,9 +1,9 @@
 import React from "react";
-import AppFooter from "../components/AppFooter";
-import AppHeader from "../components/AppHeader";
-import AppSidebar from "../components/AppSidebar";
+import { AppFooter, AppHeader, AppSidebar } from "../components";
 import { PropTypes } from "prop-types";
 import "../scss/style.scss";
+import axiosInterceptor from "../utils/interceptors";
+axiosInterceptor();
 
 const DefaultLayout = (props) => {
   const { children } = props;

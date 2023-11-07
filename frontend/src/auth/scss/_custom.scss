@@ -1,38 +1,49 @@
 // Here you can add other styles
-.btn-add-dash{
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
+.btn-add-dash {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
 }
-.wrapper-form{
-    display: flex;
-    justify-content: center;
+.wrapper-form {
+  display: flex;
+  justify-content: center;
 
-    form {
-        width: 600px;
-    }
+  form {
+    width: 600px;
+  }
 }
-.form-upload{
-    .btn-upload {
-        display: flex;
-        align-items: center;
-      }
-      .preview {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border: 1px solid #d9d9d9;
-        border-radius: 10px;
-        margin-bottom: 12px;
-        .infor {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-        }
-        > button {
-          background-color: transparent;
-          border: none;
-        }
-      }
+.form-upload {
+  .btn-upload {
+    display: flex;
+    align-items: center;
+  }
+  .preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    .infor {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    > button {
+      background-color: transparent;
+      border: none;
+    }
+  }
+}
+.drops-attr {
+  min-width: 100px;
+}
+
+.image-custom {
+  max-width: 300px;
+}
+.ant-table-cell {
+  font-size: 14px;
+  text-transform: capitalize;
 }

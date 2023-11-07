@@ -1,24 +1,11 @@
-import { Button, Table } from "antd";
-import React from "react";
+import { Button, Image, Table } from "antd";
+import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { getListGroupProduct } from "src/auth/services";
 
 const GroupProduct = () => {
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-
+  const [data, setData] = useState([]);
   const columns = [
     {
       title: "Name",
@@ -26,16 +13,29 @@ const GroupProduct = () => {
       key: "name",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Banner",
+      dataIndex: "banner",
+      key: "banner",
+      render: (url) => <Image className="image-custom" src={url} />,
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Created",
+      dataIndex: "createdAt",
+      key: "createdAt",
     },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getListGroupProduct();
+        setData(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -44,7 +44,7 @@ const GroupProduct = () => {
           <Button type="primary" icon={<PlusOutlined />} />
         </Link>
       </div>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={data} columns={columns} />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
-import Uploads from "src/auth/components/Uploads";
+import { Uploads } from "src/auth/components";
 import { rules } from "src/auth/configs";
 
 const data = [
