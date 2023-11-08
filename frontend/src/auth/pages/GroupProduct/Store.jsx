@@ -15,7 +15,7 @@ const Store = () => {
       const formData = new FormData();
       formData.append("file", values.file);
       formData.append("name", values.name);
-      const res = await storeGroupProduct(formData);
+      await storeGroupProduct(formData);
       navigate("/dashboard/group-product");
     } catch (error) {
       return error;
@@ -40,7 +40,6 @@ const Store = () => {
           name="banner"
           label="Banner"
           onGetFiles={handleGetFiles}
-          multiple
         />
         <Button type="primary" htmlType="submit">
           Submit

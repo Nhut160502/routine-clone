@@ -60,13 +60,20 @@ const Uploads = (props) => {
       }
       className="form-upload"
     >
-      {filesUrl.length <= 0 &&
+      {(filesUrl.length <= 0 &&
         data &&
-        data.map((item) => (
+        data.length &&
+        data?.map((item) => (
           <div className="preview" key={item}>
             <div className="infor">
               <Image src={item.img} height={80} />
-              <a href={item}>{item.name}</a>
+            </div>
+          </div>
+        ))) ||
+        (filesUrl.length <= 0 && data && !data.length && (
+          <div className="preview" key={data?._id}>
+            <div className="infor">
+              <Image src={data?.banner} height={80} />
             </div>
           </div>
         ))}

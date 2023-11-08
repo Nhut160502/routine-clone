@@ -1,29 +1,47 @@
-import { Button, Image, Table } from "antd";
+import { Button, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EllipsisOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { getListGroupProduct } from "src/auth/services";
+import { destroyGroupProduct, getListGroupProduct } from "src/auth/services";
+import { columnsGroup } from "src/auth/utils/columns";
+import toast from "src/auth/utils/toast";
 
 const GroupProduct = () => {
   const [data, setData] = useState([]);
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+  const columns = columnsGroup();
+  columns.push({
+    dataIndex: "_id",
+    key: "_id",
+    render: (_, record) => {
+      return (
+        <form className="action">
+          <Link to={`/dashboard/group-product/edit/${record?.slug}`}>
+            <Button type="primary" icon={<EllipsisOutlined />} />
+          </Link>
+          <Button
+            type="primary"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record?._id)}
+          />
+        </form>
+      );
     },
-    {
-      title: "Banner",
-      dataIndex: "banner",
-      key: "banner",
-      render: (url) => <Image className="image-custom" src={url} />,
-    },
-    {
-      title: "Created",
-      dataIndex: "createdAt",
-      key: "createdAt",
-    },
-  ];
+  });
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await destroyGroupProduct(id);
+      setData(data.filter((item) => item._id !== id));
+      toast.success(res?.message);
+    } catch (error) {
+      return error;
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {

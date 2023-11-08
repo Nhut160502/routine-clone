@@ -5,6 +5,7 @@ parent:[
 
 collection:[
     name, 
+    banner
 ]
 
 category:[

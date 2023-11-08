@@ -53,3 +53,21 @@
     text-transform: capitalize;
   }
 }
+
+.action {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  > a {
+    display: block;
+  }
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
