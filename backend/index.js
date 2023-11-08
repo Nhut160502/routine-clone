@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import "dotenv/config";
 import routers from "./src/routers/index.js";
 import { connectDatabase } from "./src/configs/database.js";
+import errorHandler from "./src/middlewares/errorHandler.js";
 
 const app = express();
 
@@ -23,15 +24,6 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 * 24 },
   })
 );
-const errorHandler = (error) => {
-  let errMsg;
-  if (error.code == 11000) {
-    errMsg = Object.keys(error.keyValue)[0] + " already exists.";
-  } else {
-    errMsg = error.message;
-  }
-  res.status(400).json({ statusText: "Bad Request", message: errMsg });
-};
 
 connectDatabase();
 app.use("/api", routers);

@@ -47,3 +47,9 @@
   font-size: 14px;
   text-transform: capitalize;
 }
+
+.Toastify__toast-body {
+  > div {
+    text-transform: capitalize;
+  }
+}

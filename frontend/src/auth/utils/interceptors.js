@@ -1,4 +1,5 @@
 import axiosSetup from "./axios";
+import toast from "./toast";
 
 // Add a request interceptor
 const axiosInterceptor = () => {
@@ -22,6 +23,9 @@ const axiosInterceptor = () => {
     },
 
     function (error) {
+      if (error?.response?.data?.success === false) {
+        return toast.error(error?.response?.data?.message);
+      }
       return Promise.reject(error);
     },
   );

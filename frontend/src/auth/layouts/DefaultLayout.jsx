@@ -3,19 +3,23 @@ import { AppFooter, AppHeader, AppSidebar } from "../components";
 import { PropTypes } from "prop-types";
 import "../scss/style.scss";
 import axiosInterceptor from "../utils/interceptors";
+import { ToastContainer } from "react-toastify";
+import Loading from "../components/Loading";
 axiosInterceptor();
 
 const DefaultLayout = (props) => {
   const { children } = props;
   return (
-    <div>
+    <>
+      <Loading />
+      <ToastContainer />
       <AppSidebar />
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
         <AppHeader />
         <div className="body flex-grow-1 px-3">{children}</div>
         <AppFooter />
       </div>
-    </div>
+    </>
   );
 };
 DefaultLayout.propTypes = {

@@ -10,18 +10,15 @@ const Store = () => {
   const [values, setValues] = useState({ name: null, file: null });
   const handleGetFiles = (files) => setValues({ ...values, file: files[0] });
   const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
       const formData = new FormData();
       formData.append("file", values.file);
       formData.append("name", values.name);
-      const res = storeGroupProduct(formData);
-      console.log(res);
-      if (res.success) {
-        navigate("/dashboard/group-product");
-      }
+      const res = await storeGroupProduct(formData);
+      navigate("/dashboard/group-product");
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
   return (

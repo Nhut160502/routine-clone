@@ -10,5 +10,6 @@ routers.post(
   upload("GroupProduct").single("file"),
   groupProductControllers.store
 );
+routers.get("/:slug", groupProductControllers.show);
 
 export default routers;

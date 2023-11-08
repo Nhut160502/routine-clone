@@ -1,6 +1,6 @@
 import { media } from "../configs/media.js";
 import { GroupProduct } from "../models/index.js";
-
+import fs from "fs";
 const index = async (req, res) => {
   try {
     const data = await GroupProduct.find();
@@ -16,13 +16,37 @@ const store = async (req, res, next) => {
     const data = new GroupProduct({
       name: req.body.name,
       banner: req.file.filename,
-      createdAt: new Date(0),
     });
     await data.save();
+    return res.status(200).json({ success: true, data: data });
+  } catch (error) {
+    if (req.file) {
+      var filePath = `public/GroupProduct/${req.file.filename}`;
+      fs.unlinkSync(filePath);
+    }
+    return next(error);
+  }
+};
+
+const show = async (req, res, next) => {
+  try {
+    const data = await GroupProduct.findOne({ slug: req.params.slug });
+    if (!data) {
+      throw new Error("Not found");
+    }
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     next(error);
   }
 };
 
-export { index, store };
+const update = async (req, res, next) => {
+  try {
+    const data = await GroupProduct.findByIdAndUpdate(req.body.id, {
+      name: req.body.name,
+      // banner: req.files,
+    });
+  } catch (error) {}
+};
+
+export { index, store, show };
