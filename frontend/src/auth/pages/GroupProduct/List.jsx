@@ -9,9 +9,15 @@ import { Link } from "react-router-dom";
 import { destroyGroupProduct, getListGroupProduct } from "src/auth/services";
 import { columnsGroup } from "src/auth/utils/columns";
 import toast from "src/auth/utils/toast";
+import { useDispatch } from "react-redux";
+import {
+  activeLoading,
+  disActiveLoading,
+} from "src/auth/providers/loadingSlice";
 
 const GroupProduct = () => {
   const [data, setData] = useState([]);
+  const dispatch = useDispatch();
   const columns = columnsGroup();
   columns.push({
     dataIndex: "_id",
@@ -34,9 +40,11 @@ const GroupProduct = () => {
   });
 
   const handleDelete = async (id) => {
+    dispatch(activeLoading());
     try {
       const res = await destroyGroupProduct(id);
       setData(data.filter((item) => item._id !== id));
+      dispatch(disActiveLoading());
       toast.success(res?.message);
     } catch (error) {
       return error;
@@ -45,15 +53,18 @@ const GroupProduct = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(activeLoading());
       try {
         const res = await getListGroupProduct();
         setData(res.data);
+        dispatch(disActiveLoading());
       } catch (error) {
-        console.log(error);
+        dispatch(disActiveLoading());
+        return error;
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

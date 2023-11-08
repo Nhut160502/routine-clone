@@ -1,10 +1,12 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const Loading = () => {
+  const { active } = useSelector((state) => state?.loading);
   return (
-    <Wrapper>
+    <Wrapper className={active && "active"}>
       <LoadingOutlined className="icon-loading" />
     </Wrapper>
   );

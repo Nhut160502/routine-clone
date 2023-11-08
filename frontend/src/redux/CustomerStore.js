@@ -19,7 +19,7 @@ import sidebarSlice from "../customer/providers/sidebarSlice";
 import subUserSlice from "../customer/providers/subUserSlice";
 
 const persistConfig = {
-  key: "root",
+  key: "root1",
   version: 1,
   storage,
 };

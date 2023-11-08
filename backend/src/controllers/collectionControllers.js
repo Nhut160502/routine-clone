@@ -10,4 +10,13 @@ const index = async (req, res, next) => {
     next(error);
   }
 };
-export { index };
+
+const store = async (req, res, next) => {
+  try {
+    const data = new Collections({
+      name: req.body.name,
+      banner: req.file.filename,
+    });
+  } catch (error) {}
+};
+export { index, store };

@@ -4,7 +4,6 @@ import { PropTypes } from "prop-types";
 
 const Control = (props) => {
   const { id, type, value, label, placeholder, children, min, max } = props;
-  console.log(placeholder);
   return (
     <Wrapper {...props}>
       <label htmlFor={id}>{label}</label>

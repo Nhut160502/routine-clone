@@ -9,7 +9,7 @@ const Store = () => {
         <Form.Item label="Name" name="name" rules={rules}>
           <Input placeholder="Name group product" />
         </Form.Item>
-        <Uploads required name="banner" label="Banner" multiple />
+        <Uploads name="banner" label="Banner" />
         <Button type="primary" htmlType="submit">
           Submit
         </Button>

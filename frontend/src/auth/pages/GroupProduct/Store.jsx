@@ -1,23 +1,33 @@
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Uploads } from "src/auth/components";
 import { rules } from "src/auth/configs";
+import {
+  activeLoading,
+  disActiveLoading,
+} from "src/auth/providers/loadingSlice";
 import { storeGroupProduct } from "src/auth/services";
 
 const Store = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [values, setValues] = useState({ name: null, file: null });
   const handleGetFiles = (files) => setValues({ ...values, file: files[0] });
+
   const handleSubmit = async (e) => {
+    dispatch(activeLoading());
     try {
       e.preventDefault();
       const formData = new FormData();
       formData.append("file", values.file);
       formData.append("name", values.name);
       await storeGroupProduct(formData);
+      dispatch(disActiveLoading());
       navigate("/dashboard/group-product");
     } catch (error) {
+      dispatch(disActiveLoading());
       return error;
     }
   };
