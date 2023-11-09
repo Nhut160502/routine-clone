@@ -45,4 +45,40 @@ const show = async (req, res, next) => {
   }
 };
 
-export { index, store, show };
+const update = async (req, res, next) => {
+  try {
+    const data = await Collections.findById(req.body.id);
+    data.name = req.body.name;
+    data.updatedAt = Date.now();
+    if (req.file) {
+      var filePath = `public/collection/${data.banner}`;
+      fs.existsSync(filePath) && fs.unlinkSync(filePath);
+      data.banner = req.file.filename;
+    }
+    await data.save();
+    return res
+      .status(200)
+      .json({ success: true, message: "Update Collection Successfully!" });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const destroy = async (req, res, next) => {
+  try {
+    const data = await Collections.findById(req.params.id);
+
+    var filePath = `public/collection/${data.banner}`;
+    fs.existsSync(filePath) && fs.unlinkSync(filePath);
+
+    await data.deleteOne();
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Delete Collection Successfully!" });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export { index, store, show, update, destroy };

@@ -6,6 +6,12 @@ const routers = express.Router();
 
 routers.get("/", collectionControllers.index);
 routers.get("/:slug", collectionControllers.show);
+routers.delete("/:id", collectionControllers.destroy);
+routers.put(
+  "/",
+  upload("collection").single("file"),
+  collectionControllers.update
+);
 routers.post(
   "/",
   upload("collection").single("file"),

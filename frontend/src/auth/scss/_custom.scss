@@ -71,3 +71,39 @@
     }
   }
 }
+
+.ant-modal-footer {
+  .ant-btn-primary {
+    background-color: #ff4d4f !important;
+  }
+}
+
+.title-modal-custom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  img {
+    width: 30px;
+  }
+  span {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.ant-form-item-control-input-content {
+  position: relative;
+}
+
+.btn-open-form-add {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  top: -100%;
+  top: calc(-100% - 5px);
+  padding: 5px;
+  color: #000;
+  .btn-icon-add {
+    cursor: pointer;
+  }
+}

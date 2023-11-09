@@ -5,6 +5,7 @@ import "../scss/style.scss";
 import axiosInterceptor from "../utils/interceptors";
 import { ToastContainer } from "react-toastify";
 import Loading from "../components/Loading";
+import ConfirmDelete from "../components/ConfirmDelete";
 axiosInterceptor();
 
 const DefaultLayout = (props) => {
@@ -13,6 +14,7 @@ const DefaultLayout = (props) => {
     <>
       <Loading />
       <ToastContainer />
+      <ConfirmDelete />
       <AppSidebar />
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
         <AppHeader />

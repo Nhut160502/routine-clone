@@ -4,15 +4,23 @@ import {
   show as showGroupProduct,
   update as updateGroupProduct,
   destroy as destroyGroupProduct,
-} from "./groupProduct";
+} from "./groupProducts";
 
 import {
   index as getListCollection,
   store as storeCollection,
   show as showCollection,
-  // update as updateCollection,
-  // destroy as destroyCollection,
-} from "./collection";
+  update as updateCollection,
+  destroy as destroyCollection,
+} from "./collections";
+
+import {
+  index as getListCategory,
+  store as storeCategory,
+  show as showCategory,
+  update as updateCategory,
+  destroy as destroyCategory,
+} from "./categories";
 
 export {
   // groupProduct
@@ -25,4 +33,12 @@ export {
   getListCollection,
   storeCollection,
   showCollection,
+  updateCollection,
+  destroyCollection,
+  // Caetgory
+  getListCategory,
+  storeCategory,
+  showCategory,
+  updateCategory,
+  destroyCategory,
 };

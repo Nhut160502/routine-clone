@@ -14,6 +14,7 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
+import { activeModal, handleModalDelete } from "src/auth/providers/modalSlice";
 
 const GroupProduct = () => {
   const [data, setData] = useState([]);
@@ -40,15 +41,18 @@ const GroupProduct = () => {
   });
 
   const handleDelete = async (id) => {
-    dispatch(activeLoading());
-    try {
-      const res = await destroyGroupProduct(id);
-      setData(data.filter((item) => item._id !== id));
-      dispatch(disActiveLoading());
-      toast.success(res?.message);
-    } catch (error) {
-      return error;
-    }
+    dispatch(activeModal());
+    const handle = async () => {
+      try {
+        const res = await destroyGroupProduct(id);
+        setData(data.filter((item) => item._id !== id));
+        dispatch(disActiveLoading());
+        toast.success(res?.message);
+      } catch (error) {
+        return error;
+      }
+    };
+    dispatch(handleModalDelete(handle));
   };
 
   useEffect(() => {

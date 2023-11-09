@@ -47,13 +47,12 @@ const show = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const data = await GroupProduct.findById(req.body.id);
-
     data.name = req.body.name;
     data.updatedAt = Date.now();
 
-    if (req.file && data.banner) {
+    if (req.file) {
       var filePath = `public/GroupProduct/${data.banner}`;
-      fs.unlinkSync(filePath);
+      fs.existsSync(filePath) && fs.unlinkSync(filePath);
       data.banner = req.file.filename;
     }
 

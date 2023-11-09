@@ -5,19 +5,22 @@ import {
 } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { getListCollection } from "src/auth/services";
+import { activeModal, handleModalDelete } from "src/auth/providers/modalSlice";
+import { destroyCollection, getListCollection } from "src/auth/services";
 import { columnsGroup } from "src/auth/utils/columns";
+import toast from "src/auth/utils/toast";
 
 const List = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const columns = columnsGroup();
+  const modal = useSelector((state) => state?.modal);
   columns.push({
     dataIndex: "_id",
     key: "_id",
@@ -53,7 +56,23 @@ const List = () => {
     fetchData();
   }, [dispatch]);
 
-  const handleDelete = async (id) => {};
+  const handleDelete = async (id) => {
+    dispatch(activeModal());
+    const handle = async () => {
+      try {
+        const res = await destroyCollection(id);
+        if (res.success) {
+          setData(data.filter((item) => item._id !== id));
+          toast.success(res.message);
+        }
+      } catch (error) {
+        return error;
+      }
+    };
+    dispatch(handleModalDelete(handle));
+  };
+
+  console.log(modal);
 
   return (
     <>

@@ -1,16 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import loadingSlice from "src/auth/providers/loadingSlice";
+import modalSlice from "src/auth/providers/modalSlice";
 
 const persistConfig = {
   key: "root2",
@@ -19,6 +11,7 @@ const persistConfig = {
 };
 const rootReducer = combineReducers({
   loading: loadingSlice,
+  modal: modalSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -27,9 +20,7 @@ export const AuthStore = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false,
     }),
 });
 
