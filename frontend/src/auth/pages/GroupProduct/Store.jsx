@@ -9,6 +9,7 @@ import {
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
 import { storeGroupProduct } from "src/auth/services";
+import toast from "src/auth/utils/toast";
 
 const Store = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Store = () => {
       formData.append("file", values.file);
       formData.append("name", values.name);
       await storeGroupProduct(formData);
-      dispatch(disActiveLoading());
+      toast.success("Store Group Product Successfully!");
       navigate("/dashboard/group-product");
     } catch (error) {
       dispatch(disActiveLoading());

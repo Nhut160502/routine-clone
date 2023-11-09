@@ -8,8 +8,8 @@ import {
 
 import {
   index as getListCollection,
-  // store as storeCollection,
-  // show as showCollection,
+  store as storeCollection,
+  show as showCollection,
   // update as updateCollection,
   // destroy as destroyCollection,
 } from "./collection";
@@ -23,4 +23,6 @@ export {
   destroyGroupProduct,
   // Collection
   getListCollection,
+  storeCollection,
+  showCollection,
 };

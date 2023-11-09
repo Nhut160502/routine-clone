@@ -16,13 +16,11 @@ const errorHandler = (error, req, res, next) => {
       message: errMsg,
     });
   }
-  return res
-    .status(400)
-    .json({
-      success: false,
-      statusText: "Bad Request",
-      message: error.message,
-    });
+  return res.status(400).json({
+    success: false,
+    statusText: "Bad Request",
+    message: error.message,
+  });
 };
 
 export default errorHandler;

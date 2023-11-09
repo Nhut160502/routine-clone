@@ -8,6 +8,7 @@ import {
 import {
   Store as StoreCollection,
   List as ListCollection,
+  Edit as EditCollection,
 } from "src/auth/pages/Collection";
 
 import {
@@ -73,6 +74,12 @@ const routes = [
     path: "/dashboard/collection/store",
     name: "Store Collection",
     element: StoreCollection,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/dashboard/collection/edit/:slug",
+    name: "Edit Collection",
+    element: EditCollection,
     layout: DefaultLayout,
   },
 

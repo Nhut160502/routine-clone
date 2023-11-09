@@ -25,7 +25,7 @@ const GroupProduct = () => {
     render: (_, record) => {
       return (
         <form className="action">
-          <Link to={`/dashboard/group-product/edit/${record?.slug}`}>
+          <Link to={`/dashboard/collection/edit/${record?.slug}`}>
             <Button type="primary" icon={<EllipsisOutlined />} />
           </Link>
           <Button

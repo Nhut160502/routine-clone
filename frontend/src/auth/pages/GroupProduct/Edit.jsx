@@ -9,6 +9,7 @@ import {
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
 import { showGroupProduct, updateGroupProduct } from "src/auth/services";
+import toast from "src/auth/utils/toast";
 
 const Edit = () => {
   const { slug } = useParams();
@@ -26,7 +27,7 @@ const Edit = () => {
       formData.append("file", file);
       formData.append("id", data?._id);
       await updateGroupProduct(formData);
-      dispatch(disActiveLoading());
+      toast.success("Update Group Product Successfully!");
       navigate("/dashboard/group-product");
     } catch (error) {
       dispatch(disActiveLoading());

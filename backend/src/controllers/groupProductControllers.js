@@ -13,6 +13,9 @@ const index = async (req, res) => {
 
 const store = async (req, res, next) => {
   try {
+    if (!req.file) {
+      throw new Error("Banner group product is not valid!");
+    }
     const data = new GroupProduct({
       name: req.body.name,
       banner: req.file.filename,
