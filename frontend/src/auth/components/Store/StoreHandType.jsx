@@ -1,17 +1,15 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { rules } from "../configs";
-import Uploads from "./Uploads";
+import { rules } from "../../configs";
 
-const StoreColor = () => {
+const StoreHandType = () => {
   return (
     <div>
       <div className="wrapper-form">
         <Form layout="vertical" style={{ width: "600px" }}>
-          <Form.Item label="Name Color" name="name" rules={rules}>
+          <Form.Item label="Name Hand Type" name="name" rules={rules}>
             <Input />
           </Form.Item>
-          <Uploads required name="img" label="Image" />
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
@@ -21,4 +19,4 @@ const StoreColor = () => {
   );
 };
 
-export default StoreColor;
+export default StoreHandType;

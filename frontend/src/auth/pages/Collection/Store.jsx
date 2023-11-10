@@ -39,7 +39,7 @@ const Store = () => {
         onFinish={handleSubmit}
       >
         <Form.Item label="Name" name="name" rules={rules}>
-          <Input placeholder="Name group product" />
+          <Input />
         </Form.Item>
         <Uploads
           onGetFiles={(files) => setFile(files[0])}

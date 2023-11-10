@@ -9,12 +9,12 @@ routers.get("/:slug", collectionControllers.show);
 routers.delete("/:id", collectionControllers.destroy);
 routers.put(
   "/",
-  upload("collection").single("file"),
+  upload("Collections").single("file"),
   collectionControllers.update
 );
 routers.post(
   "/",
-  upload("collection").single("file"),
+  upload("Collections").single("file"),
   collectionControllers.store
 );
 

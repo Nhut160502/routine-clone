@@ -1,13 +1,13 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { rules } from "../configs";
+import { rules } from "../../configs";
 
-const StoreDesign = () => {
+const StoreForm = () => {
   return (
     <div>
       <div className="wrapper-form">
         <Form layout="vertical" style={{ width: "600px" }}>
-          <Form.Item label="Name Design" name="name" rules={rules}>
+          <Form.Item label="Name Form" name="name" rules={rules}>
             <Input />
           </Form.Item>
           <Button type="primary" htmlType="submit">
@@ -19,4 +19,4 @@ const StoreDesign = () => {
   );
 };
 
-export default StoreDesign;
+export default StoreForm;

@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { rules } from "../configs";
+import { rules } from "../../configs";
 
 const StoreSex = () => {
   return (

@@ -3,7 +3,7 @@ import { configMongoose } from "../configs/mongoose.js";
 
 const Schema = mongoose.Schema;
 
-const collectionModel = new Schema(
+const handTypes = new Schema(
   {
     name: {
       type: String,
@@ -12,7 +12,6 @@ const collectionModel = new Schema(
       lowercase: true,
     },
     slug: { type: String, slug: "name" },
-    banner: { type: String, required: true },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
@@ -20,4 +19,4 @@ const collectionModel = new Schema(
 
 configMongoose();
 
-export const Collections = mongoose.model("Collections", collectionModel);
+export const HandTypes = mongoose.model("HandTypes", handTypes);

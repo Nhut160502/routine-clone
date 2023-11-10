@@ -1,5 +1,25 @@
-import { GroupProduct } from "./groupProduct.js";
-import { Collections } from "./collection.js";
-import { Categories } from "./category.js";
+import { GroupProduct } from "./groupProducts.js";
+import { Collections } from "./collections.js";
+import { Categories } from "./categories.js";
+import { CategoryChilds } from "./categoryChilds.js";
+import { Colors } from "./colors.js";
+import { Designs } from "./designs.js";
+import { Sizes } from "./sizes.js";
+import { Materials } from "./materials.js";
+import { Sex } from "./sex.js";
+import { Forms } from "./forms.js";
+import { HandTypes } from "./handType.js";
 
-export { GroupProduct, Collections, Categories };
+export {
+  GroupProduct,
+  Collections,
+  Categories,
+  CategoryChilds,
+  Colors,
+  Designs,
+  Sizes,
+  Materials,
+  Sex,
+  Forms,
+  HandTypes,
+};

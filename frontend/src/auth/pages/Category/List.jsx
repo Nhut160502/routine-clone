@@ -11,9 +11,10 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { activeModal } from "src/auth/providers/modalSlice";
-import { getListCategory } from "src/auth/services";
+import { activeModal, handleModalDelete } from "src/auth/providers/modalSlice";
+import { destroyCategory, getListCategory } from "src/auth/services";
 import { columnsCategories } from "src/auth/utils/columns";
+import toast from "src/auth/utils/toast";
 
 const List = () => {
   const [data, setData] = useState([]);
@@ -25,7 +26,7 @@ const List = () => {
     render: (_, record) => {
       return (
         <form className="action">
-          <Link to={`/dashboard/collection/edit/${record?.slug}`}>
+          <Link to={`/dashboard/category/edit/${record?.slug}`}>
             <Button type="primary" icon={<EllipsisOutlined />} />
           </Link>
           <Button
@@ -55,8 +56,20 @@ const List = () => {
     fetchData();
   }, [dispatch]);
 
-  const handleDelete = () => {
+  const handleDelete = async (id) => {
     dispatch(activeModal());
+    const handle = async () => {
+      try {
+        const res = await destroyCategory(id);
+        if (res.success) {
+          setData(data.filter((item) => item._id !== id));
+          toast.success("Delete Category Successfully!");
+        }
+      } catch (error) {
+        return error;
+      }
+    };
+    dispatch(handleModalDelete(handle));
   };
 
   return (
@@ -66,7 +79,7 @@ const List = () => {
           <Button type="primary" icon={<PlusOutlined />} />
         </Link>
       </div>
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={data} columns={columns} rowKey={"_id"} />
     </>
   );
 };

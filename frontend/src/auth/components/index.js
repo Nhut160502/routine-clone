@@ -4,13 +4,13 @@ import AppContent from "./AppContent";
 import AppFooter from "./AppFooter";
 import { AppSidebarNav } from "./AppSidebarNav";
 import AppSidebar from "./AppSidebar";
-import StoreColor from "./StoreColor";
-import StoreDesign from "./StoreDesign";
-import StoreForm from "./StoreForm";
-import StoreHandType from "./StoreHandType";
-import StoreMaterial from "./StoreMaterial";
-import StoreSex from "./StoreSex";
-import StoreSize from "./StoreSize";
+import StoreColor from "./Store/StoreColor";
+import StoreDesign from "./Store/StoreDesign";
+import StoreForm from "./Store/StoreForm";
+import StoreHandType from "./Store/StoreHandType";
+import StoreMaterial from "./Store/StoreMaterial";
+import StoreSex from "./Store/StoreSex";
+import StoreSize from "./Store/StoreSize";
 import Uploads from "./Uploads";
 
 export {

@@ -6,18 +6,19 @@ export const columnsGroup = () => {
     {
       title: "Name",
       dataIndex: "name",
-      key: "name",
+    },
+    {
+      title: "Shortcut",
+      dataIndex: "shortcut",
     },
     {
       title: "Banner",
       dataIndex: "banner",
-      key: "banner",
       render: (url) => <Image className="image-custom" src={url} />,
     },
     {
       title: "Created",
       dataIndex: "createdAt",
-      key: "createdAt",
     },
   ];
 };
@@ -27,23 +28,47 @@ export const columnsCategories = () => {
     {
       title: "Name",
       dataIndex: "name",
-      key: "name",
     },
     {
       title: "Group Product",
       dataIndex: "groupProduct",
-      key: "groupProduct",
+      render: (data) => data?.name,
     },
     {
       title: "Banner",
       dataIndex: "banner",
-      key: "banner",
       render: (url) => <Image className="image-custom" src={url} />,
     },
     {
       title: "Created",
       dataIndex: "createdAt",
-      key: "createdAt",
+    },
+  ];
+};
+
+export const columnsCategoryChild = () => {
+  return [
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      render: (data) => data?.name,
+    },
+    {
+      title: "Created",
+      dataIndex: "createdAt",
+    },
+  ];
+};
+
+export const columnsAttribute = () => {
+  return [
+    {
+      title: "Name",
+      dataIndex: "name",
     },
   ];
 };

@@ -10,49 +10,47 @@ import { AuthStore } from "./redux/AuthStore";
 function App() {
   return (
     <div className="App">
-      <Provider store={CustomerStore}>
-        <BrowserRouter>
-          <Routes>
-            {publicRoutes.map((item, idx) => {
-              const Page = item.element;
-              const Layout = item.layout;
-              return (
-                <Route
-                  key={idx}
-                  path={item.path}
-                  element={
+      <BrowserRouter>
+        <Routes>
+          {publicRoutes.map((item, idx) => {
+            const Page = item.element;
+            const Layout = item.layout;
+            return (
+              <Route
+                key={idx}
+                path={item.path}
+                element={
+                  <Provider store={CustomerStore}>
                     <Layout>
                       <Page />
                     </Layout>
-                  }
-                />
-              );
-            })}
-          </Routes>
-        </BrowserRouter>
-      </Provider>
+                  </Provider>
+                }
+              />
+            );
+          })}
+        </Routes>
 
-      <Provider store={AuthStore}>
-        <BrowserRouter>
-          <Routes>
-            {privateRoutes.map((item, idx) => {
-              const Page = item.element;
-              const Layout = item.layout;
-              return (
-                <Route
-                  key={idx}
-                  path={item.path}
-                  element={
+        <Routes>
+          {privateRoutes.map((item, idx) => {
+            const Page = item.element;
+            const Layout = item.layout;
+            return (
+              <Route
+                key={idx}
+                path={item?.path}
+                element={
+                  <Provider store={AuthStore}>
                     <Layout>
                       <Page />
                     </Layout>
-                  }
-                />
-              );
-            })}
-          </Routes>
-        </BrowserRouter>
-      </Provider>
+                  </Provider>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

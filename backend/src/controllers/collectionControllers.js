@@ -5,7 +5,7 @@ import fs from "fs";
 const index = async (req, res, next) => {
   try {
     const data = await Collections.find();
-    data.map((item) => (item.banner = media("Collection", item.banner)));
+    data.map((item) => (item.banner = media("Collections", item.banner)));
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     next(error);
@@ -25,8 +25,8 @@ const store = async (req, res, next) => {
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     if (req.file) {
-      var filePath = `public/collection/${req.file.filename}`;
-      fs.unlinkSync(filePath);
+      const filePath = `public/Collections/${req.file.filename}`;
+      fs.existsSync(filePath) && fs.unlinkSync(filePath);
     }
     return next(error);
   }
@@ -38,7 +38,7 @@ const show = async (req, res, next) => {
     if (!data) {
       throw new Error("Not found");
     }
-    data.banner = media("collection", data.banner);
+    data.banner = media("Collections", data.banner);
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     return next(error);
@@ -51,7 +51,7 @@ const update = async (req, res, next) => {
     data.name = req.body.name;
     data.updatedAt = Date.now();
     if (req.file) {
-      var filePath = `public/collection/${data.banner}`;
+      const filePath = `public/Collections/${data.banner}`;
       fs.existsSync(filePath) && fs.unlinkSync(filePath);
       data.banner = req.file.filename;
     }
@@ -68,7 +68,7 @@ const destroy = async (req, res, next) => {
   try {
     const data = await Collections.findById(req.params.id);
 
-    var filePath = `public/collection/${data.banner}`;
+    const filePath = `public/Collections/${data.banner}`;
     fs.existsSync(filePath) && fs.unlinkSync(filePath);
 
     await data.deleteOne();

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { configMongoose } from "../configs/mongoose.js";
 
 const Schema = mongoose.Schema;
-const categoriesModel = new Schema(
+const categories = new Schema(
   {
     groupProduct: {
       type: Schema.Types.ObjectId,
@@ -24,4 +24,4 @@ const categoriesModel = new Schema(
 
 configMongoose();
 
-export const Categories = mongoose.model("Categories", categoriesModel);
+export const Categories = mongoose.model("Categories", categories);

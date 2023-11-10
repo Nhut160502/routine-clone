@@ -56,7 +56,7 @@ const List = () => {
     fetchData();
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
     dispatch(activeModal());
     const handle = async () => {
       try {

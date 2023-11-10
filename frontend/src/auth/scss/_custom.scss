@@ -48,6 +48,9 @@
   text-transform: capitalize;
 }
 
+.Toastify__toast-container {
+  z-index: 99999;
+}
 .Toastify__toast-body {
   > div {
     text-transform: capitalize;
@@ -95,15 +98,57 @@
   position: relative;
 }
 
-.btn-open-form-add {
+.form-add-wrapper {
   position: absolute;
-  right: 0;
-  z-index: 1;
   top: -100%;
-  top: calc(-100% - 5px);
-  padding: 5px;
-  color: #000;
-  .btn-icon-add {
-    cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
+  left: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+
+  &.active {
+    top: 0;
   }
+  .form-add-content {
+    background-color: #fff;
+    padding: 40px;
+    position: relative;
+
+    .form-add-btn-close {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+  }
+}
+
+.ant-modal {
+  top: 140px !important;
+}
+
+.control {
+  position: relative;
+  .btn-open-form-add {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    top: 0;
+    padding: 5px;
+    color: #000;
+    .btn-icon-add {
+      cursor: pointer;
+    }
+  }
+}
+.ant-select-dropdown {
+  z-index: 99999;
+}
+.ant-select-item-option-content {
+  text-transform: capitalize;
 }

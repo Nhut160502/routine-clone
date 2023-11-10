@@ -3,7 +3,7 @@ import { configMongoose } from "../configs/mongoose.js";
 
 const Schema = mongoose.Schema;
 
-const groupProduct = new Schema(
+const materials = new Schema(
   {
     name: {
       type: String,
@@ -12,10 +12,11 @@ const groupProduct = new Schema(
       lowercase: true,
     },
     slug: { type: String, slug: "name" },
-    banner: { type: String, required: true },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
+
 configMongoose();
-export const GroupProduct = mongoose.model("GroupProduct", groupProduct);
+
+export const Materials = mongoose.model("Materials", materials);

@@ -1,7 +1,8 @@
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { PropTypes } from "prop-types";
 import { Uploads } from "src/auth/components";
 import { rules } from "src/auth/configs";
 import {
@@ -11,22 +12,30 @@ import {
 import { storeGroupProduct } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
-const Store = () => {
+const Store = (props) => {
+  const { handleFinish } = props;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [values, setValues] = useState({ name: null, file: null });
-  const handleGetFiles = (files) => setValues({ ...values, file: files[0] });
+  const location = useLocation();
+  const [file, setFile] = useState(null);
 
-  const handleSubmit = async (e) => {
+  console.log(location.pathname);
+  const handleSubmit = async (values) => {
     dispatch(activeLoading());
     try {
-      e.preventDefault();
       const formData = new FormData();
-      formData.append("file", values.file);
+      formData.append("file", file);
       formData.append("name", values.name);
-      await storeGroupProduct(formData);
-      toast.success("Store Group Product Successfully!");
-      navigate("/dashboard/group-product");
+      formData.append("shortcut", values.shortcut);
+      const res = await storeGroupProduct(formData);
+      if (res.success) {
+        (location.pathname === "/dashboard/group-product/store" &&
+          navigate("/dashboard/group-product")) ||
+          (handleFinish && handleFinish(res));
+        toast.success("Store Group Product Successfully!");
+      }
+      dispatch(disActiveLoading());
     } catch (error) {
       dispatch(disActiveLoading());
       return error;
@@ -35,22 +44,20 @@ const Store = () => {
   return (
     <div className="wrapper-form">
       <Form
-        onSubmitCapture={handleSubmit}
+        onFinish={handleSubmit}
         layout="vertical"
         style={{ width: "600px" }}
-        fields={[{ name: "banner", value: values.file }]}
       >
         <Form.Item label="Name" name="name" rules={rules}>
-          <Input
-            placeholder="Name group product"
-            onChange={(e) => setValues({ ...values, name: e.target.value })}
-          />
+          <Input />
+        </Form.Item>
+        <Form.Item label="Shortcut" name="shortcut" rules={rules}>
+          <Input />
         </Form.Item>
         <Uploads
-          required
           name="banner"
           label="Banner"
-          onGetFiles={handleGetFiles}
+          onGetFiles={(files) => setFile(files[0])}
         />
         <Button type="primary" htmlType="submit">
           Submit
@@ -58,6 +65,10 @@ const Store = () => {
       </Form>
     </div>
   );
+};
+
+Store.propTypes = {
+  handleFinish: PropTypes.func,
 };
 
 export default Store;

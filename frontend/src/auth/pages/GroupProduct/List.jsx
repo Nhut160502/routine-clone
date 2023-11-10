@@ -22,7 +22,6 @@ const GroupProduct = () => {
   const columns = columnsGroup();
   columns.push({
     dataIndex: "_id",
-    key: "_id",
     render: (_, record) => {
       return (
         <form className="action">
@@ -77,7 +76,7 @@ const GroupProduct = () => {
           <Button type="primary" icon={<PlusOutlined />} />
         </Link>
       </div>
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={data} columns={columns} rowKey="_id" />
     </>
   );
 };
