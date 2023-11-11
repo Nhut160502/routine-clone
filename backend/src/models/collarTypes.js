@@ -3,7 +3,7 @@ import { configMongoose } from "../configs/mongoose.js";
 
 const Schema = mongoose.Schema;
 
-const collections = new Schema(
+const collarTypes = new Schema(
   {
     name: {
       type: String,
@@ -13,7 +13,6 @@ const collections = new Schema(
       trim: true,
     },
     slug: { type: String, slug: "name" },
-    banner: { type: String, required: true },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
@@ -21,4 +20,4 @@ const collections = new Schema(
 
 configMongoose();
 
-export const Collections = mongoose.model("Collections", collections);
+export const CollarTypes = mongoose.model("CollarTypes", collarTypes);

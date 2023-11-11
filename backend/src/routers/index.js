@@ -11,6 +11,9 @@ import materialsRouters from "./private/materials.js";
 import designsRouters from "./private/designs.js";
 import sexRouters from "./private/sex.js";
 import handTypesRouters from "./private/handTypes.js";
+import collarTypesRouters from "./private/collarTypes.js";
+
+import productRouters from "./private/products.js";
 
 const routers = express.Router();
 
@@ -27,5 +30,9 @@ routers.use("/materials", materialsRouters);
 routers.use("/designs", designsRouters);
 routers.use("/sex", sexRouters);
 routers.use("/hand-types", handTypesRouters);
+routers.use("/collar-types", collarTypesRouters);
+
+// Product
+routers.use("/product", productRouters);
 
 export default routers;

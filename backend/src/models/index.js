@@ -8,7 +8,9 @@ import { Sizes } from "./sizes.js";
 import { Materials } from "./materials.js";
 import { Sex } from "./sex.js";
 import { Forms } from "./forms.js";
-import { HandTypes } from "./handType.js";
+import { HandTypes } from "./handTypes.js";
+import { CollarTypes } from "./collarTypes.js";
+import { Products } from "./products.js";
 
 export {
   GroupProduct,
@@ -22,4 +24,6 @@ export {
   Sex,
   Forms,
   HandTypes,
+  CollarTypes,
+  Products,
 };

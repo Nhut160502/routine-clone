@@ -1,5 +1,6 @@
 import { Image } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const columnsGroup = () => {
   return [
@@ -69,6 +70,66 @@ export const columnsAttribute = () => {
     {
       title: "Name",
       dataIndex: "name",
+    },
+  ];
+};
+
+export const columnsProduct = () => {
+  return [
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Group Product",
+      dataIndex: "groupProduct",
+    },
+    {
+      title: "Collection",
+      dataIndex: "collection",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+    },
+    {
+      title: "Caregory Child",
+      dataIndex: "categoryChild",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Colors",
+      dataIndex: "colors",
+      render: (colors) => colors?.length + " colors",
+    },
+    {
+      title: "Sizes",
+      dataIndex: "sizes",
+      render: (colors) => colors?.length + " sizes",
+    },
+    {
+      title: "Image",
+      dataIndex: "media",
+      render: (media, record) => (
+        <Link to={`/dashboard/product/edit/${record.slug}`}>
+          <img
+            className="img-thumbnail"
+            src={media[0].gallery[0]}
+            alt={record.name}
+          />
+        </Link>
+      ),
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+    },
+    {
+      title: "Sold",
+      dataIndex: "sold",
     },
   ];
 };

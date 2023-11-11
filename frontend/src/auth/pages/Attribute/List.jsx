@@ -8,12 +8,21 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
+import { activeModal, handleModalDelete } from "src/auth/providers/modalSlice";
 import {
+  destroyColor,
+  destroyDesign,
+  destroyForm,
+  destroyHandType,
+  destroyMaterial,
+  destroySex,
+  destroySize,
   getListColor,
   getListDesign,
   getListForm,
@@ -70,15 +79,15 @@ const objItemColos = {
 
 const List = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { state } = useLocation();
   const [data, setData] = useState([]);
   const [url, setUrl] = useState(null);
-  const { state } = useLocation();
-  const [defaultKey, setDefaultKey] = useState(state?.defaultKey || 1);
   const [columns, setColumns] = useState([]);
+  const [defaultKey, setDefaultKey] = useState(state?.defaultKey || 1);
 
   useEffect(() => {
-    setUrl(items.find((item) => item.key === defaultKey).to);
-
+    setUrl(items.find((value) => value.key === defaultKey).to);
     setColumns(columnsAttribute());
 
     defaultKey === 1 && setColumns((pre) => [...pre, objItemColos]);
@@ -108,7 +117,7 @@ const List = () => {
   }, [defaultKey]);
 
   const handleChangeTabs = (id) => {
-    setUrl(items.find((item) => item.key === id).to);
+    setUrl(items.find((value) => value.key === id).to);
     setDefaultKey(id);
   };
 
@@ -153,7 +162,54 @@ const List = () => {
     }
   }, [defaultKey, dispatch]);
 
-  const handleDelete = (id) => {};
+  const handleDelete = (id) => {
+    dispatch(activeModal());
+
+    const handleDestroy = async (apiCall) => {
+      try {
+        const res = await apiCall(id);
+        if (res.success) {
+          setTimeout(() => {
+            toast.success(res.message);
+          }, 500);
+          navigate(0);
+        }
+      } catch (error) {
+        return error;
+      }
+    };
+
+    const handle = async () => {
+      switch (defaultKey) {
+        case 1:
+          await handleDestroy(destroyColor);
+          break;
+        case 2:
+          await handleDestroy(destroySize);
+          break;
+        case 3:
+          await handleDestroy(destroyForm);
+          break;
+        case 4:
+          await handleDestroy(destroyMaterial);
+          break;
+        case 5:
+          await handleDestroy(destroySex);
+          break;
+        case 6:
+          await handleDestroy(destroyDesign);
+          break;
+        case 7:
+          await handleDestroy(destroyHandType);
+          break;
+
+        default:
+          break;
+      }
+    };
+    dispatch(handleModalDelete(handle));
+  };
+
   return (
     <>
       <div className="btn-add-dash">

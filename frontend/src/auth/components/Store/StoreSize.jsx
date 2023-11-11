@@ -16,7 +16,6 @@ const StoreSize = () => {
 
   const handleSubmit = async (values) => {
     dispatch(activeLoading());
-    console.log(values);
     try {
       const formData = new FormData();
       formData.append("name", values.name);

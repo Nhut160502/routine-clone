@@ -16,6 +16,7 @@ const groupProduct = new Schema(
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
     },
     slug: { type: String, slug: "name" },
     banner: { type: String, required: true },

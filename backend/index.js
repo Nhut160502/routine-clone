@@ -26,6 +26,7 @@ app.use(
 );
 
 connectDatabase();
+
 app.use("/api", routers);
 app.use(errorHandler);
 

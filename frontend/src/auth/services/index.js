@@ -86,6 +86,14 @@ import {
   destroy as destroyForm,
 } from "./forms";
 
+import {
+  index as getListProduct,
+  store as storeProduct,
+  show as showProduct,
+  update as updateProduct,
+  destroy as destroyProduct,
+} from "./products";
+
 export {
   // groupProduct
   getListGroupProduct,
@@ -161,4 +169,11 @@ export {
   showForm,
   updateForm,
   destroyForm,
+
+  // Product
+  getListProduct,
+  storeProduct,
+  showProduct,
+  updateProduct,
+  destroyProduct,
 };

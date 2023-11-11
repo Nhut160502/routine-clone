@@ -10,6 +10,7 @@ const colors = new Schema(
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
     },
     slug: { type: String, slug: "name" },
     image: { type: String, required: true },

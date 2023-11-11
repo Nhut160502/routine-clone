@@ -10,6 +10,7 @@ const designs = new Schema(
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
     },
     slug: { type: String, slug: "name" },
     isActive: { type: Boolean, default: true },

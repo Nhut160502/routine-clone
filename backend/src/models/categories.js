@@ -8,6 +8,7 @@ const categories = new Schema(
       type: Schema.Types.ObjectId,
       ref: "GroupProduct",
       required: true,
+      trim: true,
     },
     name: {
       type: String,
