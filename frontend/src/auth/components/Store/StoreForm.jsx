@@ -7,7 +7,7 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { storeForm } from "src/auth/services";
+import { storeAttribute } from "src/auth/services";
 import { toast } from "react-toastify";
 
 const StoreForm = () => {
@@ -19,7 +19,7 @@ const StoreForm = () => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeForm(formData);
+      const res = await storeAttribute("forms", formData);
       if (res.success) {
         toast.success("Store form successfully!");
         navigate("/dashboard/attribute", {

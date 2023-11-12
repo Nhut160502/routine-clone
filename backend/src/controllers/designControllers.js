@@ -48,8 +48,7 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
   try {
-    const data = await Designs.findById(req.params.id);
-    await data.deleteOne();
+    await Designs.findByIdAndDelete(req.params.id);
     return res
       .status(200)
       .json({ success: true, message: "Delete design successfully!" });

@@ -1,6 +1,29 @@
-import { Image } from "antd";
+import { DeleteOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { Button, Image } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
+
+export const columsOption = (handleDelete, path) => {
+  return {
+    dataIndex: "_id",
+    key: "_id",
+    render: (_, record) => {
+      return (
+        <form className="action">
+          <Link to={`/dashboard/${path}/edit/${record?.slug}`}>
+            <Button type="primary" icon={<EllipsisOutlined />} />
+          </Link>
+          <Button
+            type="primary"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record._id)}
+          />
+        </form>
+      );
+    },
+  };
+};
 
 export const columnsGroup = () => {
   return [

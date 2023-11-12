@@ -7,7 +7,7 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { storeDesign } from "src/auth/services";
+import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
 const StoreDesign = () => {
@@ -19,7 +19,7 @@ const StoreDesign = () => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeDesign(formData);
+      const res = await storeAttribute("designs", formData);
       if (res.success) {
         toast.success("Store design successfully!");
         navigate("/dashboard/attribute", {

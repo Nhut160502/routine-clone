@@ -9,6 +9,7 @@ import {
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
 import { showGroupProduct, updateGroupProduct } from "src/auth/services";
+import { getDataApi } from "src/auth/utils/fetchApi";
 import toast from "src/auth/utils/toast";
 
 const Edit = () => {
@@ -36,20 +37,8 @@ const Edit = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch(activeLoading());
-      try {
-        const res = await showGroupProduct(slug);
-        setData(res.data);
-        dispatch(disActiveLoading());
-      } catch (error) {
-        dispatch(disActiveLoading());
-        navigate("/dashboard/group-product");
-        return error;
-      }
-    };
-    fetchData();
-  }, [slug, navigate, dispatch]);
+    getDataApi(dispatch, showGroupProduct, slug, setData);
+  }, [slug, dispatch]);
 
   return (
     <div className="wrapper-form">

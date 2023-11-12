@@ -7,7 +7,7 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { storeSize } from "src/auth/services";
+import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
 const StoreSize = () => {
@@ -19,7 +19,7 @@ const StoreSize = () => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeSize(formData);
+      const res = await storeAttribute("sizes", formData);
       if (res.success) {
         toast.success("Store sizes successfully!");
         navigate("/dashboard/attribute", {

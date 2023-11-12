@@ -13,6 +13,7 @@ import {
   showCategory,
   updateCategory,
 } from "src/auth/services";
+import { getDataApi, getDataApiParams } from "src/auth/utils/fetchApi";
 import toast from "src/auth/utils/toast";
 
 const Edit = () => {
@@ -23,44 +24,11 @@ const Edit = () => {
   const [data, setData] = useState({});
   const [dataGroup, setDataGroup] = useState([]);
 
+  //fetch data
   useEffect(() => {
-    const fetchDataCategory = async () => {
-      dispatch(activeLoading());
-      try {
-        const res = await showCategory(slug);
-        res.success && setData(res.data);
-        dispatch(disActiveLoading());
-      } catch (error) {
-        dispatch(disActiveLoading());
-        navigate(-1);
-        return error;
-      }
-    };
-
-    const fetchDataGroups = async () => {
-      dispatch(activeLoading());
-      try {
-        const res = await getListGroupProduct();
-
-        res.success &&
-          res.data.map((item) =>
-            setDataGroup((pre) => [
-              ...pre,
-              { label: item.name, value: item._id },
-            ]),
-          );
-
-        dispatch(disActiveLoading());
-      } catch (error) {
-        dispatch(disActiveLoading());
-        navigate(-1);
-        return error;
-      }
-    };
-
-    fetchDataGroups();
-    fetchDataCategory();
-  }, [slug, navigate, dispatch]);
+    getDataApiParams(dispatch, showCategory, slug, setData, true);
+    getDataApi(dispatch, getListGroupProduct, setDataGroup);
+  }, [slug, dispatch]);
 
   const handleSubmit = async (values) => {
     dispatch(activeLoading());

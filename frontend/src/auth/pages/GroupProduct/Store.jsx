@@ -20,7 +20,6 @@ const Store = (props) => {
   const location = useLocation();
   const [file, setFile] = useState(null);
 
-  console.log(location.pathname);
   const handleSubmit = async (values) => {
     dispatch(activeLoading());
     try {
@@ -41,6 +40,7 @@ const Store = (props) => {
       return error;
     }
   };
+
   return (
     <div className="wrapper-form">
       <Form

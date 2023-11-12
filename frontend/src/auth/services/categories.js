@@ -14,6 +14,10 @@ export const show = (slug) => {
   return axios.get(`${path}/${slug}`);
 };
 
+export const showByIdGroup = (id) => {
+  return axios.get(`${path}/group/${id}`);
+};
+
 export const update = (data) => {
   return axios.put(path, data);
 };

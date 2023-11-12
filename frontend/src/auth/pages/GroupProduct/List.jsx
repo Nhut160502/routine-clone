@@ -1,72 +1,27 @@
 import { Button, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import {
-  DeleteOutlined,
-  EllipsisOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { destroyGroupProduct, getListGroupProduct } from "src/auth/services";
-import { columnsGroup } from "src/auth/utils/columns";
-import toast from "src/auth/utils/toast";
+import { columnsGroup, columsOption } from "src/auth/utils/columns";
 import { useDispatch } from "react-redux";
-import {
-  activeLoading,
-  disActiveLoading,
-} from "src/auth/providers/loadingSlice";
-import { activeModal, handleModalDelete } from "src/auth/providers/modalSlice";
+import { deleteDataById, getDataApi } from "src/auth/utils/fetchApi";
 
 const GroupProduct = () => {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
-  const columns = columnsGroup();
-  columns.push({
-    dataIndex: "_id",
-    render: (_, record) => {
-      return (
-        <form className="action">
-          <Link to={`/dashboard/collection/edit/${record?.slug}`}>
-            <Button type="primary" icon={<EllipsisOutlined />} />
-          </Link>
-          <Button
-            type="primary"
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record?._id)}
-          />
-        </form>
-      );
-    },
-  });
 
-  const handleDelete = async (id) => {
-    dispatch(activeModal());
-    const handle = async () => {
-      try {
-        const res = await destroyGroupProduct(id);
-        setData(data.filter((item) => item._id !== id));
-        dispatch(disActiveLoading());
-        toast.success(res?.message);
-      } catch (error) {
-        return error;
-      }
-    };
-    dispatch(handleModalDelete(handle));
-  };
+  const columns = columnsGroup();
+
+  const dataOptions = columsOption(
+    (id) => deleteDataById(dispatch, destroyGroupProduct, id, data, setData),
+    "group-product",
+  );
+
+  columns.push(dataOptions);
 
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch(activeLoading());
-      try {
-        const res = await getListGroupProduct();
-        setData(res.data);
-        dispatch(disActiveLoading());
-      } catch (error) {
-        dispatch(disActiveLoading());
-        return error;
-      }
-    };
-    fetchData();
+    getDataApi(dispatch, getListGroupProduct, setData, true);
   }, [dispatch]);
 
   return (

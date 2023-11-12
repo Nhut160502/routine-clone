@@ -1,62 +1,30 @@
-import {
-  DeleteOutlined,
-  EllipsisOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  activeLoading,
-  disActiveLoading,
-} from "src/auth/providers/loadingSlice";
-import { getListCategoryChild } from "src/auth/services";
-import { columnsCategoryChild } from "src/auth/utils/columns";
+import { destroyCategoryChild, getListCategoryChild } from "src/auth/services";
+import { columnsCategoryChild, columsOption } from "src/auth/utils/columns";
+import { deleteDataById, getDataApi } from "src/auth/utils/fetchApi";
 
 const List = () => {
-  const columns = columnsCategoryChild();
-  columns.push({
-    dataIndex: "_id",
-    key: "_id",
-    render: (_, record) => {
-      return (
-        <form className="action">
-          <Link to={`/dashboard/category-child/edit/${record?.slug}`}>
-            <Button type="primary" icon={<EllipsisOutlined />} />
-          </Link>
-          <Button
-            type="primary"
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record?._id)}
-          />
-        </form>
-      );
-    },
-  });
-
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      dispatch(activeLoading());
-      try {
-        const res = await getListCategoryChild();
-        res.success && setData(res.data);
-        dispatch(disActiveLoading());
-      } catch (error) {
-        dispatch(disActiveLoading());
-        return error;
-      }
-    };
-    fetchData();
-  }, [dispatch]);
+  const columns = columnsCategoryChild();
 
-  const handleDelete = (id) => {};
+  const dataOptions = columsOption(
+    (id) => deleteDataById(dispatch, destroyCategoryChild, id, data, setData),
+    "category-child",
+  );
+
+  columns.push(dataOptions);
+
+  useEffect(() => {
+    getDataApi(dispatch, getListCategoryChild, setData, true);
+  }, [dispatch]);
 
   return (
     <>

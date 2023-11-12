@@ -7,7 +7,7 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { storeMaterial } from "src/auth/services";
+import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
 const StoreMaterial = () => {
@@ -19,7 +19,7 @@ const StoreMaterial = () => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeMaterial({ name: values.name });
+      const res = await storeAttribute("materials", formData);
       if (res.success) {
         toast.success("Store material successfully!");
         navigate("/dashboard/attribute", {

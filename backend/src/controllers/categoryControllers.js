@@ -53,6 +53,15 @@ const show = async (req, res, next) => {
   }
 };
 
+const showByGroup = async (req, res, next) => {
+  try {
+    const data = await Categories.find({ groupProduct: req.params.id });
+    return res.status(200).json({ success: true, data: data });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const update = async (req, res, next) => {
   try {
     const data = await Categories.findById(req.body.id);
@@ -93,4 +102,4 @@ const destroy = async (req, res, next) => {
   }
 };
 
-export { index, store, show, update, destroy };
+export { index, store, show, showByGroup, update, destroy };

@@ -6,18 +6,21 @@ const modalSlice = createSlice({
     active: false,
     loading: false,
     handle: null,
+    id: null,
   },
   reducers: {
-    activeModal: (state) => {
+    activeModal: (state, action) => {
       state.active = true;
       state.loading = false;
       state.handle = null;
+      state.id = action.payload;
     },
 
     disActiveModal: (state) => {
       state.active = false;
       state.loading = false;
       state.handle = null;
+      state.id = null;
     },
 
     confirmDelete: (state) => {
@@ -28,6 +31,7 @@ const modalSlice = createSlice({
       state.active = false;
       state.loading = false;
       state.handle = null;
+      state.id = null;
     },
 
     handleModalDelete: (state, action) => {

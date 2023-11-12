@@ -7,7 +7,7 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { storeSex } from "src/auth/services";
+import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
 const StoreSex = () => {
@@ -19,7 +19,7 @@ const StoreSex = () => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeSex(formData);
+      const res = await storeAttribute("sex", formData);
       if (res.success) {
         toast.success("Store sex successfully!");
         navigate("/dashboard/attribute", {

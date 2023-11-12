@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { rules } from "../../configs";
 import Uploads from "../Uploads";
-import { storeColor } from "src/auth/services";
+import { storeAttribute } from "src/auth/services";
 import {
   activeLoading,
   disActiveLoading,
@@ -23,7 +23,7 @@ const StoreColor = () => {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("file", file);
-      const res = await storeColor(formData);
+      const res = await storeAttribute("colors", formData);
       if (res.success) {
         toast.success("Store color successfully!");
         navigate("/dashboard/attribute", {
@@ -40,26 +40,24 @@ const StoreColor = () => {
   };
 
   return (
-    <div>
-      <div className="wrapper-form">
-        <Form
-          layout="vertical"
-          style={{ width: "600px" }}
-          onFinish={handleSubmit}
-        >
-          <Form.Item label="Name Color" name="name" rules={rules}>
-            <Input />
-          </Form.Item>
-          <Uploads
-            name="img"
-            label="Image"
-            onGetFiles={(files) => setFile(files[0])}
-          />
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form>
-      </div>
+    <div className="wrapper-form">
+      <Form
+        layout="vertical"
+        style={{ width: "600px" }}
+        onFinish={handleSubmit}
+      >
+        <Form.Item label="Name Color" name="name" rules={rules}>
+          <Input />
+        </Form.Item>
+        <Uploads
+          name="img"
+          label="Image"
+          onGetFiles={(files) => setFile(files[0])}
+        />
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form>
     </div>
   );
 };

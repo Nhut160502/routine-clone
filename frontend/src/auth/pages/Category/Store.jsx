@@ -11,6 +11,7 @@ import {
 import { getListGroupProduct, storeCategory } from "src/auth/services";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "src/auth/utils/toast";
+import { getDataApi } from "src/auth/utils/fetchApi";
 
 const Store = (props) => {
   const { handleFinish } = props;
@@ -21,25 +22,7 @@ const Store = (props) => {
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch(activeLoading());
-      try {
-        const { data } = await getListGroupProduct();
-
-        data.map((item) =>
-          setDataGroup((pre) => [
-            ...pre,
-            { value: item._id, label: item.name },
-          ]),
-        );
-
-        dispatch(disActiveLoading());
-      } catch (error) {
-        dispatch(disActiveLoading());
-        return error;
-      }
-    };
-    fetchData();
+    getDataApi(dispatch, getListGroupProduct, setDataGroup);
   }, [dispatch]);
 
   const handleSubmit = async (values) => {

@@ -7,7 +7,7 @@ import {
   activeLoading,
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
-import { storeHandType } from "src/auth/services";
+import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
 const StoreHandType = () => {
@@ -19,7 +19,7 @@ const StoreHandType = () => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeHandType(formData);
+      const res = await storeAttribute("hand-types", formData);
       if (res.success) {
         toast.success("Store hand type successfully!");
         navigate("/dashboard/attribute", {

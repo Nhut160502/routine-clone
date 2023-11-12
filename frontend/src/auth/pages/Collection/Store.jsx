@@ -14,6 +14,7 @@ const Store = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
+
   const handleSubmit = async (values) => {
     dispatch(activeLoading());
     try {
@@ -31,6 +32,7 @@ const Store = () => {
       return error;
     }
   };
+
   return (
     <div className="wrapper-form">
       <Form

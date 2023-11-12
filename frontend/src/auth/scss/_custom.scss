@@ -126,6 +126,13 @@
       top: 15px;
     }
   }
+  .title {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
 }
 
 .ant-modal {
@@ -134,16 +141,16 @@
 
 .control {
   position: relative;
-  .btn-open-form-add {
+  .btn-open-form {
     position: absolute;
     right: 0;
     z-index: 1;
     top: 0;
     padding: 5px;
     color: #000;
-    .btn-icon-add {
-      cursor: pointer;
-    }
+    cursor: pointer;
+    border: none;
+    background: transparent;
   }
 }
 .ant-select-dropdown {

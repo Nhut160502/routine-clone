@@ -10,6 +10,7 @@ import {
 } from "src/auth/providers/loadingSlice";
 import { showCollection, updateCollection } from "src/auth/services";
 import toast from "src/auth/utils/toast";
+import { getDataApiParams } from "src/auth/utils/fetchApi";
 const Edit = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
@@ -18,19 +19,8 @@ const Edit = () => {
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch(activeLoading());
-      try {
-        const res = await showCollection(slug);
-        setData(res.data);
-        dispatch(disActiveLoading());
-      } catch (error) {
-        disActiveLoading(disActiveLoading());
-        return error;
-      }
-    };
-    fetchData();
-  }, [slug, dispatch]);
+    getDataApiParams(dispatch, showCollection, slug, setData, true);
+  }, [dispatch, slug]);
 
   const handleSubmit = async (values) => {
     dispatch(activeLoading());
@@ -44,7 +34,9 @@ const Edit = () => {
         toast.success(res.message);
         navigate("/dashboard/collection");
       }
+      dispatch(disActiveLoading());
     } catch (error) {
+      dispatch(disActiveLoading());
       return error;
     }
   };

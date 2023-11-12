@@ -11,7 +11,11 @@ export const show = (slug) => {
 };
 
 export const store = (data) => {
-  return axios.post(path, data);
+  return axios.post(path, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 export const update = (data) => {
