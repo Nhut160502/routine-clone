@@ -1,9 +1,9 @@
-import AppHeader from "./AppHeader";
-import AppBreadcrumb from "./AppBreadcrumb";
-import AppContent from "./AppContent";
-import AppFooter from "./AppFooter";
-import { AppSidebarNav } from "./AppSidebarNav";
-import AppSidebar from "./AppSidebar";
+import AppHeader from "./App/AppHeader";
+import AppBreadcrumb from "./App/AppBreadcrumb";
+import AppContent from "./App/AppContent";
+import AppFooter from "./App/AppFooter";
+import { AppSidebarNav } from "./App/AppSidebarNav";
+import AppSidebar from "./App/AppSidebar";
 import StoreColor from "./Store/StoreColor";
 import StoreDesign from "./Store/StoreDesign";
 import StoreForm from "./Store/StoreForm";

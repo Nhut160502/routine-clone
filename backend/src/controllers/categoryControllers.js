@@ -26,7 +26,11 @@ const store = async (req, res, next) => {
 
     await data.save();
 
-    return res.status(200).json({ success: true, data: data });
+    return res.status(200).json({
+      success: true,
+      data: data,
+      message: "Store category successfully!",
+    });
   } catch (error) {
     if (req.file) {
       const filePath = `public/Categories/${req.file.filename}`;

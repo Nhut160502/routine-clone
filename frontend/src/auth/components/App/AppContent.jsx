@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { CContainer, CSpinner } from "@coreui/react";
 
 // routes config
-import routes from "../../routes/private";
+import routes from "../../../routes/private";
 
 const AppContent = () => {
   return (

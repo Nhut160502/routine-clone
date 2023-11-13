@@ -99,7 +99,7 @@
 }
 
 .form-add-wrapper {
-  position: absolute;
+  position: fixed;
   top: -100%;
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
@@ -110,7 +110,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s;
+  transition: all 0.5s;
 
   &.active {
     top: 0;

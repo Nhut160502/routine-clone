@@ -3,6 +3,7 @@ import { Sizes } from "../models/index.js";
 const index = async (req, res, next) => {
   try {
     const data = await Sizes.find();
+
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     return next(error);
@@ -14,8 +15,12 @@ const store = async (req, res, next) => {
     const data = new Sizes({
       name: req.body.name,
     });
+
     await data.save();
-    return res.status(200).json({ success: true, data: data });
+
+    return res
+      .status(200)
+      .json({ success: true, data: data, message: "Store size successfully!" });
   } catch (error) {
     return next(error);
   }

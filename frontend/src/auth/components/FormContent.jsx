@@ -13,57 +13,94 @@ import {
 import StoreGroup from "../pages/GroupProduct/Store";
 import StoreCollection from "../pages/Collection/Store";
 import StoreCategory from "../pages/Category/Store";
+import StoreCategoryChild from "../pages/CategoryChild/Store";
 import { Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
 const FormContent = (props) => {
-  let { state, title } = props;
-  const [formContent, setFormContent] = useState({
-    state: state,
-    title: title,
-  });
+  const { state, title, handleClose, handleFinish } = props;
+
+  const [pre, setPre] = useState(null);
 
   const Content = () => {
-    switch (formContent.state) {
+    switch (state) {
       case "group":
-        return <StoreGroup />;
+        setPre("group");
+        return <StoreGroup handleFinish={handleFinish} />;
       case "collection":
-        return <StoreCollection />;
+        setPre("collection");
+        return <StoreCollection handleFinish={handleFinish} />;
       case "category":
-        return <StoreCategory />;
+        setPre("category");
+        return <StoreCategory handleFinish={handleFinish} />;
+      case "categoryChild":
+        setPre("categoryChild");
+        return <StoreCategoryChild handleFinish={handleFinish} />;
       case "color":
-        return <StoreColor />;
+        setPre("color");
+        return <StoreColor handleFinish={handleFinish} />;
       case "size":
-        return <StoreSize />;
+        setPre("size");
+        return <StoreSize handleFinish={handleFinish} />;
       case "design":
-        return <StoreDesign />;
+        setPre("design");
+        return <StoreDesign handleFinish={handleFinish} />;
       case "material":
-        return <StoreMaterial />;
+        setPre("material");
+        return <StoreMaterial handleFinish={handleFinish} />;
       case "sex":
-        return <StoreSex />;
+        setPre("sex");
+        return <StoreSex handleFinish={handleFinish} />;
       case "form":
-        return <StoreForm />;
+        setPre("form");
+        return <StoreForm handleFinish={handleFinish} />;
       case "handType":
-        return <StoreHandType />;
+        setPre("handType");
+        return <StoreHandType handleFinish={handleFinish} />;
+
       default:
+        switch (pre) {
+          case "group":
+            return <StoreGroup />;
+          case "collection":
+            return <StoreCollection />;
+          case "category":
+            return <StoreCategory />;
+          case "categoryChild":
+            return <StoreCategoryChild />;
+          case "color":
+            return <StoreColor />;
+          case "size":
+            return <StoreSize />;
+          case "design":
+            return <StoreDesign />;
+          case "material":
+            return <StoreMaterial />;
+          case "sex":
+            return <StoreSex />;
+          case "form":
+            return <StoreForm />;
+          case "handType":
+            return <StoreHandType />;
+          default:
+            break;
+        }
     }
   };
 
   return (
     <div
-      className={
-        formContent.state ? "form-add-wrapper active" : "form-add-wrapper"
-      }
+      className={state ? "form-add-wrapper active" : "form-add-wrapper"}
       id="form-content"
     >
       <div className="form-add-content">
         <Button
           icon={<CloseOutlined />}
           className="form-add-btn-close btn-open-form"
-          onClick={() => setFormContent({ state: null, title: title })}
+          onClick={handleClose}
         />
         <div className="title">
-          <h1>Store {formContent.title}</h1>
+          <h1>Store {title}</h1>
         </div>
         <Content />
       </div>
@@ -74,6 +111,8 @@ const FormContent = (props) => {
 FormContent.propTypes = {
   state: PropTypes.string,
   title: PropTypes.string,
+  handleClose: PropTypes.func,
+  handleFinish: PropTypes.func,
 };
 
 export default FormContent;

@@ -8,6 +8,7 @@ import { rules } from "src/auth/configs";
 import {
   getCategoryByIdGroup,
   getListAttribute,
+  getListCategoryChild,
   getListCollection,
   getListGroupProduct,
 } from "src/auth/services";
@@ -20,6 +21,7 @@ const Store = () => {
   const [dataGroups, setDataGroups] = useState([]);
   const [dataCollections, setDataCollections] = useState([]);
   const [dataCategories, setDataCategories] = useState([]);
+  const [dataChild, setDataChild] = useState([]);
   const [dataColors, setDataColors] = useState([]);
   const [dataSizes, setDataSizes] = useState([]);
   const [dataForms, setDataForms] = useState([]);
@@ -56,14 +58,75 @@ const Store = () => {
     getDataApiParams(dispatch, getCategoryByIdGroup, id, setDataCategories);
   };
 
+  const handleChangeCategory = async (id) => {
+    setDataChild([]);
+    form.setFieldsValue({ categoryChild: null });
+    getDataApiParams(dispatch, getListCategoryChild, id, setDataChild);
+  };
+
   const handleOpentFormContent = (state, title) =>
     setOpenForm({ state: state, title: title });
+
+  const handleCloseForm = () => setOpenForm({ state: null, title: null });
+
+  const unshiftData = (state, setState, data, name) => {
+    form.setFieldsValue({ [name]: data._id });
+    setState((pre) => [...pre, { lable: data.name, value: data._id }]);
+  };
+
+  const handleFinishForm = async (data) => {
+    switch (openForm.state) {
+      case "group":
+        unshiftData(dataGroups, setDataGroups, data, "groupProduct");
+        break;
+      case "category":
+        unshiftData(dataCategories, setDataCategories, data, "category");
+        break;
+      case "categoryChild":
+        unshiftData(dataChild, setDataChild, data, "categoryChild");
+        break;
+      case "color":
+        unshiftData(dataColors, setDataColors, data, "colors");
+        break;
+      case "size":
+        unshiftData(dataSizes, setDataSizes, data, "sizes");
+        break;
+      case "material":
+        unshiftData(dataMaterials, setDataMaterials, data, "material");
+        break;
+      case "sex":
+        unshiftData(dataSex, setDataSex, data, "sex");
+        break;
+      case "handType":
+        unshiftData(dataHandTypes, setDataHandTypes, data, "handType");
+        break;
+      case "design":
+        unshiftData(dataDesigns, setDataDesigns, data, "design");
+        break;
+      case "form":
+        unshiftData(dataForms, setDataForms, data, "form");
+        break;
+      case "collection":
+        unshiftData(dataCollections, setDataCollections, data, "collection");
+        break;
+
+      default:
+        break;
+    }
+
+    setOpenForm({ state: null, title: null });
+  };
 
   const handleSubmit = (values) => {};
 
   return (
     <div className="wrapper-form">
-      <FormContent state={openForm.state} title={openForm.title} />
+      <FormContent
+        state={openForm.state}
+        title={openForm.title}
+        handleClose={handleCloseForm}
+        handleFinish={handleFinishForm}
+      />
       <Form {...configs} form={form} onFinish={handleSubmit}>
         <div className="control">
           <Form.Item label="Group product" name="groupProduct" rules={rules}>
@@ -111,12 +174,33 @@ const Store = () => {
               filterOption={filterOption}
               filterSort={filterSort}
               options={dataCategories}
+              onChange={handleChangeCategory}
             />
           </Form.Item>
           <Button
             icon={<PlusOutlined />}
             className="btn-open-form"
             onClick={() => handleOpentFormContent("category", "category")}
+          />
+        </div>
+
+        <div className="control">
+          <Form.Item label="Category Child" name="categoryChild" rules={rules}>
+            <Select
+              showSearch
+              placeholder={"Search to Select"}
+              optionFilterProp="children"
+              filterOption={filterOption}
+              filterSort={filterSort}
+              options={dataChild}
+            />
+          </Form.Item>
+          <Button
+            icon={<PlusOutlined />}
+            className="btn-open-form"
+            onClick={() =>
+              handleOpentFormContent("categoryChild", "category child")
+            }
           />
         </div>
 

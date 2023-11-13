@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Uploads } from "src/auth/components";
 import { rules } from "src/auth/configs";
@@ -17,24 +17,27 @@ const Store = (props) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
   const [file, setFile] = useState(null);
 
   const handleSubmit = async (values) => {
     dispatch(activeLoading());
     try {
       const formData = new FormData();
+
       formData.append("file", file);
       formData.append("name", values.name);
       formData.append("shortcut", values.shortcut);
+
       const res = await storeGroupProduct(formData);
+
       if (res.success) {
-        (location.pathname === "/dashboard/group-product/store" &&
-          navigate("/dashboard/group-product")) ||
-          (handleFinish && handleFinish(res));
-        toast.success("Store Group Product Successfully!");
+        dispatch(disActiveLoading());
+        toast.success(res?.message || "Store Group Product successfully!");
+
+        if (handleFinish) return handleFinish(res.data);
+
+        navigate("/dashboard/group-product");
       }
-      dispatch(disActiveLoading());
     } catch (error) {
       dispatch(disActiveLoading());
       return error;

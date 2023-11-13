@@ -9,12 +9,13 @@ const index = async (req, res, next) => {
   }
 };
 const store = async (req, res, next) => {
-  console.log(req.body);
   try {
     const data = new CollarTypes({
       name: req.body.name,
     });
+
     await data.save();
+
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     return next(error);
@@ -24,10 +25,16 @@ const store = async (req, res, next) => {
 const show = async (req, res, next) => {
   try {
     const data = await CollarTypes.findById(req.params.id);
+
     if (data) {
       throw new Error("Not found");
     }
-    return res.status(200).json({ success: true, data: data });
+
+    return res.status(200).json({
+      success: true,
+      data: data,
+      message: "Store collar type successfully!",
+    });
   } catch (error) {
     return next(error);
   }

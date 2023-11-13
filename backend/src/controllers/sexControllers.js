@@ -14,7 +14,9 @@ const store = async (req, res, next) => {
       name: req.body.name,
     });
     await data.save();
-    return res.status(200).json({ success: true, data: data });
+    return res
+      .status(200)
+      .json({ success: true, data: data, message: "Store sex successfully!" });
   } catch (error) {
     return next(error);
   }

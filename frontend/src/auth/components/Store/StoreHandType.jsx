@@ -3,6 +3,7 @@ import React from "react";
 import { rules } from "../../configs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { PropTypes } from "prop-types";
 import {
   activeLoading,
   disActiveLoading,
@@ -10,7 +11,8 @@ import {
 import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
-const StoreHandType = () => {
+const StoreHandType = (props) => {
+  const { handleFinish } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,14 +23,18 @@ const StoreHandType = () => {
       formData.append("name", values.name);
       const res = await storeAttribute("hand-types", formData);
       if (res.success) {
-        toast.success("Store hand type successfully!");
+        dispatch(disActiveLoading());
+
+        toast.success(res?.message || "Store hand type successfully!");
+
+        if (handleFinish) return handleFinish(res.data);
+
         navigate("/dashboard/attribute", {
           state: {
             defaultKey: 7,
           },
         });
       }
-      dispatch(disActiveLoading());
     } catch (error) {
       dispatch(disActiveLoading());
       return error;
@@ -53,6 +59,10 @@ const StoreHandType = () => {
       </div>
     </div>
   );
+};
+
+StoreHandType.propTypes = {
+  handleFinish: PropTypes.func,
 };
 
 export default StoreHandType;

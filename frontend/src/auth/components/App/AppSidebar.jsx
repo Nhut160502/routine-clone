@@ -6,16 +6,16 @@ import {
   CSidebarToggler,
 } from "@coreui/react";
 
-import { AppSidebarNav } from "./AppSidebarNav";
+import { AppSidebarNav } from "../App/AppSidebarNav";
 
-import { LogoNegative } from "../assets/brand/logo-negative";
+import { LogoNegative } from "../../assets/brand/logo-negative";
 
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import "../../../node_modules/simplebar/dist/simplebar.min.css";
+import "../../../../node_modules/simplebar/dist/simplebar.min.css";
 
 // sidebar nav config
-import navigation from "../_nav";
+import navigation from "../../_nav";
 
 const AppSidebar = () => {
   return (

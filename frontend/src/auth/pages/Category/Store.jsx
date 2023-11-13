@@ -9,15 +9,15 @@ import {
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
 import { getListGroupProduct, storeCategory } from "src/auth/services";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "src/auth/utils/toast";
 import { getDataApi } from "src/auth/utils/fetchApi";
 
 const Store = (props) => {
   const { handleFinish } = props;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const [dataGroup, setDataGroup] = useState([]);
   const [file, setFile] = useState(null);
 
@@ -37,13 +37,13 @@ const Store = (props) => {
       const res = await storeCategory(formData);
 
       if (res.success) {
-        (location.pathname === "/dashboard/category/store" &&
-          navigate("/dashboard/category")) ||
-          (handleFinish && handleFinish(res));
+        dispatch(disActiveLoading());
+        toast.success(res?.message || "Store Category Successfully!");
 
-        toast.success("Store Category Successfully!");
+        if (handleFinish) return handleFinish(res.data);
+
+        navigate("/dashboard/category");
       }
-      dispatch(disActiveLoading());
     } catch (error) {
       dispatch(disActiveLoading());
       return error;

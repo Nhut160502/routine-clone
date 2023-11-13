@@ -13,14 +13,15 @@ const Loading = () => {
 };
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100vh;
+  top: 0;
   display: none;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
-  z-index: 9999;
+  z-index: 99999;
 
   .icon-loading {
     width: 30px;

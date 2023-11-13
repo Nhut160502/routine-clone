@@ -13,8 +13,14 @@ const store = async (req, res, next) => {
     const data = new Designs({
       name: req.body.name,
     });
+
     await data.save();
-    return res.status(200).json({ success: true, data: data });
+
+    return res.status(200).json({
+      success: true,
+      data: data,
+      message: "Store design successfully!",
+    });
   } catch (error) {
     return next(error);
   }
@@ -26,6 +32,7 @@ const show = async (req, res, next) => {
     if (data) {
       throw new Error("Not found");
     }
+
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     return next(error);

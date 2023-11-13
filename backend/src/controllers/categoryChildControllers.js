@@ -10,13 +10,14 @@ const index = async (req, res, next) => {
 };
 
 const store = async (req, res, next) => {
-  console.log(req.body);
   try {
     const data = new CategoryChilds({
       name: req.body.name,
       category: req.body.category,
     });
+
     await data.save();
+
     return res.status(200).json({
       success: true,
       data: data,

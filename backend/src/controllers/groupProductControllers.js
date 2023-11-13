@@ -21,8 +21,16 @@ const store = async (req, res, next) => {
       shortcut: req.body.shortcut,
       banner: req.file.filename,
     });
+
     await data.save();
-    return res.status(200).json({ success: true, data: data });
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        data: data,
+        message: "Store group product successfully!",
+      });
   } catch (error) {
     if (req.file) {
       var filePath = `public/GroupProducts/${req.file.filename}`;

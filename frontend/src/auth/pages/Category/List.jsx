@@ -13,10 +13,10 @@ const List = () => {
 
   const columns = columnsCategories();
 
-  const dataOption = columsOption(
-    (id) => deleteDataById(dispatch, destroyCategory, id, data, setData),
-    "category",
-  );
+  const dataOption = columsOption((id) => {
+    console.log("render");
+    deleteDataById(dispatch, destroyCategory, id, data, setData);
+  }, "category");
 
   columns.push(dataOption);
 

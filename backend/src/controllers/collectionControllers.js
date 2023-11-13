@@ -5,7 +5,9 @@ import fs from "fs";
 const index = async (req, res, next) => {
   try {
     const data = await Collections.find();
+
     data.map((item) => (item.banner = media("Collections", item.banner)));
+
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     next(error);
@@ -17,17 +19,25 @@ const store = async (req, res, next) => {
     if (!req.file) {
       throw new Error("Banner collection is not valid!");
     }
+
     const data = new Collections({
       name: req.body.name,
       banner: req.file.filename,
     });
+
     await data.save();
-    return res.status(200).json({ success: true, data: data });
+
+    return res.status(200).json({
+      success: true,
+      data: data,
+      message: "Store collection successfully!",
+    });
   } catch (error) {
     if (req.file) {
       const filePath = `public/Collections/${req.file.filename}`;
       fs.existsSync(filePath) && fs.unlinkSync(filePath);
     }
+
     return next(error);
   }
 };

@@ -3,6 +3,8 @@ import React from "react";
 import { rules } from "../../configs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { PropTypes } from "prop-types";
+
 import {
   activeLoading,
   disActiveLoading,
@@ -10,7 +12,9 @@ import {
 import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
-const StoreDesign = () => {
+const StoreDesign = (props) => {
+  const { handleFinish } = props;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,14 +25,17 @@ const StoreDesign = () => {
       formData.append("name", values.name);
       const res = await storeAttribute("designs", formData);
       if (res.success) {
-        toast.success("Store design successfully!");
+        dispatch(disActiveLoading());
+        toast.success(res?.message || "Store design successfully!");
+
+        if (handleFinish) return handleFinish(res.data);
+
         navigate("/dashboard/attribute", {
           state: {
             defaultKey: 6,
           },
         });
       }
-      dispatch(disActiveLoading());
     } catch (error) {
       dispatch(disActiveLoading());
       return error;
@@ -53,6 +60,10 @@ const StoreDesign = () => {
       </div>
     </div>
   );
+};
+
+StoreDesign.propTypes = {
+  handleFinish: PropTypes.func,
 };
 
 export default StoreDesign;

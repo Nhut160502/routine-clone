@@ -3,6 +3,8 @@ import React from "react";
 import { rules } from "../../configs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { PropTypes } from "prop-types";
+
 import {
   activeLoading,
   disActiveLoading,
@@ -10,7 +12,8 @@ import {
 import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
-const StoreMaterial = () => {
+const StoreMaterial = (props) => {
+  const { handleFinish } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,14 +24,17 @@ const StoreMaterial = () => {
       formData.append("name", values.name);
       const res = await storeAttribute("materials", formData);
       if (res.success) {
-        toast.success("Store material successfully!");
+        dispatch(disActiveLoading());
+        toast.success(res?.message || "Store material successfully!");
+
+        if (handleFinish) handleFinish(res.data);
+
         navigate("/dashboard/attribute", {
           state: {
             defaultKey: 4,
           },
         });
       }
-      dispatch(disActiveLoading());
     } catch (error) {
       dispatch(disActiveLoading());
       return error;
@@ -52,6 +58,10 @@ const StoreMaterial = () => {
       </div>
     </div>
   );
+};
+
+StoreMaterial.propTypes = {
+  handleFinish: PropTypes.func,
 };
 
 export default StoreMaterial;

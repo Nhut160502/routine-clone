@@ -17,12 +17,19 @@ const store = async (req, res, next) => {
     if (!req.file) {
       throw new Error("Image color is not valid!");
     }
+
     const data = new Colors({
       name: req.body.name,
       image: req.file.filename,
     });
+
     await data.save();
-    return res.status(200).json({ success: true, data: data });
+
+    return res.status(200).json({
+      success: true,
+      data: data,
+      message: "Store color successfully!",
+    });
   } catch (error) {
     if (req.file) {
       const filePath = `public/Colors/${req.file.filename}`;
