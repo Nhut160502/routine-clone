@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { rules } from "../../configs";
+import { configsForm, rules } from "../../configs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PropTypes } from "prop-types";
@@ -45,11 +45,7 @@ const StoreDesign = (props) => {
   return (
     <div>
       <div className="wrapper-form">
-        <Form
-          layout="vertical"
-          style={{ width: "600px" }}
-          onFinish={handleSubmit}
-        >
+        <Form {...configsForm} onFinish={handleSubmit}>
           <Form.Item label="Name Design" name="name" rules={rules}>
             <Input />
           </Form.Item>

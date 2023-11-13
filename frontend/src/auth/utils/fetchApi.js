@@ -63,27 +63,3 @@ export const deleteDataById = (dispatch, apiDelete, id, state, setState) => {
   };
   dispatch(handleModalDelete(handle));
 };
-
-export const deleteDataByIdAndPath = (
-  dispatch,
-  apiDelete,
-  id,
-  path,
-  state,
-  setState,
-) => {
-  const handle = async () => {
-    dispatch(activeModal());
-    try {
-      const res = await apiDelete(path, id);
-      if (res.success) {
-        setState(state.filter((item) => item._id !== id));
-        (res?.message && toast.success(res.message)) ||
-          (!res?.message && toast.success("Delete data successfully!"));
-      }
-    } catch (error) {
-      return error;
-    }
-  };
-  dispatch(handleModalDelete(handle));
-};

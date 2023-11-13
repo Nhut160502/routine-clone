@@ -14,7 +14,6 @@ const List = () => {
   const columns = columnsCategories();
 
   const dataOption = columsOption((id) => {
-    console.log("render");
     deleteDataById(dispatch, destroyCategory, id, data, setData);
   }, "category");
 

@@ -34,6 +34,7 @@ import {
 import {
   index as getListAttribute,
   store as storeAttribute,
+  storeColor,
   // show as showAttribute,
   // update as updateAttribute,
   destroy as destroyAttribute,
@@ -77,9 +78,10 @@ export {
   updateCategoryChild,
   destroyCategoryChild,
 
-  // Form
+  // Attr
   getListAttribute,
   storeAttribute,
+  storeColor,
   destroyAttribute,
   // showAttribute,
   // updateAttribute,

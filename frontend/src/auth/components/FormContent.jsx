@@ -9,6 +9,7 @@ import {
   StoreSex,
   StoreForm,
   StoreHandType,
+  StoreCollarType,
 } from "src/auth/components";
 import StoreGroup from "../pages/GroupProduct/Store";
 import StoreCollection from "../pages/Collection/Store";
@@ -57,6 +58,9 @@ const FormContent = (props) => {
       case "handType":
         setPre("handType");
         return <StoreHandType handleFinish={handleFinish} />;
+      case "collarType":
+        setPre("collarType");
+        return <StoreCollarType handleFinish={handleFinish} />;
 
       default:
         switch (pre) {
@@ -82,6 +86,8 @@ const FormContent = (props) => {
             return <StoreForm />;
           case "handType":
             return <StoreHandType />;
+          case "collarType":
+            return <StoreCollarType />;
           default:
             break;
         }

@@ -1,10 +1,9 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { configsForm, rules } from "../../configs";
+import { rules } from "../../configs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PropTypes } from "prop-types";
-
 import {
   activeLoading,
   disActiveLoading,
@@ -12,7 +11,7 @@ import {
 import { storeAttribute } from "src/auth/services";
 import toast from "src/auth/utils/toast";
 
-const StoreMaterial = (props) => {
+const StoreCollarType = (props) => {
   const { handleFinish } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,16 +21,17 @@ const StoreMaterial = (props) => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeAttribute("materials", formData);
+      const res = await storeAttribute("hand-types", formData);
       if (res.success) {
         dispatch(disActiveLoading());
-        toast.success(res?.message || "Store material successfully!");
+
+        toast.success(res?.message || "Store hand type successfully!");
 
         if (handleFinish) return handleFinish(res.data);
 
         navigate("/dashboard/attribute", {
           state: {
-            defaultKey: 4,
+            defaultKey: 7,
           },
         });
       }
@@ -40,11 +40,16 @@ const StoreMaterial = (props) => {
       return error;
     }
   };
+
   return (
     <div>
       <div className="wrapper-form">
-        <Form {...configsForm} onFinish={handleSubmit}>
-          <Form.Item label="Name Material" name="name" rules={rules}>
+        <Form
+          layout="vertical"
+          style={{ width: "600px" }}
+          onFinish={handleSubmit}
+        >
+          <Form.Item label="Name Collar Type" name="name" rules={rules}>
             <Input />
           </Form.Item>
           <Button type="primary" htmlType="submit">
@@ -56,8 +61,8 @@ const StoreMaterial = (props) => {
   );
 };
 
-StoreMaterial.propTypes = {
+StoreCollarType.propTypes = {
   handleFinish: PropTypes.func,
 };
 
-export default StoreMaterial;
+export default StoreCollarType;

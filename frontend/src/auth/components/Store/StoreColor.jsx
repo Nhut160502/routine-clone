@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { PropTypes } from "prop-types";
 
-import { rules } from "../../configs";
+import { configsForm, rules } from "../../configs";
 import Uploads from "../Uploads";
-import { storeAttribute } from "src/auth/services";
+import { storeColor } from "src/auth/services";
 import {
   activeLoading,
   disActiveLoading,
@@ -27,7 +27,7 @@ const StoreColor = (props) => {
       formData.append("name", values.name);
       formData.append("file", file);
 
-      const res = await storeAttribute("colors", formData);
+      const res = await storeColor("colors", formData);
 
       if (res.success) {
         dispatch(disActiveLoading());
@@ -49,11 +49,7 @@ const StoreColor = (props) => {
 
   return (
     <div className="wrapper-form">
-      <Form
-        layout="vertical"
-        style={{ width: "600px" }}
-        onFinish={handleSubmit}
-      >
+      <Form {...configsForm} onFinish={handleSubmit}>
         <Form.Item label="Name Color" name="name" rules={rules}>
           <Input />
         </Form.Item>

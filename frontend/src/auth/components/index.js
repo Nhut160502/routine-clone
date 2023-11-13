@@ -8,6 +8,7 @@ import StoreColor from "./Store/StoreColor";
 import StoreDesign from "./Store/StoreDesign";
 import StoreForm from "./Store/StoreForm";
 import StoreHandType from "./Store/StoreHandType";
+import StoreCollarType from "./Store/StoreCollarType";
 import StoreMaterial from "./Store/StoreMaterial";
 import StoreSex from "./Store/StoreSex";
 import StoreSize from "./Store/StoreSize";
@@ -24,6 +25,7 @@ export {
   StoreDesign,
   StoreForm,
   StoreHandType,
+  StoreCollarType,
   StoreMaterial,
   StoreSex,
   StoreSize,

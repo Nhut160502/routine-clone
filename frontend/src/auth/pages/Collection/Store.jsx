@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PropTypes } from "prop-types";
 
-import { rules } from "src/auth/configs";
+import { configsForm, rules } from "src/auth/configs";
 import { Uploads } from "src/auth/components";
 import { storeCollection } from "src/auth/services";
 import {
@@ -46,11 +46,7 @@ const Store = (props) => {
 
   return (
     <div className="wrapper-form">
-      <Form
-        layout="vertical"
-        style={{ width: "600px" }}
-        onFinish={handleSubmit}
-      >
+      <Form {...configsForm} onFinish={handleSubmit}>
         <Form.Item label="Name" name="name" rules={rules}>
           <Input />
         </Form.Item>

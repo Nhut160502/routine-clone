@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { PropTypes } from "prop-types";
 import { Uploads } from "src/auth/components";
-import { rules } from "src/auth/configs";
+import { configsForm, configsSelect, rules } from "src/auth/configs";
 import {
   activeLoading,
   disActiveLoading,
@@ -52,24 +52,11 @@ const Store = (props) => {
 
   return (
     <div className="wrapper-form">
-      <Form
-        layout="vertical"
-        style={{ width: "600px" }}
-        onFinish={handleSubmit}
-      >
+      <Form {...configsForm} onFinish={handleSubmit}>
         <Form.Item label="Group product" name="groupProduct" rules={rules}>
           <Select
-            showSearch
+            {...configsSelect}
             placeholder="Search to Select"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
             options={dataGroup}
           />
         </Form.Item>

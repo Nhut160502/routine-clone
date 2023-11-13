@@ -12,6 +12,14 @@ export const store = (path, data) => {
   });
 };
 
+export const storeColor = (path, data) => {
+  return axios.post(path, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 export const destroy = (path, id) => {
   return axios.delete(`${path}/${id}`);
 };

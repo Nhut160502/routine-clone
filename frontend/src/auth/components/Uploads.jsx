@@ -9,8 +9,8 @@ const Uploads = (props) => {
   const [files, setFiles] = useState([]);
 
   const handleChange = (e) => {
-    multiple && setFiles([]) && setFilesUrl([]);
     const arr = [];
+    files.map((file) => arr.push(file));
     for (let i = 0; i < e.target.files.length; i++) {
       const file = e.target.files[i];
       const url = URL.createObjectURL(file);

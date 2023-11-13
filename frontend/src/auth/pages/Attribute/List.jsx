@@ -1,16 +1,23 @@
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EllipsisOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { Button, Table, Tabs } from "antd";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { destroyAttribute, getListAttribute } from "src/auth/services";
-import { columnsAttribute, columsOption } from "src/auth/utils/columns";
 import {
-  deleteDataByIdAndPath,
-  getDataApiParams,
-} from "src/auth/utils/fetchApi";
+  activeModal,
+  disActiveModal,
+  handleModalDelete,
+} from "src/auth/providers/modalSlice";
+import { destroyAttribute, getListAttribute } from "src/auth/services";
+import { columnsAttribute } from "src/auth/utils/columns";
+import { getDataApiParams } from "src/auth/utils/fetchApi";
+import toast from "src/auth/utils/toast";
 
 const items = [
   {
@@ -63,12 +70,6 @@ const items = [
   },
 ];
 
-// const objItemColos = {
-//   title: "Image",
-//   dataIndex: "image",
-//   render: (url) => <Image className="image-custom" src={url} />,
-// };
-
 const List = () => {
   const dispatch = useDispatch();
   const { state } = useLocation();
@@ -85,25 +86,45 @@ const List = () => {
   });
 
   const columns = columnsAttribute();
+  columns.push({
+    dataIndex: "_id",
+    key: "_id",
+    render: (_, record) => {
+      return (
+        <form className="action">
+          <Link to={`/dashboard/attribute/edit/${record?.slug}`}>
+            <Button type="primary" icon={<EllipsisOutlined />} />
+          </Link>
+          <Button
+            type="primary"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record._id)}
+          />
+        </form>
+      );
+    },
+  });
 
-  const dataOption = columsOption(
-    (id) =>
-      deleteDataByIdAndPath(
-        dispatch,
-        destroyAttribute,
-        id,
-        itemTabs.path,
-        data,
-        setData,
-      ),
-    "attribute",
-  );
+  const handleDelete = (id) => {
+    dispatch(activeModal());
+    const handle = async () => {
+      try {
+        const res = await destroyAttribute(itemTabs.path, id);
 
-  columns.push(dataOption);
+        if (res.success) {
+          setData(data.filter((item) => item._id !== id));
+          toast.success(res.message || "Delete attribute successfully!");
+        }
 
-  // useEffect(() => {
-  //   itemTabs.defaultKey === 1 && columns.push(objItemColos);
-  // }, [itemTabs, columns, dataOption]);
+        dispatch(disActiveModal());
+      } catch (error) {
+        dispatch(disActiveModal());
+        return error;
+      }
+    };
+    dispatch(handleModalDelete(handle));
+  };
 
   // fetch data
   useEffect(() => {
