@@ -3,7 +3,7 @@ import { CollarTypes } from "../models/index.js";
 const index = async (req, res, next) => {
   try {
     const data = await CollarTypes.find();
-    return res.status(200).json({ success: true, data: data });
+    return res.status(200).json({ success: true, data: data, message: "he" });
   } catch (error) {
     return next(error);
   }

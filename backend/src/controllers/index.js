@@ -9,6 +9,7 @@ import * as materialControllers from "./materialControllers.js";
 import * as sexControllers from "./sexControllers.js";
 import * as designControllers from "./designControllers.js";
 import * as handTypeControllers from "./handTypeControllers.js";
+import * as collarTypeControllers from "./collarTypeControllers.js";
 import * as productControllers from "./productControllers.js";
 
 export {
@@ -23,5 +24,6 @@ export {
   sexControllers,
   designControllers,
   handTypeControllers,
+  collarTypeControllers,
   productControllers,
 };

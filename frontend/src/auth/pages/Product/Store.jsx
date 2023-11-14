@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Uploads } from "src/auth/components";
@@ -13,16 +13,26 @@ import {
   getListCategoryChild,
   getListCollection,
   getListGroupProduct,
+  storeProduct,
 } from "src/auth/services";
 import { getDataApi, getDataApiParams } from "src/auth/utils/fetchApi";
 import Editor from "src/auth/components/Editor";
 import { configsForm } from "src/auth/configs/form";
+import { useNavigate } from "react-router-dom";
+import toast from "src/auth/utils/toast";
+import {
+  activeLoading,
+  disActiveLoading,
+} from "src/auth/providers/loadingSlice";
+import { Col, Row } from "react-bootstrap";
 
 const Store = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [form] = useForm();
   const [desc, setDesc] = useState(null);
   const [thumbnail, setThumbnail] = useState([]);
+  const [filesDesc, setFilesDesc] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [dataGroups, setDataGroups] = useState([]);
   const [dataCollections, setDataCollections] = useState([]);
@@ -86,10 +96,12 @@ const Store = () => {
   const handleCloseForm = () => setOpenForm({ state: null, title: null });
 
   const unshiftData = async (setState, data) => {
-    setState((pre) => [...pre, { label: data.name, value: data._id }]);
+    setState((pre) => [{ label: data.name, value: data._id }, ...pre]);
   };
 
   const handleFinishForm = async (data) => {
+    const arrId = [];
+
     switch (openForm.state) {
       case "group":
         unshiftData(setDataGroups, data);
@@ -105,19 +117,31 @@ const Store = () => {
         break;
       case "color":
         unshiftData(setDataColors, data);
-        form.setFieldsValue({ colors: data._id });
+
+        arrId.push(data._id);
+        colorsSelect.map((item) => arrId.push(item.value));
+
         setSColorsSelect((pre) => [
-          ...pre,
           { label: data.name, value: data._id },
+          ...pre,
         ]);
+
+        form.setFieldsValue({ colors: arrId });
+
         break;
       case "size":
         unshiftData(setDataSizes, data);
+
+        arrId.push(data._id);
+        sizesSelect.map((item) => arrId.push(item.value));
+
         setSizesSelect((pre) => [
-          ...pre,
           { label: data.name, value: data._id },
+          ...pre,
         ]);
-        form.setFieldsValue({ sizes: data._id });
+
+        form.setFieldsValue({ sizes: arrId });
+
         break;
       case "material":
         unshiftData(setDataMaterials, data);
@@ -170,16 +194,85 @@ const Store = () => {
       if (!check) {
         setGallery((pre) => [...pre, { id: id, imgs: files }]);
       } else {
+        gallery.map(
+          (item, key) => item.id === id && (gallery[key].imgs = files),
+        );
       }
+    } else {
+      setGallery(gallery.filter((item) => item.id !== id));
     }
   };
 
-  console.log(thumbnail);
+  const handleGetFilesDesc = (files) => {
+    setFilesDesc(files);
+  };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
+    dispatch(activeLoading());
     try {
       console.log(values);
-    } catch (error) {}
+      const stock = [];
+      const media = [];
+
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("category", values.category);
+      formData.append("categoryChild", values.categoryChild);
+      formData.append("collarType", values.collarType);
+      formData.append("collection", values.collection);
+      formData.append("description", desc);
+      formData.append("design", values.design);
+      formData.append("form", values.form);
+      formData.append("groupProduct", values.groupProduct);
+      formData.append("handType", values.handType);
+      formData.append("material", values.material);
+      formData.append("price", values.price);
+      formData.append("sale", values.sale);
+      formData.append("sex", values.sex);
+
+      values.colors.map((color) => {
+        formData.append("colors", JSON.stringify(color));
+        const { img } = thumbnail.find((item) => item.id === color);
+        const { imgs } = gallery.find((item) => item.id === color);
+        return media.push({ color: color, thumbnail: img, gallery: imgs });
+      });
+
+      values.sizes.map((size) =>
+        formData.append("sizes", JSON.stringify(size)),
+      );
+
+      values.colors.map((color) =>
+        values.sizes.map((size) =>
+          stock.push({
+            color: color,
+            size: size,
+            qty: values[`${color}-${size}`],
+          }),
+        ),
+      );
+
+      stock.map((item) => formData.append("stock", JSON.stringify(item)));
+
+      media.map((item) => {
+        formData.append("files", item.thumbnail);
+        item.gallery.map((gal) => formData.append("files", gal));
+        return formData.append("media", JSON.stringify(item));
+      });
+
+      filesDesc.map((file) => formData.append("filesDesc", file));
+
+      const res = await storeProduct(formData);
+
+      if (res.success) {
+        toast.success(res.message);
+        navigate("/dashboard/product");
+      }
+
+      dispatch(disActiveLoading());
+    } catch (error) {
+      dispatch(disActiveLoading());
+      return error;
+    }
   };
 
   return (
@@ -262,7 +355,7 @@ const Store = () => {
 
         {colorsSelect.length > 0 &&
           colorsSelect.map((item) => (
-            <>
+            <Fragment key={item.value}>
               <Uploads
                 label={`Ảnh đại diện sản phẩm màu ${item.label}`}
                 onGetFiles={(files) => handleGetThumbnail(files, item.value)}
@@ -272,157 +365,181 @@ const Store = () => {
                 multiple
                 onGetFiles={(files) => handleGetGallary(files, item.value)}
               />
-            </>
+            </Fragment>
           ))}
 
-        <div className="control">
-          <Form.Item label="Colors" name="colors" rules={rules}>
-            <Select
-              {...configsSelect}
-              mode="multiple"
-              placeholder="Search to Select"
-              options={dataColors}
-              onChange={handleChangeColors}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("color", "Color")}
-          />
-        </div>
-
-        <div className="control">
-          <Form.Item label="Sizes" name="sizes" rules={rules}>
-            <Select
-              {...configsSelect}
-              mode="multiple"
-              placeholder="Search to Select"
-              options={dataSizes}
-              onChange={handleChangeSizes}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("size", "Size")}
-          />
-        </div>
-
-        {colorsSelect.length > 0 &&
-          sizesSelect.length > 0 &&
-          colorsSelect.map((color) =>
-            sizesSelect.map((size) => (
-              <Form.Item
-                name={`${color.value}-${size.value}`}
-                rules={rules}
-                key={`${color.value}-${size.value}`}
-                label={`Số lượng sản phẩm màu ${color.label} - size ${size.label}`}
-              >
-                <Input type="number" />
+        <Row>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Colors" name="colors" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  mode="multiple"
+                  placeholder="Search to Select"
+                  options={dataColors}
+                  onChange={handleChangeColors}
+                />
               </Form.Item>
-            )),
-          )}
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() => handleOpentFormContent("color", "Color")}
+              />
+            </div>
+          </Col>
 
-        <div className="control">
-          <Form.Item label="Sex" name="sex" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataSex}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("sex", "sex")}
-          />
-        </div>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Sizes" name="sizes" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  mode="multiple"
+                  placeholder="Search to Select"
+                  options={dataSizes}
+                  onChange={handleChangeSizes}
+                />
+              </Form.Item>
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() => handleOpentFormContent("size", "Size")}
+              />
+            </div>
+          </Col>
+          <Row>
+            {colorsSelect.length > 0 &&
+              sizesSelect.length > 0 &&
+              colorsSelect.map((color) =>
+                sizesSelect.map((size) => (
+                  <Col sm="4" key={`${color.value}-${size.value}`}>
+                    <Form.Item
+                      name={`${color.value}-${size.value}`}
+                      rules={rules}
+                      label={`Số lượng sản phẩm màu ${color.label} - size ${size.label}`}
+                    >
+                      <Input type="number" />
+                    </Form.Item>
+                  </Col>
+                )),
+              )}
+          </Row>
 
-        <div className="control">
-          <Form.Item label="Form" name="form" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataForms}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("form", "form")}
-          />
-        </div>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Sex" name="sex" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  placeholder="Search to Select"
+                  options={dataSex}
+                />
+              </Form.Item>
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() => handleOpentFormContent("sex", "sex")}
+              />
+            </div>
+          </Col>
 
-        <div className="control">
-          <Form.Item label="Design" name="design" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataDesigns}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("design", "design")}
-          />
-        </div>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Form" name="form" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  placeholder="Search to Select"
+                  options={dataForms}
+                />
+              </Form.Item>
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() => handleOpentFormContent("form", "form")}
+              />
+            </div>
+          </Col>
 
-        <div className="control">
-          <Form.Item label="Material" name="material" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataMaterials}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("material", "material")}
-          />
-        </div>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Design" name="design" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  placeholder="Search to Select"
+                  options={dataDesigns}
+                />
+              </Form.Item>
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() => handleOpentFormContent("design", "design")}
+              />
+            </div>
+          </Col>
 
-        <div className="control">
-          <Form.Item label="Hand Type" name="handType" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataHandTypes}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("handType", "Hand Type")}
-          />
-        </div>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Material" name="material" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  placeholder="Search to Select"
+                  options={dataMaterials}
+                />
+              </Form.Item>
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() => handleOpentFormContent("material", "material")}
+              />
+            </div>
+          </Col>
 
-        <div className="control">
-          <Form.Item label="Collar Type" name="collarType" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataCollarTypes}
-            />
-          </Form.Item>
-          <Button
-            icon={<PlusOutlined />}
-            className="btn-open-form"
-            onClick={() => handleOpentFormContent("collarType", "Collar Type")}
-          />
-        </div>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Hand Type" name="handType" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  placeholder="Search to Select"
+                  options={dataHandTypes}
+                />
+              </Form.Item>
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() => handleOpentFormContent("handType", "Hand Type")}
+              />
+            </div>
+          </Col>
 
-        <Form.Item label="Price" name="price" rules={rules}>
-          <Input placeholder="Price" type="number" />
-        </Form.Item>
+          <Col sm="6">
+            <div className="control">
+              <Form.Item label="Collar Type" name="collarType" rules={rules}>
+                <Select
+                  {...configsSelect}
+                  placeholder="Search to Select"
+                  options={dataCollarTypes}
+                />
+              </Form.Item>
+              <Button
+                icon={<PlusOutlined />}
+                className="btn-open-form"
+                onClick={() =>
+                  handleOpentFormContent("collarType", "Collar Type")
+                }
+              />
+            </div>
+          </Col>
 
-        <Form.Item label="Sale" name="sale" rules={rules}>
-          <Input placeholder="Sale" type="number" min="0" max="100" />
-        </Form.Item>
+          <Col sm="6">
+            <Form.Item label="Price" name="price" rules={rules}>
+              <Input placeholder="Price" type="number" />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Uploads label="Description Image" multiple />
+        <Uploads
+          label="Description Image"
+          multiple
+          onGetFiles={handleGetFilesDesc}
+        />
 
         <Form.Item label="Description" name="description">
           <Editor handleGetData={(values) => setDesc(values)} />

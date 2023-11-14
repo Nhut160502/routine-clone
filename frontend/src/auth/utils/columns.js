@@ -106,18 +106,22 @@ export const columnsProduct = () => {
     {
       title: "Group Product",
       dataIndex: "groupProduct",
+      render: (value) => value.name,
     },
     {
       title: "Collection",
       dataIndex: "collection",
+      render: (value) => value.name,
     },
     {
       title: "Category",
       dataIndex: "category",
+      render: (value) => value.name,
     },
     {
       title: "Caregory Child",
       dataIndex: "categoryChild",
+      render: (value) => value.name,
     },
     {
       title: "Name",
@@ -139,8 +143,8 @@ export const columnsProduct = () => {
       render: (media, record) => (
         <Link to={`/dashboard/product/edit/${record.slug}`}>
           <img
-            className="img-thumbnail"
-            src={media[0].gallery[0]}
+            className="product-img"
+            src={media[0].thumbnail}
             alt={record.name}
           />
         </Link>

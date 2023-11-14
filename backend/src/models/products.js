@@ -57,18 +57,16 @@ const products = new Schema({
     },
   ],
   price: { type: Number, required: true },
-  sale: { type: Number, required: true, min: 0, max: 100 },
+  sale: { type: Number, required: true, min: 0, max: 100, default: 0 },
   sold: { type: Number, default: 0 },
-  attribute: [
-    {
-      form: { type: Schema.Types.ObjectId, ref: "Forms" },
-      materials: { type: Schema.Types.ObjectId, ref: "Materials" },
-      design: { type: Schema.Types.ObjectId, ref: "Designs" },
-      handType: { type: Schema.Types.ObjectId, ref: "HandTypes" },
-      collarType: { type: Schema.Types.ObjectId, ref: "CollarTypes" },
-      sex: { type: Schema.Types.ObjectId, ref: "Sex" },
-    },
-  ],
+  attribute: {
+    form: { type: Schema.Types.ObjectId, ref: "Forms" },
+    material: { type: Schema.Types.ObjectId, ref: "Materials" },
+    design: { type: Schema.Types.ObjectId, ref: "Designs" },
+    handType: { type: Schema.Types.ObjectId, ref: "HandTypes" },
+    collarType: { type: Schema.Types.ObjectId, ref: "CollarTypes" },
+    sex: { type: Schema.Types.ObjectId, ref: "Sex" },
+  },
   description: { type: String },
   isActive: { type: Boolean, default: true },
 });

@@ -11,7 +11,7 @@ export const filterSort = (optionA, optionB) =>
 export const configsForm = {
   layout: "vertical",
   style: {
-    width: "600px",
+    width: "800px",
   },
 };
 

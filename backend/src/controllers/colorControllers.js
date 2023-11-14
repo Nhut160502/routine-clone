@@ -13,6 +13,7 @@ const index = async (req, res, next) => {
   }
 };
 const store = async (req, res, next) => {
+  console.log(req.body);
   try {
     if (!req.file) {
       throw new Error("Image color is not valid!");
