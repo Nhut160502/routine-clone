@@ -1,21 +1,35 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Uploads } from "src/auth/components";
 import Editor from "src/auth/components/Editor";
 import FormContent from "src/auth/components/FormContent";
 import { configsForm, configsSelect, rules } from "src/auth/configs";
-import { getCategoryByIdGroup, getListCategoryChild } from "src/auth/services";
-import { getDataApiParams } from "src/auth/utils/fetchApi";
+import {
+  activeLoading,
+  disActiveLoading,
+} from "src/auth/providers/loadingSlice";
+import {
+  getCategoryByIdGroup,
+  getListAttribute,
+  getListCategory,
+  getListCategoryChild,
+  getListCollection,
+  getListGroupProduct,
+  showProduct,
+} from "src/auth/services";
+import { getDataApi, getDataApiParams } from "src/auth/utils/fetchApi";
 
 const Edit = () => {
   const [form] = useForm();
+  const { slug } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [data, setData] = useState({});
   const [desc, setDesc] = useState(null);
   const [thumbnail, setThumbnail] = useState([]);
   const [gallery, setGallery] = useState([]);
@@ -34,6 +48,19 @@ const Edit = () => {
   const [openForm, setOpenForm] = useState({ state: null, title: null });
   const [sizesSelect, setSizesSelect] = useState([]);
   const [colorsSelect, setSColorsSelect] = useState([]);
+
+  useEffect(async () => {
+    const fetchData = async () => {
+      const res = await getDataApiParams(dispatch, showProduct, slug, setData);
+      getDataApi(dispatch, getListGroupProduct, setDataGroups);
+      getDataApi(dispatch, getListCollection, setDataCollections);
+      getDataApi(dispatch, getListCategory, setDataCategories);
+      getDataApi(dispatch, getListCategoryChild, setDataChild);
+      getDataApiParams(dispatch, getListAttribute, "colors", setDataColors);
+      getDataApiParams(dispatch, getListAttribute, "sizes", setDataSizes);
+      getDataApiParams(dispatch, getListAttribute, "forms", setDataForms);
+    };
+  }, [slug, dispatch]);
 
   const handleChangeGroup = async (id) => {
     setDataCategories([]);

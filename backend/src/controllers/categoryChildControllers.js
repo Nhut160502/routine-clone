@@ -31,9 +31,11 @@ const store = async (req, res, next) => {
 const show = async (req, res, next) => {
   try {
     const data = await CategoryChilds.findOne({ slug: req.params.slug });
+
     if (!data) {
       throw new Error("Not found");
     }
+
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     return next(error);
@@ -46,6 +48,7 @@ const update = async (req, res, next) => {
     data.name = req.body.name;
     data.category = req.body.category;
     data.updatedAt = Date.now();
+
     await data.save();
 
     return res
@@ -59,6 +62,7 @@ const update = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   try {
     await CategoryChilds.findByIdAndDelete(req.params.id);
+
     return res
       .status(200)
       .json({ success: true, message: "Delete category child successfully!" });

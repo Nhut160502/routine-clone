@@ -259,7 +259,10 @@ const Store = () => {
         return formData.append("media", JSON.stringify(item));
       });
 
-      filesDesc.map((file) => formData.append("filesDesc", file));
+      filesDesc.map((file, idx) => {
+        formData.append("filesDesc", JSON.stringify(idx));
+        return formData.append("files", file);
+      });
 
       const res = await storeProduct(formData);
 

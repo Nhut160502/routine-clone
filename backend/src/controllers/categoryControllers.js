@@ -57,6 +57,12 @@ const show = async (req, res, next) => {
   }
 };
 
+const findByGroup = async (req, res, next) => {
+  try {
+    const data = await Categories.find();
+  } catch (error) {}
+};
+
 const showByGroup = async (req, res, next) => {
   try {
     const data = await Categories.find({ groupProduct: req.params.id });

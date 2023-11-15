@@ -21,7 +21,7 @@ const StoreCollarType = (props) => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      const res = await storeAttribute("hand-types", formData);
+      const res = await storeAttribute("collar-types", formData);
       if (res.success) {
         dispatch(disActiveLoading());
 

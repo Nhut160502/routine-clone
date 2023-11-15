@@ -9,10 +9,12 @@ export const getDataApi = async (dispatch, api, setState, table) => {
     if (res.success) {
       if (table) {
         setState(res.data);
+        return res.data;
       } else {
         res.data.map((item) =>
           setState((pre) => [...pre, { label: item.name, value: item._id }]),
         );
+        return res.data;
       }
     }
     dispatch(disActiveLoading());

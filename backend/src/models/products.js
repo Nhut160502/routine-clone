@@ -68,6 +68,7 @@ const products = new Schema({
     sex: { type: Schema.Types.ObjectId, ref: "Sex" },
   },
   description: { type: String },
+  descImage: [],
   isActive: { type: Boolean, default: true },
 });
 
