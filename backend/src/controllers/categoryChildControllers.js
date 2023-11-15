@@ -42,6 +42,18 @@ const show = async (req, res, next) => {
   }
 };
 
+const showByIdCategory = async (req, res, next) => {
+  try {
+    const data = await CategoryChilds.find({ category: req.params.id });
+
+    if (!data) {
+      throw new Error("Not found");
+    }
+
+    return res.status(200).json({ success: true, data: data });
+  } catch (error) {}
+};
+
 const update = async (req, res, next) => {
   try {
     const data = await CategoryChilds.findById(req.body.id);
@@ -71,4 +83,4 @@ const destroy = async (req, res, next) => {
   }
 };
 
-export { index, store, show, update, destroy };
+export { index, store, show, update, destroy, showByIdCategory };

@@ -9,11 +9,12 @@ import {
   disActiveLoading,
 } from "src/auth/providers/loadingSlice";
 import { showGroupProduct, updateGroupProduct } from "src/auth/services";
-import { getDataApi } from "src/auth/utils/fetchApi";
+import { getDataApiParams } from "src/auth/utils/fetchApi";
 import toast from "src/auth/utils/toast";
 
 const Edit = () => {
   const { slug } = useParams();
+  console.log(slug);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [data, setData] = useState({});
@@ -37,8 +38,10 @@ const Edit = () => {
   };
 
   useEffect(() => {
-    getDataApi(dispatch, showGroupProduct, slug, setData);
+    getDataApiParams(dispatch, showGroupProduct, slug, setData);
   }, [slug, dispatch]);
+
+  console.log(data);
 
   return (
     <div className="wrapper-form">
@@ -51,7 +54,11 @@ const Edit = () => {
         <Form.Item label="Name" name="name" rules={rules}>
           <Input placeholder="Name group product" />
         </Form.Item>
-        <Uploads data={data} label="Banner" onGetFiles={handleGetFiles} />
+        <Uploads
+          data={data?.banner}
+          label="Banner"
+          onGetFiles={handleGetFiles}
+        />
         <Button type="primary" htmlType="submit">
           Submit
         </Button>

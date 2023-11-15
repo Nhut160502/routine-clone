@@ -218,7 +218,6 @@ const Store = () => {
       formData.append("name", values.name);
       formData.append("category", values.category);
       formData.append("categoryChild", values.categoryChild);
-      formData.append("collarType", values.collarType);
       formData.append("collection", values.collection);
       formData.append("description", desc);
       formData.append("design", values.design);
@@ -226,6 +225,7 @@ const Store = () => {
       formData.append("groupProduct", values.groupProduct);
       formData.append("handType", values.handType);
       formData.append("material", values.material);
+      formData.append("collarType", values.collarType);
       formData.append("price", values.price);
       formData.append("sale", values.sale);
       formData.append("sex", values.sex);
@@ -292,7 +292,6 @@ const Store = () => {
           <Form.Item label="Group product" name="groupProduct" rules={rules}>
             <Select
               {...configsSelect}
-              placeholder="Search to Select"
               options={dataGroups}
               onChange={handleChangeGroup}
             />
@@ -306,11 +305,7 @@ const Store = () => {
 
         <div className="control">
           <Form.Item label="Collection" name="collection" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataCollections}
-            />
+            <Select {...configsSelect} options={dataCollections} />
           </Form.Item>
           <Button
             icon={<PlusOutlined />}
@@ -323,7 +318,6 @@ const Store = () => {
           <Form.Item label="Category" name="category" rules={rules}>
             <Select
               {...configsSelect}
-              placeholder={"Search to Select"}
               options={dataCategories}
               onChange={handleChangeCategory}
             />
@@ -337,11 +331,7 @@ const Store = () => {
 
         <div className="control">
           <Form.Item label="Category Child" name="categoryChild" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder={"Search to Select"}
-              options={dataChild}
-            />
+            <Select {...configsSelect} options={dataChild} />
           </Form.Item>
           <Button
             icon={<PlusOutlined />}
@@ -353,7 +343,7 @@ const Store = () => {
         </div>
 
         <Form.Item label="Name" name="name" rules={rules}>
-          <Input placeholder="Name group product" />
+          <Input />
         </Form.Item>
 
         {colorsSelect.length > 0 &&
@@ -378,7 +368,6 @@ const Store = () => {
                 <Select
                   {...configsSelect}
                   mode="multiple"
-                  placeholder="Search to Select"
                   options={dataColors}
                   onChange={handleChangeColors}
                 />
@@ -397,7 +386,6 @@ const Store = () => {
                 <Select
                   {...configsSelect}
                   mode="multiple"
-                  placeholder="Search to Select"
                   options={dataSizes}
                   onChange={handleChangeSizes}
                 />
@@ -430,11 +418,7 @@ const Store = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Sex" name="sex" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataSex}
-                />
+                <Select {...configsSelect} options={dataSex} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -447,11 +431,7 @@ const Store = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Form" name="form" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataForms}
-                />
+                <Select {...configsSelect} options={dataForms} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -464,11 +444,7 @@ const Store = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Design" name="design" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataDesigns}
-                />
+                <Select {...configsSelect} options={dataDesigns} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -481,11 +457,7 @@ const Store = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Material" name="material" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataMaterials}
-                />
+                <Select {...configsSelect} options={dataMaterials} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -498,11 +470,7 @@ const Store = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Hand Type" name="handType" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataHandTypes}
-                />
+                <Select {...configsSelect} options={dataHandTypes} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -515,11 +483,7 @@ const Store = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Collar Type" name="collarType" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataCollarTypes}
-                />
+                <Select {...configsSelect} options={dataCollarTypes} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -533,7 +497,7 @@ const Store = () => {
 
           <Col sm="6">
             <Form.Item label="Price" name="price" rules={rules}>
-              <Input placeholder="Price" type="number" />
+              <Input />
             </Form.Item>
           </Col>
         </Row>

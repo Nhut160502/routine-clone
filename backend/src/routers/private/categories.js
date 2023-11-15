@@ -6,7 +6,7 @@ const routers = express.Router();
 
 routers.get("/", categoryControllers.index);
 routers.get("/:slug", categoryControllers.show);
-routers.get("/group/:id", categoryControllers.showByGroup);
+routers.get("/group/:id", categoryControllers.showByIdGroup);
 routers.delete("/:id", categoryControllers.destroy);
 
 routers.post(

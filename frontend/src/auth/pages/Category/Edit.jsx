@@ -85,7 +85,7 @@ const Edit = () => {
         <Uploads
           name="banner"
           label="Banner"
-          data={data}
+          data={data?.banner}
           onGetFiles={(files) => setFile(files[0])}
         />
         <Button type="primary" htmlType="submit">

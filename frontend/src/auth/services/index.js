@@ -27,6 +27,7 @@ import {
   index as getListCategoryChild,
   store as storeCategoryChild,
   show as showCategoryChild,
+  showByIdCategory as showChildbyIdCategory,
   update as updateCategoryChild,
   destroy as destroyCategoryChild,
 } from "./categoryChilds";
@@ -75,6 +76,7 @@ export {
   getListCategoryChild,
   storeCategoryChild,
   showCategoryChild,
+  showChildbyIdCategory,
   updateCategoryChild,
   destroyCategoryChild,
 

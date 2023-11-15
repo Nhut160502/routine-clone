@@ -6,18 +6,19 @@ export const getDataApi = async (dispatch, api, setState, table) => {
   dispatch(activeLoading());
   try {
     const res = await api();
+
     if (res.success) {
       if (table) {
         setState(res.data);
-        return res.data;
       } else {
         res.data.map((item) =>
           setState((pre) => [...pre, { label: item.name, value: item._id }]),
         );
-        return res.data;
       }
     }
+
     dispatch(disActiveLoading());
+    return res;
   } catch (error) {
     dispatch(disActiveLoading());
     return error;
@@ -35,6 +36,7 @@ export const getDataApiParams = async (
   try {
     const res = await api(params);
     if (res.success) {
+      dispatch(disActiveLoading());
       if (table) {
         setState(res.data);
       } else {
@@ -42,8 +44,8 @@ export const getDataApiParams = async (
           setState((pre) => [...pre, { label: item.name, value: item._id }]),
         );
       }
+      return res.data;
     }
-    dispatch(disActiveLoading());
   } catch (error) {
     dispatch(disActiveLoading());
     return error;

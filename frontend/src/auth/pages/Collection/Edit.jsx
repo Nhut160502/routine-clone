@@ -57,7 +57,7 @@ const Edit = () => {
             onGetFiles={(files) => setFile(files[0])}
             name="banner"
             label="Banner"
-            data={data}
+            data={data?.banner}
           />
           <Button type="primary" htmlType="submit">
             Submit

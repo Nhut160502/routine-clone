@@ -1,25 +1,22 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Uploads } from "src/auth/components";
 import Editor from "src/auth/components/Editor";
 import FormContent from "src/auth/components/FormContent";
 import { configsForm, configsSelect, rules } from "src/auth/configs";
-import {
-  activeLoading,
-  disActiveLoading,
-} from "src/auth/providers/loadingSlice";
+
 import {
   getCategoryByIdGroup,
   getListAttribute,
-  getListCategory,
   getListCategoryChild,
   getListCollection,
   getListGroupProduct,
+  showChildbyIdCategory,
   showProduct,
 } from "src/auth/services";
 import { getDataApi, getDataApiParams } from "src/auth/utils/fetchApi";
@@ -28,7 +25,6 @@ const Edit = () => {
   const [form] = useForm();
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [data, setData] = useState({});
   const [desc, setDesc] = useState(null);
   const [thumbnail, setThumbnail] = useState([]);
@@ -49,18 +45,100 @@ const Edit = () => {
   const [sizesSelect, setSizesSelect] = useState([]);
   const [colorsSelect, setSColorsSelect] = useState([]);
 
-  useEffect(async () => {
+  useEffect(() => {
     const fetchData = async () => {
-      const res = await getDataApiParams(dispatch, showProduct, slug, setData);
+      const res = await getDataApiParams(
+        dispatch,
+        showProduct,
+        slug,
+        setData,
+        true,
+      );
       getDataApi(dispatch, getListGroupProduct, setDataGroups);
       getDataApi(dispatch, getListCollection, setDataCollections);
-      getDataApi(dispatch, getListCategory, setDataCategories);
-      getDataApi(dispatch, getListCategoryChild, setDataChild);
+      getDataApiParams(
+        dispatch,
+        getCategoryByIdGroup,
+        res.groupProduct._id,
+        setDataCategories,
+      );
+      getDataApiParams(
+        dispatch,
+        showChildbyIdCategory,
+        res.category._id,
+        setDataChild,
+      );
       getDataApiParams(dispatch, getListAttribute, "colors", setDataColors);
       getDataApiParams(dispatch, getListAttribute, "sizes", setDataSizes);
       getDataApiParams(dispatch, getListAttribute, "forms", setDataForms);
+      getDataApiParams(dispatch, getListAttribute, "designs", setDataDesigns);
+      getDataApiParams(
+        dispatch,
+        getListAttribute,
+        "materials",
+        setDataMaterials,
+      );
+      getDataApiParams(dispatch, getListAttribute, "sex", setDataSex);
+      getDataApiParams(
+        dispatch,
+        getListAttribute,
+        "hand-types",
+        setDataHandTypes,
+      );
+      getDataApiParams(
+        dispatch,
+        getListAttribute,
+        "collar-types",
+        setDataCollarTypes,
+      );
+
+      const colorsFields = [];
+      const sizesFields = [];
+
+      console.log(colorsFields);
+
+      res.colors.map((color) => {
+        colorsFields.push(color._id);
+        return setSColorsSelect((pre) => [
+          ...pre,
+          { label: color.name, value: color._id },
+        ]);
+      });
+
+      res.sizes.map((size) => {
+        sizesFields.push(size._id);
+        return setSizesSelect((pre) => [
+          ...pre,
+          { label: size.name, value: size._id },
+        ]);
+      });
+
+      res.stock.map((item) =>
+        form.setFieldsValue({
+          [`${item.color._id}-${item.size._id}`]: item.qty,
+        }),
+      );
+
+      form.setFieldsValue({
+        name: res.name,
+        groupProduct: res.groupProduct?._id,
+        collection: res.collection?._id,
+        category: res.category?._id,
+        categoryChild: res.categoryChild?._id,
+        colors: colorsFields,
+        sizes: sizesFields,
+        form: res.attribute.form?._id,
+        sex: res.attribute.sex?._id,
+        design: res.attribute.design?._id,
+        material: res.attribute.material?._id,
+        handType: res.attribute.handType?._id,
+        collarType: res.attribute.collarType?._id,
+        price: res.price,
+        sale: res.sale,
+      });
     };
-  }, [slug, dispatch]);
+    fetchData();
+  }, [slug, dispatch, form]);
 
   const handleChangeGroup = async (id) => {
     setDataCategories([]);
@@ -74,9 +152,35 @@ const Edit = () => {
     form.setFieldsValue({ categoryChild: null });
   };
 
-  const handleChangeColors = (id, data) => setSColorsSelect(data);
+  const handleChangeColors = (id, data) => {};
+  // setSColorsSelect((pre) => [...pre, data]);
 
-  const handleChangeSizes = (id, data) => setSizesSelect(data);
+  const handleChangeSizes = (id, data) => {};
+  // setSizesSelect((pre) => [...pre, data]);
+
+  const handleGetThumbnail = (files, id) => {
+    if (files.length > 0) {
+      const check = thumbnail?.some((item) => item.id === id);
+      !check && setThumbnail((pre) => [...pre, { id: id, img: files[0] }]);
+    } else {
+      setThumbnail(thumbnail.filter((item) => item.id !== id));
+    }
+  };
+
+  const handleGetGallary = (files, id) => {
+    if (files.length > 0) {
+      const check = gallery.some((item) => item.id === id);
+      if (!check) {
+        setGallery((pre) => [...pre, { id: id, imgs: files }]);
+      } else {
+        gallery.map(
+          (item, key) => item.id === id && (gallery[key].imgs = files),
+        );
+      }
+    } else {
+      setGallery(gallery.filter((item) => item.id !== id));
+    }
+  };
 
   const handleOpentFormContent = (state, title) =>
     setOpenForm({ state: state, title: title });
@@ -181,7 +285,6 @@ const Edit = () => {
           <Form.Item label="Group product" name="groupProduct" rules={rules}>
             <Select
               {...configsSelect}
-              placeholder="Search to Select"
               options={dataGroups}
               onChange={handleChangeGroup}
             />
@@ -195,11 +298,7 @@ const Edit = () => {
 
         <div className="control">
           <Form.Item label="Collection" name="collection" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder="Search to Select"
-              options={dataCollections}
-            />
+            <Select {...configsSelect} options={dataCollections} />
           </Form.Item>
           <Button
             icon={<PlusOutlined />}
@@ -212,7 +311,6 @@ const Edit = () => {
           <Form.Item label="Category" name="category" rules={rules}>
             <Select
               {...configsSelect}
-              placeholder={"Search to Select"}
               options={dataCategories}
               onChange={handleChangeCategory}
             />
@@ -226,11 +324,7 @@ const Edit = () => {
 
         <div className="control">
           <Form.Item label="Category Child" name="categoryChild" rules={rules}>
-            <Select
-              {...configsSelect}
-              placeholder={"Search to Select"}
-              options={dataChild}
-            />
+            <Select {...configsSelect} options={dataChild} />
           </Form.Item>
           <Button
             icon={<PlusOutlined />}
@@ -242,17 +336,45 @@ const Edit = () => {
         </div>
 
         <Form.Item label="Name" name="name" rules={rules}>
-          <Input placeholder="Name group product" />
+          <Input />
         </Form.Item>
+
+        {colorsSelect.length > 0 &&
+          colorsSelect.map((item) => (
+            <Fragment key={item.value}>
+              <>
+                <Uploads
+                  data={
+                    (data.media.some((media) => media.color === item.value) &&
+                      data?.media?.find((media) => media.color === item.value)
+                        .thumbnail) ||
+                    false
+                  }
+                  label={`Ảnh đại diện sản phẩm màu ${item.label}`}
+                  onGetFiles={(files) => handleGetThumbnail(files, item.value)}
+                />
+                <Uploads
+                  data={
+                    (data.media.some((media) => media.color === item.value) &&
+                      data?.media?.find((media) => media.color === item.value)
+                        .gallery) ||
+                    false
+                  }
+                  label={`Ảnh chi tiết sản phẩm màu ${item.label}`}
+                  multiple
+                  onGetFiles={(files) => handleGetGallary(files, item.value)}
+                />
+              </>
+            </Fragment>
+          ))}
 
         <Row>
           <Col sm="6">
             <div className="control">
               <Form.Item label="Colors" name="colors" rules={rules}>
                 <Select
-                  {...configsSelect}
                   mode="multiple"
-                  placeholder="Search to Select"
+                  {...configsSelect}
                   options={dataColors}
                   onChange={handleChangeColors}
                 />
@@ -271,7 +393,6 @@ const Edit = () => {
                 <Select
                   {...configsSelect}
                   mode="multiple"
-                  placeholder="Search to Select"
                   options={dataSizes}
                   onChange={handleChangeSizes}
                 />
@@ -304,11 +425,7 @@ const Edit = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Sex" name="sex" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataSex}
-                />
+                <Select {...configsSelect} options={dataSex} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -321,11 +438,7 @@ const Edit = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Form" name="form" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataForms}
-                />
+                <Select {...configsSelect} options={dataForms} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -338,11 +451,7 @@ const Edit = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Design" name="design" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataDesigns}
-                />
+                <Select {...configsSelect} options={dataDesigns} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -355,11 +464,7 @@ const Edit = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Material" name="material" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataMaterials}
-                />
+                <Select {...configsSelect} options={dataMaterials} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -372,11 +477,7 @@ const Edit = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Hand Type" name="handType" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataHandTypes}
-                />
+                <Select {...configsSelect} options={dataHandTypes} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -389,11 +490,7 @@ const Edit = () => {
           <Col sm="6">
             <div className="control">
               <Form.Item label="Collar Type" name="collarType" rules={rules}>
-                <Select
-                  {...configsSelect}
-                  placeholder="Search to Select"
-                  options={dataCollarTypes}
-                />
+                <Select {...configsSelect} options={dataCollarTypes} />
               </Form.Item>
               <Button
                 icon={<PlusOutlined />}
@@ -407,13 +504,13 @@ const Edit = () => {
 
           <Col sm="6">
             <Form.Item label="Price" name="price" rules={rules}>
-              <Input placeholder="Price" type="number" />
+              <Input />
             </Form.Item>
           </Col>
 
           <Col sm="6">
             <Form.Item label="Sale" name="sale" rules={rules}>
-              <Input placeholder="Sale" type="number" min="0" max="100" />
+              <Input />
             </Form.Item>
           </Col>
         </Row>

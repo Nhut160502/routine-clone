@@ -10,6 +10,10 @@ export const show = (slug) => {
   return axios.get(`${path}/${slug}`);
 };
 
+export const showByIdCategory = (id) => {
+  return axios.get(`${path}/category/${id}`);
+};
+
 export const store = (data) => {
   return axios.post(path, data, {
     headers: {

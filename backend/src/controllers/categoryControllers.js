@@ -57,15 +57,14 @@ const show = async (req, res, next) => {
   }
 };
 
-const findByGroup = async (req, res, next) => {
+const showByIdGroup = async (req, res, next) => {
   try {
-    const data = await Categories.find();
-  } catch (error) {}
-};
-
-const showByGroup = async (req, res, next) => {
-  try {
+    console.log(req.params.id);
     const data = await Categories.find({ groupProduct: req.params.id });
+    console.log(data);
+    if (!data) {
+      throw new Error("Not found");
+    }
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     return next(error);
@@ -112,4 +111,4 @@ const destroy = async (req, res, next) => {
   }
 };
 
-export { index, store, show, showByGroup, update, destroy };
+export { index, store, show, showByIdGroup, update, destroy };

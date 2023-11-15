@@ -79,8 +79,6 @@ const store = async (req, res, next) => {
     });
 
     let j = req.body.filesDesc.length - 1;
-    console.log(j);
-    console.log(req.files.length);
     for (let idx = j; idx < req.files.length; idx++) {
       console.log(req.files[idx]);
       filesDesc.push(req.files[idx].filename);
@@ -175,7 +173,31 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
   try {
-  } catch (error) {}
+    const data = await Products.findById(req.params.id);
+    data.media.map((item) => {
+      fs.existsSync(`public/Products/${item.thumbnail}`) &&
+        fs.unlinkSync(`public/Products/${item.thumbnail}`);
+      item.gallery.map(
+        (gall) =>
+          fs.existsSync(`public/Products/${gall}`) &&
+          fs.unlinkSync(`public/Products/${gall}`)
+      );
+    });
+
+    data?.descImage?.map(
+      (item) =>
+        fs.existsSync(`pulic/Products/${item}`) &&
+        fs.unlinkSync(`pulic/Products/${item}`)
+    );
+
+    await data.deleteOne();
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Delete product successfully!" });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 export { index, store, show, update, destroy };
