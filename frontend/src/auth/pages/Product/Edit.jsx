@@ -2,14 +2,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import React, { Fragment, useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Uploads } from "src/auth/components";
-import Editor from "src/auth/components/Editor";
-import FormContent from "src/auth/components/FormContent";
-import { configsForm, configsSelect, rules } from "src/auth/configs";
 
+import { Uploads } from "src/auth/components";
+import FormContent from "src/auth/components/FormContent";
+import { rules, configsSelect } from "src/auth/configs";
 import {
   getCategoryByIdGroup,
   getListAttribute,
@@ -20,6 +17,15 @@ import {
   showProduct,
 } from "src/auth/services";
 import { getDataApi, getDataApiParams } from "src/auth/utils/fetchApi";
+import Editor from "src/auth/components/Editor";
+import { configsForm } from "src/auth/configs/form";
+import { Col, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import toast from "src/auth/utils/toast";
+import {
+  activeLoading,
+  disActiveLoading,
+} from "src/auth/providers/loadingSlice";
 
 const Edit = () => {
   const [form] = useForm();
@@ -27,6 +33,7 @@ const Edit = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [desc, setDesc] = useState(null);
+  const [filesDesc, setFilesDesc] = useState([]);
   const [thumbnail, setThumbnail] = useState([]);
   const [gallery, setGallery] = useState([]);
   const [dataGroups, setDataGroups] = useState([]);
@@ -44,6 +51,8 @@ const Edit = () => {
   const [openForm, setOpenForm] = useState({ state: null, title: null });
   const [sizesSelect, setSizesSelect] = useState([]);
   const [colorsSelect, setSColorsSelect] = useState([]);
+
+  console.log();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,8 +103,6 @@ const Edit = () => {
 
       const colorsFields = [];
       const sizesFields = [];
-
-      console.log(colorsFields);
 
       res.colors.map((color) => {
         colorsFields.push(color._id);
@@ -152,11 +159,9 @@ const Edit = () => {
     form.setFieldsValue({ categoryChild: null });
   };
 
-  const handleChangeColors = (id, data) => {};
-  // setSColorsSelect((pre) => [...pre, data]);
+  const handleChangeColors = (id, data) => setSColorsSelect(data);
 
-  const handleChangeSizes = (id, data) => {};
-  // setSizesSelect((pre) => [...pre, data]);
+  const handleChangeSizes = (id, data) => setSizesSelect(data);
 
   const handleGetThumbnail = (files, id) => {
     if (files.length > 0) {
@@ -180,6 +185,10 @@ const Edit = () => {
     } else {
       setGallery(gallery.filter((item) => item.id !== id));
     }
+  };
+
+  const handleGetFilesDesc = (files) => {
+    setFilesDesc(files);
   };
 
   const handleOpentFormContent = (state, title) =>
@@ -270,7 +279,67 @@ const Edit = () => {
     setOpenForm({ state: null, title: null });
   };
 
-  const handleSubmit = (values) => {};
+  const handleSubmit = (values) => {
+    dispatch(activeLoading());
+    const stock = [];
+    const media = [];
+
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("category", values.category);
+    formData.append("categoryChild", values.categoryChild);
+    formData.append("collection", values.collection);
+    formData.append("description", desc);
+    formData.append("design", values.design);
+    formData.append("form", values.form);
+    formData.append("groupProduct", values.groupProduct);
+    formData.append("handType", values.handType);
+    formData.append("material", values.material);
+    formData.append("collarType", values.collarType);
+    formData.append("price", values.price);
+    formData.append("sale", values.sale);
+    formData.append("sex", values.sex);
+
+    values.colors.map((color) => {
+      formData.append("colors", JSON.stringify(color));
+      const thumb = thumbnail?.find((item) => item.id === color);
+      const gall = gallery?.find((item) => item.id === color);
+      media.push({ color: color, thumbnail: thumb?.img, gallery: gall?.imgs });
+    });
+
+    values.sizes.map((size) => formData.append("sizes", JSON.stringify(size)));
+
+    values.colors.map((color) =>
+      values.sizes.map((size) =>
+        stock.push({
+          color: color,
+          size: size,
+          qty: values[`${color}-${size}`],
+        }),
+      ),
+    );
+
+    stock.map((item) => formData.append("stock", JSON.stringify(item)));
+
+    media?.map((item) => {
+      formData.append("files", item.thumbnail);
+      item?.gallery?.map((gal) => formData.append("files", gal));
+      formData.append("media", JSON.stringify(item));
+    });
+
+    filesDesc.map((file, idx) => {
+      formData.append("filesDesc", JSON.stringify(idx));
+      formData.append("files", file);
+    });
+
+    console.log(stock, media, filesDesc);
+    console.log(values);
+
+    dispatch(disActiveLoading());
+    dispatch(disActiveLoading());
+  };
+
+  const handleFinishFailed = (error) => toast.error("Validate failed!");
 
   return (
     <div className="wrapper-form">
@@ -280,7 +349,12 @@ const Edit = () => {
         handleClose={handleCloseForm}
         handleFinish={handleFinishForm}
       />
-      <Form {...configsForm} form={form} onFinish={handleSubmit}>
+      <Form
+        {...configsForm}
+        form={form}
+        onFinish={handleSubmit}
+        onFinishFailed={handleFinishFailed}
+      >
         <div className="control">
           <Form.Item label="Group product" name="groupProduct" rules={rules}>
             <Select
@@ -514,10 +588,14 @@ const Edit = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Uploads label="Description Image" multiple />
+        <Uploads
+          label="Description Image"
+          multiple
+          onGetFiles={handleGetFilesDesc}
+        />
 
         <Form.Item label="Description" name="description">
-          <Editor handleGetData={(values) => setDesc(values)} />
+          <Editor value={"ok"} handleGetData={(values) => setDesc(values)} />
         </Form.Item>
 
         <Button type="primary" htmlType="submit">

@@ -3,8 +3,10 @@ import JoditEditor from "jodit-react";
 import { editorConfig } from "../configs";
 import { PropTypes } from "prop-types";
 const Editor = (props) => {
-  const { handleGetData } = props;
-  const [data, setData] = useState("");
+  const { handleGetData, value } = props;
+  const [data, setData] = useState(value || "");
+
+  console.log(value);
 
   return (
     <div
@@ -25,6 +27,7 @@ const Editor = (props) => {
 
 Editor.propTypes = {
   handleGetData: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default Editor;

@@ -210,7 +210,6 @@ const Store = () => {
   const handleSubmit = async (values) => {
     dispatch(activeLoading());
     try {
-      console.log(values);
       const stock = [];
       const media = [];
 
