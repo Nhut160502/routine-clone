@@ -124,6 +124,7 @@ const routes = [
   },
 
   // Product
+
   {
     path: "/dashboard/product",
     name: "Product",
@@ -140,6 +141,11 @@ const routes = [
     path: "/dashboard/product/edit/:slug",
     name: "Edit Product",
     element: EditProduct,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/dashboard/product/detail/:slug",
+    name: "Detail Product",
     layout: DefaultLayout,
   },
 

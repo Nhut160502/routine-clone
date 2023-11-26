@@ -59,9 +59,7 @@ const show = async (req, res, next) => {
 
 const showByIdGroup = async (req, res, next) => {
   try {
-    console.log(req.params.id);
     const data = await Categories.find({ groupProduct: req.params.id });
-    console.log(data);
     if (!data) {
       throw new Error("Not found");
     }
@@ -89,7 +87,6 @@ const update = async (req, res, next) => {
       .status(200)
       .json({ success: true, message: "Update Category Successfully!" });
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 };

@@ -229,12 +229,16 @@ const Store = () => {
       formData.append("sale", values.sale);
       formData.append("sex", values.sex);
 
-      values.colors.map((color) => {
-        formData.append("colors", JSON.stringify(color));
-        const { img } = thumbnail.find((item) => item.id === color);
-        const { imgs } = gallery.find((item) => item.id === color);
-        return media.push({ color: color, thumbnail: img, gallery: imgs });
-      });
+      console.log(values);
+
+      if (thumbnail.length > 0 && gallery.length > 0) {
+        values.colors.map((color) => {
+          formData.append("colors", JSON.stringify(color));
+          const { img } = thumbnail.find((item) => item.id === color);
+          const { imgs } = gallery.find((item) => item.id === color);
+          return media.push({ color: color, thumbnail: img, gallery: imgs });
+        });
+      }
 
       values.sizes.map((size) =>
         formData.append("sizes", JSON.stringify(size)),
@@ -258,10 +262,12 @@ const Store = () => {
         return formData.append("media", JSON.stringify(item));
       });
 
-      filesDesc.map((file, idx) => {
-        formData.append("filesDesc", JSON.stringify(idx));
-        return formData.append("files", file);
-      });
+      if (filesDesc.length > 0) {
+        filesDesc.map((file, idx) => {
+          formData.append("filesDesc", JSON.stringify(idx));
+          return formData.append("files", file);
+        });
+      }
 
       const res = await storeProduct(formData);
 
@@ -277,6 +283,8 @@ const Store = () => {
     }
   };
 
+  const handleFinishFailed = (e) => toast.error("Validate failed!");
+
   return (
     <div className="wrapper-form">
       <FormContent
@@ -286,7 +294,12 @@ const Store = () => {
         handleFinish={handleFinishForm}
       />
 
-      <Form {...configsForm} form={form} onFinish={handleSubmit}>
+      <Form
+        {...configsForm}
+        form={form}
+        onFinish={handleSubmit}
+        onFinishFailed={handleFinishFailed}
+      >
         <div className="control">
           <Form.Item label="Group product" name="groupProduct" rules={rules}>
             <Select
@@ -401,7 +414,7 @@ const Store = () => {
               sizesSelect.length > 0 &&
               colorsSelect.map((color) =>
                 sizesSelect.map((size) => (
-                  <Col sm="4" key={`${color.value}-${size.value}`}>
+                  <Col sm="6" key={`${color.value}-${size.value}`}>
                     <Form.Item
                       name={`${color.value}-${size.value}`}
                       rules={rules}
@@ -416,7 +429,7 @@ const Store = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Sex" name="sex" rules={rules}>
+              <Form.Item label="Sex" name="sex">
                 <Select {...configsSelect} options={dataSex} />
               </Form.Item>
               <Button
@@ -429,7 +442,7 @@ const Store = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Form" name="form" rules={rules}>
+              <Form.Item label="Form" name="form">
                 <Select {...configsSelect} options={dataForms} />
               </Form.Item>
               <Button
@@ -442,7 +455,7 @@ const Store = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Design" name="design" rules={rules}>
+              <Form.Item label="Design" name="design">
                 <Select {...configsSelect} options={dataDesigns} />
               </Form.Item>
               <Button
@@ -455,7 +468,7 @@ const Store = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Material" name="material" rules={rules}>
+              <Form.Item label="Material" name="material">
                 <Select {...configsSelect} options={dataMaterials} />
               </Form.Item>
               <Button
@@ -468,7 +481,7 @@ const Store = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Hand Type" name="handType" rules={rules}>
+              <Form.Item label="Hand Type" name="handType">
                 <Select {...configsSelect} options={dataHandTypes} />
               </Form.Item>
               <Button
@@ -481,7 +494,7 @@ const Store = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Collar Type" name="collarType" rules={rules}>
+              <Form.Item label="Collar Type" name="collarType">
                 <Select {...configsSelect} options={dataCollarTypes} />
               </Form.Item>
               <Button

@@ -15,12 +15,13 @@ import {
   getListGroupProduct,
   showChildbyIdCategory,
   showProduct,
+  updateProduct,
 } from "src/auth/services";
 import { getDataApi, getDataApiParams } from "src/auth/utils/fetchApi";
 import Editor from "src/auth/components/Editor";
 import { configsForm } from "src/auth/configs/form";
 import { Col, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "src/auth/utils/toast";
 import {
   activeLoading,
@@ -31,6 +32,7 @@ const Edit = () => {
   const [form] = useForm();
   const { slug } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [data, setData] = useState({});
   const [desc, setDesc] = useState(null);
   const [filesDesc, setFilesDesc] = useState([]);
@@ -52,117 +54,125 @@ const Edit = () => {
   const [sizesSelect, setSizesSelect] = useState([]);
   const [colorsSelect, setSColorsSelect] = useState([]);
 
-  console.log();
-
+  // fetch data
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getDataApiParams(
-        dispatch,
-        showProduct,
-        slug,
-        setData,
-        true,
-      );
-      getDataApi(dispatch, getListGroupProduct, setDataGroups);
-      getDataApi(dispatch, getListCollection, setDataCollections);
-      getDataApiParams(
-        dispatch,
-        getCategoryByIdGroup,
-        res.groupProduct._id,
-        setDataCategories,
-      );
-      getDataApiParams(
-        dispatch,
-        showChildbyIdCategory,
-        res.category._id,
-        setDataChild,
-      );
-      getDataApiParams(dispatch, getListAttribute, "colors", setDataColors);
-      getDataApiParams(dispatch, getListAttribute, "sizes", setDataSizes);
-      getDataApiParams(dispatch, getListAttribute, "forms", setDataForms);
-      getDataApiParams(dispatch, getListAttribute, "designs", setDataDesigns);
-      getDataApiParams(
-        dispatch,
-        getListAttribute,
-        "materials",
-        setDataMaterials,
-      );
-      getDataApiParams(dispatch, getListAttribute, "sex", setDataSex);
-      getDataApiParams(
-        dispatch,
-        getListAttribute,
-        "hand-types",
-        setDataHandTypes,
-      );
-      getDataApiParams(
-        dispatch,
-        getListAttribute,
-        "collar-types",
-        setDataCollarTypes,
-      );
+      try {
+        getDataApi(dispatch, getListGroupProduct, setDataGroups);
+        getDataApi(dispatch, getListCollection, setDataCollections);
+        getDataApiParams(dispatch, getListAttribute, "colors", setDataColors);
+        getDataApiParams(dispatch, getListAttribute, "sizes", setDataSizes);
+        getDataApiParams(dispatch, getListAttribute, "forms", setDataForms);
+        getDataApiParams(dispatch, getListAttribute, "designs", setDataDesigns);
+        getDataApiParams(
+          dispatch,
+          getListAttribute,
+          "materials",
+          setDataMaterials,
+        );
+        getDataApiParams(dispatch, getListAttribute, "sex", setDataSex);
+        getDataApiParams(
+          dispatch,
+          getListAttribute,
+          "hand-types",
+          setDataHandTypes,
+        );
+        getDataApiParams(
+          dispatch,
+          getListAttribute,
+          "collar-types",
+          setDataCollarTypes,
+        );
+        const res = await getDataApiParams(
+          dispatch,
+          showProduct,
+          slug,
+          setData,
+          true,
+        );
+        getDataApiParams(
+          dispatch,
+          getCategoryByIdGroup,
+          res.groupProduct._id,
+          setDataCategories,
+        );
+        getDataApiParams(
+          dispatch,
+          showChildbyIdCategory,
+          res.category._id,
+          setDataChild,
+        );
 
-      const colorsFields = [];
-      const sizesFields = [];
+        const colorsFields = [];
+        const sizesFields = [];
 
-      res.colors.map((color) => {
-        colorsFields.push(color._id);
-        return setSColorsSelect((pre) => [
-          ...pre,
-          { label: color.name, value: color._id },
-        ]);
-      });
+        res.colors.map((color) => {
+          colorsFields.push(color._id);
+          return setSColorsSelect((pre) => [
+            ...pre,
+            { label: color.name, value: color._id },
+          ]);
+        });
 
-      res.sizes.map((size) => {
-        sizesFields.push(size._id);
-        return setSizesSelect((pre) => [
-          ...pre,
-          { label: size.name, value: size._id },
-        ]);
-      });
+        res.sizes.map((size) => {
+          sizesFields.push(size._id);
+          return setSizesSelect((pre) => [
+            ...pre,
+            { label: size.name, value: size._id },
+          ]);
+        });
 
-      res.stock.map((item) =>
+        res.stock.map((item) =>
+          form.setFieldsValue({
+            [`${item.color._id}-${item.size._id}`]: item.qty,
+          }),
+        );
+
         form.setFieldsValue({
-          [`${item.color._id}-${item.size._id}`]: item.qty,
-        }),
-      );
-
-      form.setFieldsValue({
-        name: res.name,
-        groupProduct: res.groupProduct?._id,
-        collection: res.collection?._id,
-        category: res.category?._id,
-        categoryChild: res.categoryChild?._id,
-        colors: colorsFields,
-        sizes: sizesFields,
-        form: res.attribute.form?._id,
-        sex: res.attribute.sex?._id,
-        design: res.attribute.design?._id,
-        material: res.attribute.material?._id,
-        handType: res.attribute.handType?._id,
-        collarType: res.attribute.collarType?._id,
-        price: res.price,
-        sale: res.sale,
-      });
+          name: res.name,
+          groupProduct: res.groupProduct?._id,
+          collection: res.collection?._id,
+          category: res.category?._id,
+          categoryChild: res.categoryChild?._id,
+          colors: colorsFields,
+          sizes: sizesFields,
+          form: res.attribute?.form?._id,
+          sex: res.attribute?.sex?._id,
+          design: res.attribute?.design?._id,
+          material: res.attribute?.material?._id,
+          handType: res.attribute?.handType?._id,
+          collarType: res.attribute?.collarType?._id,
+          price: res.price,
+          sale: res.sale,
+        });
+      } catch (error) {
+        return navigate(-1);
+      }
     };
     fetchData();
-  }, [slug, dispatch, form]);
+  }, [slug, dispatch, form, navigate]);
 
+  // handle change group
   const handleChangeGroup = async (id) => {
     setDataCategories([]);
     getDataApiParams(dispatch, getCategoryByIdGroup, id, setDataCategories);
     form.setFieldsValue({ category: null });
   };
 
+  // handle change category
   const handleChangeCategory = async (id) => {
     setDataChild([]);
     getDataApiParams(dispatch, getListCategoryChild, id, setDataChild);
     form.setFieldsValue({ categoryChild: null });
   };
 
+  // handle change colors
   const handleChangeColors = (id, data) => setSColorsSelect(data);
 
+  // handle change sizes
   const handleChangeSizes = (id, data) => setSizesSelect(data);
 
+  // handle get thumbnail
   const handleGetThumbnail = (files, id) => {
     if (files.length > 0) {
       const check = thumbnail?.some((item) => item.id === id);
@@ -172,6 +182,7 @@ const Edit = () => {
     }
   };
 
+  // handle get gallery
   const handleGetGallary = (files, id) => {
     if (files.length > 0) {
       const check = gallery.some((item) => item.id === id);
@@ -187,15 +198,19 @@ const Edit = () => {
     }
   };
 
+  // handle get files
   const handleGetFilesDesc = (files) => {
     setFilesDesc(files);
   };
 
+  // handle open form content
   const handleOpentFormContent = (state, title) =>
     setOpenForm({ state: state, title: title });
 
+  // handle close form content
   const handleCloseForm = () => setOpenForm({ state: null, title: null });
 
+  // handle finish form content
   const handleFinishForm = async (data) => {
     const arrId = [];
     const unshiftData = async (setState, data) => {
@@ -279,67 +294,102 @@ const Edit = () => {
     setOpenForm({ state: null, title: null });
   };
 
-  const handleSubmit = (values) => {
+  // handle sutmit
+  const handleSubmit = async (values) => {
     dispatch(activeLoading());
-    const stock = [];
-    const media = [];
+    try {
+      const stock = [];
+      const media = [];
 
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("category", values.category);
-    formData.append("categoryChild", values.categoryChild);
-    formData.append("collection", values.collection);
-    formData.append("description", desc);
-    formData.append("design", values.design);
-    formData.append("form", values.form);
-    formData.append("groupProduct", values.groupProduct);
-    formData.append("handType", values.handType);
-    formData.append("material", values.material);
-    formData.append("collarType", values.collarType);
-    formData.append("price", values.price);
-    formData.append("sale", values.sale);
-    formData.append("sex", values.sex);
+      const formData = new FormData();
+      formData.append("id", data._id);
+      formData.append("name", values.name);
+      formData.append("category", values.category);
+      formData.append("categoryChild", values.categoryChild);
+      formData.append("collection", values.collection);
+      formData.append("description", desc);
+      formData.append("design", values.design);
+      formData.append("form", values.form);
+      formData.append("groupProduct", values.groupProduct);
+      formData.append("handType", values.handType);
+      formData.append("material", values.material);
+      formData.append("collarType", values.collarType);
+      formData.append("price", values.price);
+      formData.append("sale", values.sale);
+      formData.append("sex", values.sex);
 
-    values.colors.map((color) => {
-      formData.append("colors", JSON.stringify(color));
-      const thumb = thumbnail?.find((item) => item.id === color);
-      const gall = gallery?.find((item) => item.id === color);
-      media.push({ color: color, thumbnail: thumb?.img, gallery: gall?.imgs });
-    });
+      values.colors.map((color) => {
+        values.sizes.map((size) =>
+          stock.push({
+            color: color,
+            size: size,
+            qty: values[`${color}-${size}`],
+          }),
+        );
 
-    values.sizes.map((size) => formData.append("sizes", JSON.stringify(size)));
+        const imgThumb = [];
+        const imgGall = [];
 
-    values.colors.map((color) =>
+        if (thumbnail.some((item) => item.id === color)) {
+          thumbnail.map(
+            (thumb) =>
+              thumb.id === color &&
+              imgThumb.push(thumb.img) &&
+              formData.append("files", thumb.img),
+          );
+        } else
+          data.media.find(
+            (item) => item.color === color && imgThumb.push(item.thumbnail),
+          );
+
+        if (gallery.some((item) => item.id === color))
+          gallery.map(
+            (gall) =>
+              gall.id === color &&
+              gall.imgs.map(
+                (img) => imgGall.push(img) && formData.append("files", img),
+              ),
+          );
+        else
+          data.media.find(
+            (item) =>
+              item.color === color &&
+              item.gallery.map((img) => imgGall.push(img)),
+          );
+
+        media.push({ color: color, thumbnail: imgThumb[0], gallery: imgGall });
+
+        return formData.append("colors", JSON.stringify(color));
+      });
+
       values.sizes.map((size) =>
-        stock.push({
-          color: color,
-          size: size,
-          qty: values[`${color}-${size}`],
-        }),
-      ),
-    );
+        formData.append("sizes", JSON.stringify(size)),
+      );
 
-    stock.map((item) => formData.append("stock", JSON.stringify(item)));
+      stock.map((item) => formData.append("stock", JSON.stringify(item)));
+      media.map((item) => formData.append("media", JSON.stringify(item)));
 
-    media?.map((item) => {
-      formData.append("files", item.thumbnail);
-      item?.gallery?.map((gal) => formData.append("files", gal));
-      formData.append("media", JSON.stringify(item));
-    });
+      filesDesc.map((file, idx) => {
+        formData.append("filesDesc", JSON.stringify(idx));
+        return formData.append("files", file);
+      });
 
-    filesDesc.map((file, idx) => {
-      formData.append("filesDesc", JSON.stringify(idx));
-      formData.append("files", file);
-    });
+      const res = await updateProduct(formData);
 
-    console.log(stock, media, filesDesc);
-    console.log(values);
+      if (res.success) {
+        toast.success(res.message);
+        navigate("/dashboard/product");
+      }
 
-    dispatch(disActiveLoading());
-    dispatch(disActiveLoading());
+      dispatch(disActiveLoading());
+    } catch (error) {
+      dispatch(disActiveLoading());
+      console.log(error);
+      return error;
+    }
   };
 
-  const handleFinishFailed = (error) => toast.error("Validate failed!");
+  const handleSubmitFailed = () => toast.error("Validate failed!");
 
   return (
     <div className="wrapper-form">
@@ -353,7 +403,7 @@ const Edit = () => {
         {...configsForm}
         form={form}
         onFinish={handleSubmit}
-        onFinishFailed={handleFinishFailed}
+        onFinishFailed={handleSubmitFailed}
       >
         <div className="control">
           <Form.Item label="Group product" name="groupProduct" rules={rules}>
@@ -483,7 +533,7 @@ const Edit = () => {
               sizesSelect.length > 0 &&
               colorsSelect.map((color) =>
                 sizesSelect.map((size) => (
-                  <Col sm="4" key={`${color.value}-${size.value}`}>
+                  <Col sm="6" key={`${color.value}-${size.value}`}>
                     <Form.Item
                       name={`${color.value}-${size.value}`}
                       rules={rules}
@@ -498,7 +548,7 @@ const Edit = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Sex" name="sex" rules={rules}>
+              <Form.Item label="Sex" name="sex">
                 <Select {...configsSelect} options={dataSex} />
               </Form.Item>
               <Button
@@ -511,7 +561,7 @@ const Edit = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Form" name="form" rules={rules}>
+              <Form.Item label="Form" name="form">
                 <Select {...configsSelect} options={dataForms} />
               </Form.Item>
               <Button
@@ -524,7 +574,7 @@ const Edit = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Design" name="design" rules={rules}>
+              <Form.Item label="Design" name="design">
                 <Select {...configsSelect} options={dataDesigns} />
               </Form.Item>
               <Button
@@ -537,7 +587,7 @@ const Edit = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Material" name="material" rules={rules}>
+              <Form.Item label="Material" name="material">
                 <Select {...configsSelect} options={dataMaterials} />
               </Form.Item>
               <Button
@@ -550,7 +600,7 @@ const Edit = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Hand Type" name="handType" rules={rules}>
+              <Form.Item label="Hand Type" name="handType">
                 <Select {...configsSelect} options={dataHandTypes} />
               </Form.Item>
               <Button
@@ -563,7 +613,7 @@ const Edit = () => {
 
           <Col sm="6">
             <div className="control">
-              <Form.Item label="Collar Type" name="collarType" rules={rules}>
+              <Form.Item label="Collar Type" name="collarType">
                 <Select {...configsSelect} options={dataCollarTypes} />
               </Form.Item>
               <Button
@@ -577,13 +627,13 @@ const Edit = () => {
           </Col>
 
           <Col sm="6">
-            <Form.Item label="Price" name="price" rules={rules}>
+            <Form.Item label="Price" name="price">
               <Input />
             </Form.Item>
           </Col>
 
           <Col sm="6">
-            <Form.Item label="Sale" name="sale" rules={rules}>
+            <Form.Item label="Sale" name="sale">
               <Input />
             </Form.Item>
           </Col>

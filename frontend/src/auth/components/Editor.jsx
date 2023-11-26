@@ -6,8 +6,6 @@ const Editor = (props) => {
   const { handleGetData, value } = props;
   const [data, setData] = useState(value || "");
 
-  console.log(value);
-
   return (
     <div
       className="App"

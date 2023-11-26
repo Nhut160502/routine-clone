@@ -13,16 +13,17 @@ const index = async (req, res, next) => {
       .populate("sizes", ["_id", "name"])
       .populate("stock.size", ["_id", "name"])
       .populate("stock.color", ["_id", "name"])
-      .populate("attribute.sex", ["_id", "name"])
       .populate("attribute.form", ["_id", "name"])
-      .populate("attribute.design", ["_id", "name"])
       .populate("attribute.material", ["_id", "name"])
+      .populate("attribute.design", ["_id", "name"])
       .populate("attribute.handType", ["_id", "name"])
-      .populate("attribute.collarType", ["_id", "name"]);
+      .populate("attribute.collarType", ["_id", "name"])
+      .populate("attribute.sex", ["_id", "name"]);
 
     data.map((item) =>
       item.media.map((itemMedia) => {
-        itemMedia.thumbnail = media("Products", itemMedia.thumbnail);
+        itemMedia.thumbnail &&
+          (itemMedia.thumbnail = media("Products", itemMedia.thumbnail));
         itemMedia.gallery.map(
           (gall, idx) => (itemMedia.gallery[idx] = media("Products", gall))
         );
@@ -38,19 +39,17 @@ const index = async (req, res, next) => {
 
 const store = async (req, res, next) => {
   try {
+    if (!req.files.length) {
+      throw new Error("Image product is not valid!");
+    }
+    if (!req.body.colors) {
+      throw new Error("Image product is not valid!");
+    }
     const sizes = [];
     const colors = [];
     const media = [];
     const stock = [];
     const filesDesc = [];
-    const attribute = {
-      form: null,
-      material: null,
-      design: null,
-      handType: null,
-      collarType: null,
-      sex: null,
-    };
 
     if (typeof req.body.sizes === "string")
       sizes.push(JSON.parse(req.body.sizes));
@@ -78,18 +77,19 @@ const store = async (req, res, next) => {
       i++;
     });
 
-    let j = req.body.filesDesc.length - 1;
+    let j = req.body?.filesDesc?.length - 1;
     for (let idx = j; idx < req.files.length; idx++) {
-      console.log(req.files[idx]);
       filesDesc.push(req.files[idx].filename);
     }
 
-    attribute.sex = req.body?.sex;
-    attribute.form = req.body?.form;
-    attribute.design = req.body?.design;
-    attribute.material = req.body?.material;
-    attribute.handType = req.body?.handType;
-    attribute.collarType = req.body?.collarType;
+    const attribute = {
+      sex: req.body.sex,
+      form: req.body.form,
+      design: req.body.design,
+      material: req.body.material,
+      handType: req.body.handType,
+      collarType: req.body.collarType,
+    };
 
     const data = new Products({
       sizes: sizes,
@@ -97,8 +97,8 @@ const store = async (req, res, next) => {
       stock: stock,
       colors: colors,
       name: req.body.name,
-      attribute: attribute,
       descImage: filesDesc,
+      attribute: attribute,
       price: req.body.price,
       category: req.body.category,
       collection: req.body.collection,
@@ -123,6 +123,8 @@ const store = async (req, res, next) => {
       );
     }
 
+    console.log(error);
+
     return next(error);
   }
 };
@@ -138,12 +140,12 @@ const show = async (req, res, next) => {
       .populate("sizes", ["_id", "name"])
       .populate("stock.size", ["_id", "name"])
       .populate("stock.color", ["_id", "name"])
-      .populate("attribute.sex", ["_id", "name"])
       .populate("attribute.form", ["_id", "name"])
-      .populate("attribute.design", ["_id", "name"])
       .populate("attribute.material", ["_id", "name"])
+      .populate("attribute.design", ["_id", "name"])
       .populate("attribute.handType", ["_id", "name"])
-      .populate("attribute.collarType", ["_id", "name"]);
+      .populate("attribute.collarType", ["_id", "name"])
+      .populate("attribute.sex", ["_id", "name"]);
 
     if (!data) {
       throw new Error("Not found");
@@ -167,8 +169,125 @@ const show = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
+  console.log(req.body.media);
+
   try {
-  } catch (error) {}
+    const media = [];
+    const oldMedia = [];
+    const stock = [];
+    const sizes = [];
+    const colors = [];
+    const filesDesc = [];
+    const files = req.files;
+
+    if (typeof req.body.sizes === "string")
+      sizes.push(JSON.parse(req.body.sizes));
+    else req.body.sizes.map((size) => sizes.push(JSON.parse(size)));
+
+    if (typeof req.body.colors === "string")
+      colors.push(JSON.parse(req.body.colors));
+    else req.body.colors.map((color) => colors.push(JSON.parse(color)));
+
+    if (typeof req.body.media === "string")
+      media.push(JSON.parse(req.body.media));
+    else {
+      req.body.media.map((item) => media.push(JSON.parse(item)));
+    }
+
+    if (req.body.stock) {
+      if (typeof req.body.stock === "string")
+        stock.push(JSON.parse(req.body.stock));
+      else req.body.stock.map((item) => stock.push(JSON.parse(item)));
+    }
+
+    const data = await Products.findById(req.body.id);
+
+    let i = 0;
+    media.map((item) => {
+      if (typeof item.thumbnail === "string")
+        item.thumbnail = item.thumbnail.split("/Products/", 2)[1];
+      else {
+        item.thumbnail = item.thumbnail = files[i].filename;
+        const old = data.media.find((val) => val.color + "" === item.color);
+        oldMedia.push(old?.thumbnail);
+        i++;
+      }
+
+      if (typeof item.gallery[0] === "string") {
+        item.gallery.map(
+          (gall, key) => (item.gallery[key] = gall.split("/Products/", 2)[1])
+        );
+      } else {
+        item.gallery.map((gall, key) => {
+          item.gallery[key] = files[i].filename;
+          i++;
+        });
+        const old = data.media.find((val) => val.color + "" === item.color);
+        old?.gallery?.map((val) => oldMedia.push(val));
+      }
+    });
+
+    const attribute = {
+      form: null,
+      material: null,
+      design: null,
+      handType: null,
+      collarType: null,
+      sex: null,
+    };
+
+    attribute.sex = req.body?.sex;
+    attribute.form = req.body?.form;
+    attribute.design = req.body?.design;
+    attribute.material = req.body?.material;
+    attribute.handType = req.body?.handType;
+    attribute.collarType = req.body?.collarType;
+
+    if (req.body.filesDesc) {
+      let j = req.body.filesDesc.length - 1;
+      for (let idx = j; idx < req.files.length; idx++) {
+        filesDesc.push(req.files[idx].filename);
+      }
+    }
+
+    data.sizes = sizes;
+    data.media = media;
+    data.stock = stock;
+    data.colors = colors;
+    data.name = req.body.name;
+    data.attribute = attribute;
+    data.descImage = filesDesc;
+    data.price = req.body.price;
+    data.category = req.body.category;
+    data.collection = req.body.collection;
+    data.description = req.body.description;
+    data.groupProduct = req.body.groupProduct;
+    data.categoryChild = req.body.categoryChild;
+
+    console.log(oldMedia);
+
+    await data.save();
+
+    oldMedia.map(
+      (item) =>
+        fs.existsSync(`public/Products/${item}`) &&
+        fs.unlinkSync(`public/Products/${item}`)
+    );
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Update Product Successfully" });
+  } catch (error) {
+    if (req.files) {
+      req.files.map(
+        (file) =>
+          fs.existsSync(`public/Products/${file.filename}`) &&
+          fs.unlinkSync(`public/Products/${file.filename}`)
+      );
+    }
+    console.log(error);
+    return next(error);
+  }
 };
 
 const destroy = async (req, res, next) => {

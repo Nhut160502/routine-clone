@@ -15,7 +15,7 @@ export const store = (data) => {
 };
 
 export const update = (data) => {
-  return axios.put(path, update);
+  return axios.put(path, data);
 };
 
 export const destroy = (id) => {

@@ -2,6 +2,7 @@ import React, { memo, useRef, useState } from "react";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Image, Input } from "antd";
 import { PropTypes } from "prop-types";
+import { styled } from "styled-components";
 
 const Uploads = (props) => {
   const { label, name, multiple, onGetFiles, data } = props;
@@ -64,29 +65,39 @@ const Uploads = (props) => {
   };
 
   const PreviewsData = () => {
-    if (typeof data === "string")
-      return (
-        <div className="preview" key={data?._id}>
-          <div className="infor">
-            <Image src={data} height={80} />
-          </div>
-        </div>
-      );
-    else
-      return data.map((item) => {
+    if (typeof data === "string") {
+      if (data) {
+        const arr = [];
+        arr.push(data);
         return (
-          <div className="preview" key={item}>
+          <div className="preview">
             <div className="infor">
-              <Image src={item} height={80} />
+              <Image src={arr[0]} height={80} />
             </div>
           </div>
         );
-      });
+      }
+    } else {
+      return data?.map(
+        (item) =>
+          item && (
+            <div className="preview" key={item}>
+              <div className="infor">
+                <Image src={item} height={80} />
+              </div>
+            </div>
+          ),
+      );
+    }
   };
 
   const Content = () => {
-    if (data && filesUrl.length <= 0) return <PreviewsData />;
-    else if (filesUrl.length > 0) return <PreviewsURL />;
+    return (
+      <Wrapper>
+        {data && filesUrl.length <= 0 && <PreviewsData />}
+        {filesUrl.length > 0 && <PreviewsURL />}
+      </Wrapper>
+    );
   };
 
   return (
@@ -102,7 +113,14 @@ Uploads.propTypes = {
   name: PropTypes.string,
   multiple: PropTypes.bool,
   onGetFiles: PropTypes.func,
-  data: PropTypes.array || PropTypes.string,
+  data: PropTypes.array,
+  onDeleteData: PropTypes.func,
 };
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+`;
 
 export default memo(Uploads);
