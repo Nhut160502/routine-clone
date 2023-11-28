@@ -1,5 +1,5 @@
-import { media } from "../configs/media.js";
-import { Categories } from "../models/index.js";
+import { media } from "../../configs/media.js";
+import { Categories } from "../../models/index.js";
 import fs from "fs";
 
 const index = async (req, res, next) => {

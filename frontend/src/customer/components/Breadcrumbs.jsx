@@ -8,10 +8,12 @@ const Breadcrumbs = (props) => {
   return (
     <Wrapper>
       <li className="home">
-        <Link>Trang chủ</Link>
+        <Link className="item">Trang chủ</Link>
       </li>
       {data.map((item, idx) => (
-        <li key={idx}>{item.name}</li>
+        <li className="item" key={idx}>
+          {item}
+        </li>
       ))}
     </Wrapper>
   );
@@ -32,6 +34,15 @@ const Wrapper = styled.ul`
       color: #787878;
     }
   }
+
+  .item:not(:last-child):after {
+    content: "/";
+    font-size: 13px;
+    line-height: 15px;
+    font-family: inherit;
+    margin: 0 4px;
+  }
+
   .home {
     a::after {
       content: "/";

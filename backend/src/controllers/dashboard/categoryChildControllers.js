@@ -1,4 +1,4 @@
-import { CategoryChilds } from "../models/index.js";
+import { CategoryChilds } from "../../models/index.js";
 
 const index = async (req, res, next) => {
   try {

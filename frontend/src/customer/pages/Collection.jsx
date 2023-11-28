@@ -6,32 +6,60 @@ import Filter from "../components/Filter";
 import Pagination from "../components/Pagination";
 import Product from "../components/Product";
 import Toolbar from "../components/Toolbar";
+import { useParams } from "react-router-dom";
+import { findByCollection, showCollection } from "../services";
+import { useDispatch } from "react-redux";
+import { activeLoading, disActiveLoading } from "../providers/loadingSlice";
 
 const Collection = () => {
+  const dispatch = useDispatch();
+  const [colleciton, setCollection] = useState({});
   const [data, setData] = useState([]);
+  const [total, setTotal] = useState(0);
   const [grid, setGrid] = useState(3);
 
+  const { slug } = useParams();
+
   useEffect(() => {
-    for (let i = 0; i < 20; i++) setData((pre) => [...pre, i]);
-  }, []);
+    const fetchData = async () => {
+      dispatch(activeLoading());
+      try {
+        const res = await showCollection(slug);
+
+        if (res.success) {
+          setCollection(res.data);
+          const pro = await findByCollection(res.data._id);
+          if (pro.success) {
+            setData(pro.data);
+            setTotal(pro.total);
+          }
+        }
+        dispatch(disActiveLoading());
+      } catch (error) {
+        dispatch(disActiveLoading());
+        return error;
+      }
+    };
+    fetchData();
+  }, [slug, dispatch]);
 
   return (
     <div className="wrapper-layout">
-      <Breadcrumbs data={[{ name: "Bộ Sưu Tập" }]} />
+      <Breadcrumbs data={["Bộ sưu tập", colleciton?.name]} />
       <div className="content-layout">
         <div className="title-layout">
-          <h1>COUPLE COLLECTION</h1>
+          <h1>{colleciton?.name}</h1>
         </div>
         <Row>
           <Col sm="3" className="sticky">
             <Filter />
           </Col>
           <Col sm="9">
-            <Toolbar getGrid={(e) => setGrid(e)} />
+            <Toolbar total={total} getGrid={(e) => setGrid(e)} />
             <Row className="content-layout-product">
               {data.map((item) => (
                 <Col key={item} sm={grid}>
-                  <Product />
+                  <Product data={item} />
                 </Col>
               ))}
             </Row>

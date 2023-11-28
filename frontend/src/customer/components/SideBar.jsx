@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -18,8 +18,11 @@ import {
   hiddenSidebar,
   openSidebar,
 } from "../providers/sidebarSlice";
+import { getListCollection } from "../services";
 
 const SideBar = (props) => {
+  const [dataCollection, setDataCollection] = useState([]);
+
   const [types, setTypes] = useState("men");
   const [subMenu, setSubmenu] = useState();
   const location = useLocation();
@@ -30,6 +33,17 @@ const SideBar = (props) => {
     setTypes(type);
     setSubmenu();
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getListCollection();
+      console.log(res);
+      if (res.success) setDataCollection(res.data);
+    };
+
+    fetchData();
+  }, []);
+
   const handleSubMenu = (type) => setSubmenu(type);
 
   useEffect(() => {
@@ -47,6 +61,7 @@ const SideBar = (props) => {
     }
   }, [location, dispatch]);
 
+  // handle scroll
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 1) {
@@ -71,6 +86,7 @@ const SideBar = (props) => {
   const handleActiveSideBar = () => {
     dispatch(disableTransparent());
   };
+
   const handleOnmouseLeave = () => {
     if (location.pathname === "/" && window.scrollY <= 0) {
       dispatch(enbleTransparent());
@@ -79,6 +95,7 @@ const SideBar = (props) => {
     }
     setSubmenu();
   };
+
   return (
     <Wrapper
       className={`${open === true ? "active" : ""} ${
@@ -191,21 +208,13 @@ const SideBar = (props) => {
                   <span>BEST SELLERS</span>
                 </Link>
               </li>
-              <li>
-                <Link>
-                  <span>FALL WINTER</span>
-                </Link>
-              </li>
-              <li>
-                <Link>
-                  <span>COUPLE</span>
-                </Link>
-              </li>
-              <li>
-                <Link>
-                  <span>Flannel</span>
-                </Link>
-              </li>
+              {dataCollection.map((item) => (
+                <li key={item._id}>
+                  <Link to={`/collection/${item.slug}`}>
+                    <span>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         )}
@@ -496,4 +505,4 @@ const Bottom = styled.div`
   }
 `;
 
-export default SideBar;
+export default memo(SideBar);

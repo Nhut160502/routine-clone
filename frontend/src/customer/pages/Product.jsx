@@ -7,6 +7,10 @@ import Button from "../components/Button";
 import { IconHeartBlack } from "../components/Icon";
 import Feature from "../components/Feature";
 import AnimateHeight from "react-animate-height";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { activeLoading, disActiveLoading } from "../providers/loadingSlice";
+import { showProduct } from "../services";
 
 const settings1 = {
   infinite: true,
@@ -29,448 +33,421 @@ const settings2 = {
   autoplay: true,
 };
 
-const data = {
-  name: "Quần Sweatpants Nữ Nỉ Túi Ốp Trước Ống Rộng Form Wide Leg -10F23PKNW002",
-  price: "569.000",
-  media: [
-    {
-      color: {
-        id: "color1",
-        name: "black",
-      },
-      thumbbail:
-        "https://routine.vn/media/catalog/product/cache/8ee0d41a0522a757b6f54f9321607fdf/1/0/10f23pknw002-black-_1__1_1.jpg",
-      gallery: [
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_black_1__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_black_2__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_black_3__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_black_4__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_black_5__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-black-_1__2_1_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-black-_2__2_1_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-black-_3__2_1_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-black-_4__2_1_jpg.webp",
-      ],
-    },
-    {
-      color: {
-        id: "color2",
-        name: "capuccino",
-      },
-      thumbbail:
-        "https://routine.vn/media/catalog/product/cache/8ee0d41a0522a757b6f54f9321607fdf/1/0/10f23pknw002-brown-_1__2_1.jpg",
-      gallery: [
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_brown_1__3_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_brown_5__3_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_brown_3__3_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_brown_4__3_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-brown-_1__3_1_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-brown-_2__3_1_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-brown-_4__3_1_jpg.webp",
-      ],
-    },
-    {
-      color: {
-        id: "color3",
-        name: "beige",
-      },
-      thumbbail:
-        "https://routine.vn/media/catalog/product/cache/8ee0d41a0522a757b6f54f9321607fdf/1/0/10f23pknw002-beige-_1__1_1.jpg",
-      gallery: [
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_beige_1__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_beige_2__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_beige_3__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_beige_4__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/q/u/quan-nu-10f23pknw002_beige_5__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-beige-_1__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-beige-_2__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-beige-_3__2_jpg.webp",
-        "https://routine.vn/media/amasty/webp/catalog/product/cache/5b5632a96492396f42c72e22fdd64763/1/0/10f23pknw002-beige-_3__2_jpg.webp",
-      ],
-    },
-  ],
-  attr: [
-    {
-      color: {
-        id: "color1",
-        name: "black",
-      },
-      sizes: [
-        {
-          id: "size1",
-          name: "xs",
-          stock: 10,
-        },
-        {
-          id: "size2",
-          name: "s",
-          stock: 10,
-        },
-        {
-          id: "size3",
-          name: "m",
-          stock: 10,
-        },
-        {
-          id: "size4",
-          name: "l",
-          stock: 10,
-        },
-        {
-          id: "size5",
-          name: "xl",
-          stock: 0,
-        },
-        {
-          id: "size6",
-          name: "xxl",
-          stock: 0,
-        },
-      ],
-    },
-    {
-      color: {
-        id: "color2",
-        name: "capuccino",
-      },
-      sizes: [
-        {
-          id: "size1",
-          name: "xs",
-          stock: 10,
-        },
-        {
-          id: "size2",
-          name: "s",
-          stock: 10,
-        },
-        {
-          id: "size3",
-          name: "m",
-          stock: 10,
-        },
-        {
-          id: "size4",
-          name: "l",
-          stock: 10,
-        },
-        {
-          id: "size5",
-          name: "xl",
-          stock: 0,
-        },
-        {
-          id: "size6",
-          name: "xxl",
-          stock: 0,
-        },
-      ],
-    },
-    {
-      color: {
-        id: "color3",
-        name: "beige",
-      },
-      sizes: [
-        {
-          id: "size1",
-          name: "xs",
-          stock: 0,
-        },
-        {
-          id: "size2",
-          name: "s",
-          stock: 10,
-        },
-        {
-          id: "size3",
-          name: "m",
-          stock: 10,
-        },
-        {
-          id: "size4",
-          name: "l",
-          stock: 10,
-        },
-        {
-          id: "size5",
-          name: "xl",
-          stock: 0,
-        },
-        {
-          id: "size6",
-          name: "xxl",
-          stock: 0,
-        },
-      ],
-    },
-  ],
-  form: "Wide Leg",
-  material: "Nỉ",
-  design: "Trơn",
-  sex: "Nữ",
-  groups: "Quần Nỉ/Jogger",
-};
-
 const Product = () => {
-  const [colorsSelected, setColorsSelected] = useState("color1");
-  const [sizeSelected, setSizeSelected] = useState();
+  const { slug } = useParams();
+  const dispatch = useDispatch();
+  const [data, setData] = useState({});
+  const [colorsSelected, setColorsSelected] = useState(null);
+  const [sizeSelected, setSizeSelected] = useState(null);
   const [showDesc, setShowDesc] = useState(false);
   const [slider2, setSlider2] = useState(null);
-
-  console.log(showDesc);
+  const [qty, setQty] = useState(1);
 
   useEffect(() => {
-    const size = data.attr
-      .find((item) => item.color.id === colorsSelected)
-      .sizes.find((size) => size.stock > 0).id;
-    console.log(size);
-    setSizeSelected(size);
-  }, [colorsSelected]);
+    const fetchData = async () => {
+      dispatch(activeLoading());
+      try {
+        const res = await showProduct(slug);
+        res.success && setData(res.data);
+        setColorsSelected(res?.data?.media[0]?.color._id);
+        dispatch(disActiveLoading());
+      } catch (error) {
+        dispatch(disActiveLoading());
+        return error;
+      }
+    };
+
+    fetchData();
+  }, [slug, dispatch]);
+
   return (
-    <Wrapper>
-      <Row>
-        <Col sm="6">
-          <Image>
-            <Row>
-              <Col sm="2">
-                <Vertical>
-                  {data.media.map(
-                    (item, idx) =>
-                      item.color.id === colorsSelected && (
-                        <Slider key={idx} {...settings1} asNavFor={slider2}>
-                          {item.gallery.map((gall, key) => (
-                            <div key={key} className="item-vertical">
-                              <img src={gall} alt="" />
-                            </div>
-                          ))}
-                        </Slider>
-                      ),
-                  )}
-                </Vertical>
-              </Col>
-              <Col sm="10">
-                <Horizontal>
-                  {data.media.map(
-                    (item, idx) =>
-                      item.color.id === colorsSelected && (
-                        <Slider
-                          key={idx}
-                          {...settings2}
-                          ref={(slider) => setSlider2(slider)}
-                        >
-                          {item.gallery.map((gall, key) => (
-                            <div key={key} className="item-horizontal">
-                              <img src={gall} alt="" />
-                            </div>
-                          ))}
-                        </Slider>
-                      ),
-                  )}
-                </Horizontal>
-              </Col>
-            </Row>
-          </Image>
-        </Col>
-        <Col sm="6">
-          <Infor>
-            <div className="name">
-              <h1>{data.name}</h1>
+    <>
+      <FixTop>
+        <Row>
+          <Col sm="4" className="fixtop-left">
+            <div className="image">
+              {data?.media && <img src={data?.media[0]?.thumbnail} alt="" />}
             </div>
-            <div className="price">
-              <span>{data.price}&nbsp;₫</span>
+            <div className="infor">
+              <h1 className="name">{data?.name}</h1>
+              {data?.price && <h1 className="price">{data?.price}&nbsp;₫</h1>}
             </div>
-            <div className="color">
-              <div className="color-option span-option">
-                <span>Chọn màu sắc: </span>
-                <span className="selected">
-                  {
-                    data.attr.find((item) => item.color.id === colorsSelected)
-                      .color.name
-                  }
-                </span>
-              </div>
-              <div className="color-content">
-                {data.media.map((item, idx) => (
-                  <div
-                    onClick={() => setColorsSelected(item.color.id)}
-                    key={idx}
-                    className={
-                      item.color.id === colorsSelected
-                        ? "color-item active"
-                        : "color-item"
-                    }
-                    style={{ backgroundImage: `url(${item.thumbbail})` }}
-                  />
-                ))}
+          </Col>
+          <Col sm="8" className="fixtop-right">
+            <div className="option">
+              <div className="option-title">
+                <span>Chọn màu:</span>
               </div>
             </div>
-            <div className="size">
-              <div className="size-option span-option">
-                <span>Chọn size: </span>
-                <span className="selected">
-                  {
-                    data.attr
-                      .find((item) => item.color.id === colorsSelected)
-                      .sizes.find((size) => size.id === sizeSelected)?.name
-                  }
-                </span>
+            <div className="option">
+              <div className="option-title">
+                <span>Chọn size:</span>
               </div>
-              <div className="size-content">
-                {data.attr.map(
-                  (item) =>
-                    item.color.id === colorsSelected &&
-                    item.sizes.map((size) => (
-                      <button
-                        onClick={() => setSizeSelected(size.id)}
-                        key={size.id}
-                        className={
-                          (size.stock <= 0 && "size-item disabled") ||
-                          (size.id === sizeSelected && "size-item active") ||
-                          "size-item"
-                        }
-                      >
-                        {size.name}
-                      </button>
-                    )),
+            </div>
+            <div className="option">
+              <div className="option-title">
+                <span>Chọn SL:</span>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </FixTop>
+      <Wrapper>
+        <Row>
+          <Col sm="6">
+            <Image>
+              <Row>
+                <Col sm="2">
+                  <Vertical>
+                    {data?.media?.map(
+                      (item, idx) =>
+                        item.color._id === colorsSelected && (
+                          <Slider key={idx} {...settings1} asNavFor={slider2}>
+                            {item.gallery.map((gall, key) => (
+                              <div key={key} className="item-vertical">
+                                <img src={gall} alt="" />
+                              </div>
+                            ))}
+                          </Slider>
+                        ),
+                    )}
+                  </Vertical>
+                </Col>
+                <Col sm="10">
+                  <Horizontal>
+                    {data?.media?.map(
+                      (item, idx) =>
+                        item.color._id === colorsSelected && (
+                          <Slider
+                            key={idx}
+                            {...settings2}
+                            ref={(slider) => setSlider2(slider)}
+                          >
+                            {item.gallery.map((gall, key) => (
+                              <div key={key} className="item-horizontal">
+                                <img src={gall} alt="" />
+                              </div>
+                            ))}
+                          </Slider>
+                        ),
+                    )}
+                  </Horizontal>
+                </Col>
+              </Row>
+            </Image>
+          </Col>
+          <Col sm="6">
+            <Infor>
+              <div className="name">
+                <h1>{data?.name}</h1>
+              </div>
+              <div className="price">
+                {data?.price && <span>{data?.price}&nbsp;₫</span>}
+              </div>
+              <div className="color">
+                <div className="color-option span-option">
+                  <span>Chọn màu sắc: </span>
+                  <span className="selected">
+                    {colorsSelected &&
+                      data?.media?.find(
+                        (item) => item.color._id === colorsSelected,
+                      ).color.name}
+                  </span>
+                </div>
+                <div className="color-content">
+                  {data?.media?.map((item, idx) => (
+                    <div
+                      onClick={() => setColorsSelected(item.color._id)}
+                      key={idx}
+                      className={
+                        item.color._id === colorsSelected
+                          ? "color-item active"
+                          : "color-item"
+                      }
+                      style={{ backgroundImage: `url(${item.thumbnail})` }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="size">
+                <div className="size-option span-option">
+                  <span>Chọn size: </span>
+                  <span className="selected">
+                    {sizeSelected &&
+                      data.sizes.find((size) => size._id === sizeSelected)
+                        ?.name}
+                  </span>
+                </div>
+                <div className="size-content">
+                  {data?.sizes?.map((size) => (
+                    <button
+                      onClick={() => setSizeSelected(size._id)}
+                      key={size._id}
+                      className={
+                        (size._id === sizeSelected && "size-item active") ||
+                        "size-item"
+                      }
+                    >
+                      {size.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="quantity">
+                <div className="quantity-option span-option">
+                  <span>Chọn số lượng: </span>
+                  <span className="selected">{qty}</span>
+                </div>
+                <div className="quantity-content"></div>
+              </div>
+              <Option>
+                <Quantity className="qty" getValue={(e) => setQty(e)} />
+                <Button border>Mua ngay</Button>
+                <IconHeartBlack className="icon" />
+              </Option>
+              <div className="stock">
+                {colorsSelected && sizeSelected && (
+                  <span>
+                    còn lại:{" "}
+                    <strong>
+                      {
+                        data?.stock?.find(
+                          (item) =>
+                            item.color._id === colorsSelected &&
+                            item.size._id === sizeSelected,
+                        )?.qty
+                      }
+                    </strong>{" "}
+                    sản phẩm
+                  </span>
                 )}
               </div>
-            </div>
-            <div className="quantity">
-              <div className="quantity-option span-option">
-                <span>Chọn số lượng: </span>
-                <span className="selected">1</span>
-              </div>
-              <div className="quantity-content"></div>
-            </div>
-            <Option>
-              <Quantity className="qty" getValue={(e) => console.log(e)} />
-              <Button border>Mua ngay</Button>
-              <IconHeartBlack className="icon" />
-            </Option>
-            <div className="stock">
-              <span>
-                còn lại <strong>5</strong> sản phẩm
-              </span>
-            </div>
-            <Feature />
-            <Attribute>
-              <div className="caption">
-                <b>ĐẶC ĐIỂM NỔI BẬT</b>
-              </div>
-              <table>
-                <tbody>
-                  <tr>
-                    <th className="col">Form</th>
-                    <td className="col">{data.form}</td>
-                  </tr>
-                  <tr>
-                    <th className="col">Chất liệu</th>
-                    <td className="col">{data.material}</td>
-                  </tr>
-                  <tr>
-                    <th className="col">Thiết kế</th>
-                    <td className="col">{data.design}</td>
-                  </tr>
-                  <tr>
-                    <th className="col">Giới tính</th>
-                    <td className="col">{data.sex}</td>
-                  </tr>
-                  <tr>
-                    <th className="col">Nhóm sản phẩm</th>
-                    <td className="col">{data.groups}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </Attribute>
-            <Descripton>
-              <div className="caption">
-                THÔNG TIN CHI TIẾT <b>{data.name}</b>
-              </div>
-              <AnimateHeight
-                duration={800}
-                height={showDesc === true ? "auto" : 247}
-              >
-                <div className="content">
-                  <p className="page-title" style={{ textAlign: "justify" }}>
-                    <b>
-                      <span className="base" data-ui-id="page-title-wrapper">
-                        Quần Sweatpants Nữ Nỉ Túi Ốp Trước Ống Rộng Form Wide
-                        Leg - 10F23PKNW002&nbsp;
-                      </span>
-                    </b>
-                    <span className="base" data-ui-id="page-title-wrapper">
-                      mang thiết kế đơn giản, sành điệu kết hợp cùng chất vải ấm
-                      áp:
-                    </span>
-                  </p>
-                  <ul style={{ textAlign: "justify" }}>
-                    <li className="page-title">
-                      <span className="base" data-ui-id="page-title-wrapper">
-                        Chất vải nỉ mềm mại, giữ ấm tốt và có độ bền cao
-                      </span>
-                    </li>
-                    <li className="page-title">
-                      <span className="base" data-ui-id="page-title-wrapper">
-                        Form quần ống rộng thoải mái, dễ dàng che đi khuyết điểm
-                      </span>
-                    </li>
-                    <li className="page-title">
-                      <span className="base" data-ui-id="page-title-wrapper">
-                        Lưng quần thiết kế lưng thun kèm theo dây tiện dụng, dễ
-                        dàng thay đổi độ rộng
-                      </span>
-                    </li>
-                    <li className="page-title">
-                      <span className="base" data-ui-id="page-title-wrapper">
-                        Túi quần may ẩn đa năng
-                      </span>
-                    </li>
-                    <li className="page-title">
-                      <span className="base" data-ui-id="page-title-wrapper">
-                        Tag Be Together bé xinh, tạo điểm nhấn cho quần
-                      </span>
-                    </li>
-                    <li className="page-title">
-                      <span className="base" data-ui-id="page-title-wrapper">
-                        Sử dụng diện đi chơi, đi học hay đi làm đều thích
-                        hợp.&nbsp;
-                      </span>
-                    </li>
-                  </ul>
-                  <p style={{ textAlign: "justify" }}>&nbsp;</p>
-                  <p style={{ textAlign: "justify" }}>
-                    <span className="base" data-ui-id="page-title-wrapper">
-                      <img
-                        src="https://routine.vn/media/amasty/webp/wysiwyg/Mo_ta_sp_1/Mo-ta-1016-10F23PKNW002-01_jpg.webp"
-                        data-amsrc="https://routine.vn/media/amasty/webp/wysiwyg/Mo_ta_sp_1/Mo-ta-1016-10F23PKNW002-01_jpg.webp"
-                        alt="Thông tin sản phẩm 10F23PKNW002"
-                        width="1150"
-                        data-loaded="true"
-                      />
-                    </span>
-                  </p>
+              <Feature />
+              <Attribute>
+                <div className="caption">
+                  <b>ĐẶC ĐIỂM NỔI BẬT</b>
                 </div>
-              </AnimateHeight>
-              <div className="btn-option">
-                <Button
-                  transparent
-                  outline
-                  onClick={() => setShowDesc(!showDesc)}
-                >
-                  {showDesc ? "Thu Gọn" : "Xem thêm"}
-                </Button>
-              </div>
-            </Descripton>
-          </Infor>
-        </Col>
-      </Row>
-      <div className="reviews">
-        <button>Gửi đánh giá của bạn</button>
-      </div>
-    </Wrapper>
+                <table>
+                  <tbody>
+                    {data?.attribute?.form && (
+                      <tr>
+                        <th className="col">Form</th>
+                        <td className="col">{data?.attribute?.form?.name}</td>
+                      </tr>
+                    )}
+                    {data?.attribute?.material && (
+                      <tr>
+                        <th className="col">Chất liệu</th>
+                        <td className="col">
+                          {data?.attribute?.material?.name}
+                        </td>
+                      </tr>
+                    )}
+                    {data?.attribute?.design && (
+                      <tr>
+                        <th className="col">Thiết kế</th>
+                        <td className="col">{data?.attribute?.design?.name}</td>
+                      </tr>
+                    )}
+                    {data?.attribute?.collarType && (
+                      <tr>
+                        <th className="col">Kiểu cổ</th>
+                        <td className="col">
+                          {data?.attribute?.collarType?.name}
+                        </td>
+                      </tr>
+                    )}
+                    {data?.attribute?.handType && (
+                      <tr>
+                        <th className="col">Kiểu tay</th>
+                        <td className="col">
+                          {data?.attribute?.handType?.name}
+                        </td>
+                      </tr>
+                    )}
+                    {data?.attribute?.sex && (
+                      <tr>
+                        <th className="col">Giới tính</th>
+                        <td className="col">{data?.attribute?.sex?.name}</td>
+                      </tr>
+                    )}
+                    <tr>
+                      <th className="col">Nhóm sản phẩm</th>
+                      <td className="col">{data?.categoryChild?.name}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Attribute>
+              {data?.description !== "null" && data?.descImage?.length > 0 && (
+                <Descripton>
+                  <div className="caption">
+                    THÔNG TIN CHI TIẾT <b>{data.name}</b>
+                  </div>
+                  <AnimateHeight
+                    duration={800}
+                    height={showDesc === true ? "auto" : 247}
+                  >
+                    <div className="content">
+                      <p
+                        className="page-title"
+                        style={{ textAlign: "justify" }}
+                      >
+                        <b>
+                          <span
+                            className="base"
+                            data-ui-id="page-title-wrapper"
+                          >
+                            Quần Sweatpants Nữ Nỉ Túi Ốp Trước Ống Rộng Form
+                            Wide Leg - 10F23PKNW002&nbsp;
+                          </span>
+                        </b>
+                        <span className="base" data-ui-id="page-title-wrapper">
+                          mang thiết kế đơn giản, sành điệu kết hợp cùng chất
+                          vải ấm áp:
+                        </span>
+                      </p>
+                      <ul style={{ textAlign: "justify" }}>
+                        <li className="page-title">
+                          <span
+                            className="base"
+                            data-ui-id="page-title-wrapper"
+                          >
+                            Chất vải nỉ mềm mại, giữ ấm tốt và có độ bền cao
+                          </span>
+                        </li>
+                        <li className="page-title">
+                          <span
+                            className="base"
+                            data-ui-id="page-title-wrapper"
+                          >
+                            Form quần ống rộng thoải mái, dễ dàng che đi khuyết
+                            điểm
+                          </span>
+                        </li>
+                        <li className="page-title">
+                          <span
+                            className="base"
+                            data-ui-id="page-title-wrapper"
+                          >
+                            Lưng quần thiết kế lưng thun kèm theo dây tiện dụng,
+                            dễ dàng thay đổi độ rộng
+                          </span>
+                        </li>
+                        <li className="page-title">
+                          <span
+                            className="base"
+                            data-ui-id="page-title-wrapper"
+                          >
+                            Túi quần may ẩn đa năng
+                          </span>
+                        </li>
+                        <li className="page-title">
+                          <span
+                            className="base"
+                            data-ui-id="page-title-wrapper"
+                          >
+                            Tag Be Together bé xinh, tạo điểm nhấn cho quần
+                          </span>
+                        </li>
+                        <li className="page-title">
+                          <span
+                            className="base"
+                            data-ui-id="page-title-wrapper"
+                          >
+                            Sử dụng diện đi chơi, đi học hay đi làm đều thích
+                            hợp.&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                      <p style={{ textAlign: "justify" }}>&nbsp;</p>
+                      <p style={{ textAlign: "justify" }}>
+                        <span className="base" data-ui-id="page-title-wrapper">
+                          <img
+                            src="https://routine.vn/media/amasty/webp/wysiwyg/Mo_ta_sp_1/Mo-ta-1016-10F23PKNW002-01_jpg.webp"
+                            data-amsrc="https://routine.vn/media/amasty/webp/wysiwyg/Mo_ta_sp_1/Mo-ta-1016-10F23PKNW002-01_jpg.webp"
+                            alt="Thông tin sản phẩm 10F23PKNW002"
+                            width="1150"
+                            data-loaded="true"
+                          />
+                        </span>
+                      </p>
+                    </div>
+                  </AnimateHeight>
+                  <div className="btn-option">
+                    <Button
+                      transparent
+                      outline
+                      onClick={() => setShowDesc(!showDesc)}
+                    >
+                      {showDesc ? "Thu Gọn" : "Xem thêm"}
+                    </Button>
+                  </div>
+                </Descripton>
+              )}
+            </Infor>
+          </Col>
+        </Row>
+        <div className="reviews">
+          <button>Gửi đánh giá của bạn</button>
+        </div>
+      </Wrapper>
+    </>
   );
 };
+
+const FixTop = styled.div`
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  top: 0;
+  position: fixed;
+  z-index: 99999;
+  height: 121px;
+  background-color: #fff;
+  padding: 15px 50px;
+  justify-content: space-between;
+  .fixtop-left {
+    display: flex;
+    .image {
+      width: 54px;
+      margin-right: 15px;
+      img {
+        width: 100%;
+      }
+    }
+    .infor {
+      h1 {
+        display: block;
+        color: #000;
+
+        &.name {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 19px;
+          text-transform: capitalize;
+        }
+        &.price {
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 28px;
+          margin: 20px 0 !important;
+        }
+      }
+    }
+  }
+  .fixtop-right {
+    display: flex;
+    justify-content: right;
+    .option {
+      padding-right: 5px;
+      padding-bottom: 5px;
+      margin-right: 20px;
+      + .option {
+        border-left: 1px solid #666;
+      }
+    }
+  }
+`;
 
 const Infor = styled.div`
   .quantity {
@@ -635,6 +612,7 @@ const Attribute = styled.div`
       color: #000;
       padding: 5px 0;
       display: block;
+      text-transform: capitalize;
     }
   }
 `;
@@ -645,6 +623,7 @@ const Option = styled.div`
   max-width: 600px;
   align-items: center;
   margin-top: 18px;
+  gap: 2rem;
   .qty {
     margin-right: 30px;
   }
@@ -654,8 +633,8 @@ const Option = styled.div`
     height: 46px;
   }
   .icon {
-    width: 40px;
-    height: 48px;
+    width: 40px !important;
+    height: 48px !important;
   }
 `;
 

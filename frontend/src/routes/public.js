@@ -22,7 +22,7 @@ const routes = [
     layout: DefaultLayout,
   },
   {
-    path: "/p/:slugProduct",
+    path: "/p/:slug",
     element: Product,
     layout: DefaultLayout,
   },
@@ -57,7 +57,7 @@ const routes = [
     layout: DefaultLayout,
   },
   {
-    path: "/collection/:slugCollection",
+    path: "/collection/:slug",
     element: Collection,
     layout: DefaultLayout,
   },

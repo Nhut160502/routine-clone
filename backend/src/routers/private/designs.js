@@ -1,5 +1,5 @@
 import express from "express";
-import { designControllers } from "../../controllers/index.js";
+import { designControllers } from "../../controllers/dashboard/index.js";
 
 const routers = express.Router();
 

@@ -1,6 +1,6 @@
 import fs from "fs";
-import { Products } from "../models/index.js";
-import { media } from "../configs/media.js";
+import { Products } from "../../models/index.js";
+import { media } from "../../configs/media.js";
 
 const index = async (req, res, next) => {
   try {
@@ -169,8 +169,6 @@ const show = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
-  console.log(req.body.media);
-
   try {
     const media = [];
     const oldMedia = [];
@@ -254,6 +252,7 @@ const update = async (req, res, next) => {
     data.media = media;
     data.stock = stock;
     data.colors = colors;
+    data.sale = req.body.sale;
     data.name = req.body.name;
     data.attribute = attribute;
     data.descImage = filesDesc;
@@ -263,8 +262,6 @@ const update = async (req, res, next) => {
     data.description = req.body.description;
     data.groupProduct = req.body.groupProduct;
     data.categoryChild = req.body.categoryChild;
-
-    console.log(oldMedia);
 
     await data.save();
 

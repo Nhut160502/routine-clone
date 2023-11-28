@@ -17,6 +17,7 @@ import overlaySlice from "../customer/providers/overlaySlice";
 import registerSlice from "../customer/providers/registerSlice";
 import sidebarSlice from "../customer/providers/sidebarSlice";
 import subUserSlice from "../customer/providers/subUserSlice";
+import loadingSlice from "../customer/providers/loadingSlice";
 
 const persistConfig = {
   key: "root1",
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   favourite: favouriteSlice,
   login: loginSlice,
   register: registerSlice,
+  loading: loadingSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

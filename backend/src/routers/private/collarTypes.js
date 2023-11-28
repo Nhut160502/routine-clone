@@ -1,5 +1,5 @@
 import express from "express";
-import { collarTypeControllers } from "../../controllers/index.js";
+import { collarTypeControllers } from "../../controllers/dashboard/index.js";
 
 const routers = express.Router();
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { categoryChildControllers } from "../../controllers/index.js";
+import { categoryChildControllers } from "../../controllers/dashboard/index.js";
 
 const routers = express.Router();
 

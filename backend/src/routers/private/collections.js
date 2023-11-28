@@ -1,5 +1,5 @@
 import express from "express";
-import { collectionControllers } from "../../controllers/index.js";
+import { collectionControllers } from "../../controllers/dashboard/index.js";
 import { upload } from "../../configs/multer.js";
 
 const routers = express.Router();

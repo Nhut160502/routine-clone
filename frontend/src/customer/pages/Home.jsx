@@ -5,10 +5,10 @@ import Button from "../components/Button";
 import Product from "../components/Product";
 import Slibar from "../components/Slider";
 import { styled } from "styled-components";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 const Home = () => {
-  useSelector((state) => console.log(state));
+  // useSelector((state) => console.log(state));
   return (
     <>
       <Slibar />

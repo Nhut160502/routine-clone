@@ -10,6 +10,10 @@ import Overlay from "../components/Overlay";
 import Favourite from "../components/Favourite";
 import Login from "../components/Login";
 import Register from "../components/Register";
+import axiosInterceptor from "../utils/interceptors";
+import Loading from "../components/Loading";
+
+axiosInterceptor();
 
 const DefaultLayout = (props) => {
   const { children } = props;
@@ -26,6 +30,7 @@ const DefaultLayout = (props) => {
 
   return (
     <>
+      <Loading />
       <Login />
       <Register />
       <Overlay />

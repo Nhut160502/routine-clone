@@ -1,27 +1,28 @@
-import { media } from "../configs/media.js";
-import { Colors } from "../models/index.js";
+import { media } from "../../configs/media.js";
+import { Collections } from "../../models/index.js";
 import fs from "fs";
+
 const index = async (req, res, next) => {
   try {
-    const data = await Colors.find();
+    const data = await Collections.find();
 
-    data.map((item) => (item.image = media("Colors", item.image)));
+    data.map((item) => (item.banner = media("Collections", item.banner)));
 
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
+
 const store = async (req, res, next) => {
-  console.log(req.body);
   try {
     if (!req.file) {
-      throw new Error("Image color is not valid!");
+      throw new Error("Banner collection is not valid!");
     }
 
-    const data = new Colors({
+    const data = new Collections({
       name: req.body.name,
-      image: req.file.filename,
+      banner: req.file.filename,
     });
 
     await data.save();
@@ -29,11 +30,11 @@ const store = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       data: data,
-      message: "Store color successfully!",
+      message: "Store collection successfully!",
     });
   } catch (error) {
     if (req.file) {
-      const filePath = `public/Colors/${req.file.filename}`;
+      const filePath = `public/Collections/${req.file.filename}`;
       fs.existsSync(filePath) && fs.unlinkSync(filePath);
     }
 
@@ -43,11 +44,11 @@ const store = async (req, res, next) => {
 
 const show = async (req, res, next) => {
   try {
-    const data = await Colors.findById(req.params.id);
-    if (data) {
+    const data = await Collections.findOne({ slug: req.params.slug });
+    if (!data) {
       throw new Error("Not found");
     }
-    data.image = media("Colors", data.image);
+    data.banner = media("Collections", data.banner);
     return res.status(200).json({ success: true, data: data });
   } catch (error) {
     return next(error);
@@ -56,18 +57,18 @@ const show = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const data = await Colors.findById(req.params.id);
+    const data = await Collections.findById(req.body.id);
     data.name = req.body.name;
     data.updatedAt = Date.now();
     if (req.file) {
-      data.image = req.file.filname;
-      const filePath = `public/Colors/${data.image}`;
+      const filePath = `public/Collections/${data.banner}`;
       fs.existsSync(filePath) && fs.unlinkSync(filePath);
+      data.banner = req.file.filename;
     }
     await data.save();
     return res
       .status(200)
-      .json({ success: true, message: "Update color successfully!" });
+      .json({ success: true, message: "Update Collection Successfully!" });
   } catch (error) {
     return next(error);
   }
@@ -75,15 +76,16 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
   try {
-    const data = await Colors.findById(req.params.id);
-    if (data.image) {
-      const filePath = `public/Colors/${data.image}`;
-      fs.existsSync(filePath) && fs.unlinkSync(filePath);
-    }
+    const data = await Collections.findById(req.params.id);
+
+    const filePath = `public/Collections/${data.banner}`;
+    fs.existsSync(filePath) && fs.unlinkSync(filePath);
+
     await data.deleteOne();
+
     return res
       .status(200)
-      .json({ success: true, message: "Delete color successfully!" });
+      .json({ success: true, message: "Delete Collection Successfully!" });
   } catch (error) {
     return next(error);
   }

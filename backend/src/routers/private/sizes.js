@@ -1,5 +1,5 @@
 import express from "express";
-import { sizesControllers } from "../../controllers/index.js";
+import { sizesControllers } from "../../controllers/dashboard/index.js";
 
 const routers = express.Router();
 

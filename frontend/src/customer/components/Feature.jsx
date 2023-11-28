@@ -13,7 +13,7 @@ const Feature = () => {
   return (
     <Wrapper>
       <div className="item">
-        <div className="icon">
+        <div className="icon_">
           <IconGHN />
         </div>
         <div className="text">
@@ -22,7 +22,7 @@ const Feature = () => {
         </div>
       </div>
       <div className="item">
-        <div className="icon">
+        <div className="icon_">
           <IconFreeShip />
         </div>
         <div className="text">
@@ -31,7 +31,7 @@ const Feature = () => {
         </div>
       </div>
       <div className="item">
-        <div className="icon">
+        <div className="icon_">
           <IconOrder />
         </div>
         <div className="text">
@@ -39,7 +39,7 @@ const Feature = () => {
         </div>
       </div>
       <div className="item">
-        <div className="icon">
+        <div className="icon_">
           <IconReturns />
         </div>
         <div className="text">
@@ -48,7 +48,7 @@ const Feature = () => {
         </div>
       </div>
       <div className="item">
-        <div className="icon">
+        <div className="icon_">
           <IconPay />
         </div>
         <div className="text">
@@ -56,7 +56,7 @@ const Feature = () => {
         </div>
       </div>
       <div className="item">
-        <div className="icon">
+        <div className="icon_">
           <IconHotline />
         </div>
         <div className="text">
@@ -78,6 +78,8 @@ const Wrapper = styled.div`
     align-items: center;
     gap: 1rem;
     padding: 20px;
+    .icon {
+    }
     strong {
       display: block;
       font-weight: 400;

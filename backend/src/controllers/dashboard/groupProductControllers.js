@@ -1,5 +1,5 @@
-import { media } from "../configs/media.js";
-import { GroupProduct } from "../models/index.js";
+import { media } from "../../configs/media.js";
+import { GroupProduct } from "../../models/index.js";
 import fs from "fs";
 const index = async (req, res) => {
   try {
@@ -24,13 +24,11 @@ const store = async (req, res, next) => {
 
     await data.save();
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        data: data,
-        message: "Store group product successfully!",
-      });
+    return res.status(200).json({
+      success: true,
+      data: data,
+      message: "Store group product successfully!",
+    });
   } catch (error) {
     if (req.file) {
       var filePath = `public/GroupProducts/${req.file.filename}`;

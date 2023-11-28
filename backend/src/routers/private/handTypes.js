@@ -1,5 +1,5 @@
 import express from "express";
-import { handTypeControllers } from "../../controllers/index.js";
+import { handTypeControllers } from "../../controllers/dashboard/index.js";
 
 const routers = express.Router();
 

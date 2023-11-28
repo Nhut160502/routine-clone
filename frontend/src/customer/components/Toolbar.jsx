@@ -4,7 +4,7 @@ import { PropTypes } from "prop-types";
 import { styled } from "styled-components";
 
 const Toolbar = (props) => {
-  let { getGrid } = props;
+  let { getGrid, total } = props;
   const [gird, setGird] = useState(3);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const Toolbar = (props) => {
     <Wrapper>
       <div className="total">
         <span>
-          <b>431</b> sản phẩm
+          <b>{total || 0}</b> sản phẩm
         </span>
       </div>
       <div className="display">
@@ -41,6 +41,7 @@ const Toolbar = (props) => {
 
 Toolbar.propTypes = {
   getGrid: PropTypes.func,
+  total: PropTypes.number,
 };
 
 const Wrapper = styled.div`

@@ -1,4 +1,4 @@
-import { Forms } from "../models/index.js";
+import { Forms } from "../../models/index.js";
 
 const index = async (req, res, next) => {
   try {

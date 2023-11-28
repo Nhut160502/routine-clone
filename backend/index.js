@@ -4,7 +4,9 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import "dotenv/config";
-import routers from "./src/routers/index.js";
+
+import privateRouters from "./src/routers/private/index.js";
+import publicRouters from "./src/routers/public/index.js";
 import { connectDatabase } from "./src/configs/database.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 
@@ -27,7 +29,9 @@ app.use(
 
 connectDatabase();
 
-app.use("/api", routers);
+app.use("/api", privateRouters);
+app.use("/public/api", publicRouters);
+
 app.use(errorHandler);
 
 app.listen(`${process.env.PORT}`, () => {
