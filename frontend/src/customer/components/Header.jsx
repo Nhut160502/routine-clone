@@ -130,25 +130,25 @@ const Header = () => {
       )}
       <Col sm="5">
         <Right>
-          <Search className="icon">
+          <Search className="iconnn">
             {transparent === false ? <IconSearch /> : <IconSearchWhite />}
             <span>Tiềm kiếm</span>
           </Search>
           {!transparent ? (
             <>
-              <IconUserBlack className="icon" onClick={handleAciveSubUser} />
-              <IconHeartBlack className="icon" />
+              <IconUserBlack className="iconnn" onClick={handleAciveSubUser} />
+              <IconHeartBlack className="iconnn" />
               <IconShoppingCartBlack
-                className="icon"
+                className="iconnn"
                 onClick={handleClickActiveCart}
               />
             </>
           ) : (
             <>
-              <IconUseWhite className="icon" onClick={handleAciveSubUser} />
-              <IconHeartWhite className="icon" />
+              <IconUseWhite className="iconnn" onClick={handleAciveSubUser} />
+              <IconHeartWhite className="iconnn" />
               <IconShoppingCartWhite
-                className="icon"
+                className="iconnn"
                 onClick={handleClickActiveCart}
               />
             </>
@@ -187,8 +187,8 @@ const Wrapper = styled.div`
       margin: 0 0;
     }
   }
-  .icon {
-    + .icon {
+  .iconnn {
+    + .iconnn {
       margin-left: 40px;
     }
     cursor: pointer;

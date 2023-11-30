@@ -45,7 +45,7 @@ export const show = async (req, res, next) => {
       .populate("category", ["_id", "name"])
       .populate("categoryChild", ["_id", "name"])
       .populate("colors", ["_id", "name"])
-      .populate("sizes", ["_id", "name"])
+      .populate({ path: "sizes", options: { sort: { name: "asc" } } })
       .populate("stock.size", ["_id", "name"])
       .populate("stock.color", ["_id", "name"])
       .populate("attribute.form", ["_id", "name"])

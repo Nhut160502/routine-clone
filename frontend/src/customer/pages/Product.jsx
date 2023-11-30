@@ -42,6 +42,8 @@ const Product = () => {
   const [showDesc, setShowDesc] = useState(false);
   const [slider2, setSlider2] = useState(null);
   const [qty, setQty] = useState(1);
+  const [price, setPrice] = useState();
+  const [showFixTop, setShowFixtop] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +52,7 @@ const Product = () => {
         const res = await showProduct(slug);
         res.success && setData(res.data);
         setColorsSelected(res?.data?.media[0]?.color._id);
+        setPrice(res.data.price - res.data.price * (res.data.sale / 100));
         dispatch(disActiveLoading());
       } catch (error) {
         dispatch(disActiveLoading());
@@ -60,9 +63,71 @@ const Product = () => {
     fetchData();
   }, [slug, dispatch]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      window.scrollY > 380 && setShowFixtop(true);
+      window.scrollY < 380 && setShowFixtop(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [showFixTop]);
+
+  const handleSelectedSize = (id) => {
+    const { qty } = data?.stock.find(
+      (item) => item.color._id === colorsSelected && item.size._id === id,
+    );
+    if (qty <= 0) return;
+    else setSizeSelected(id);
+  };
+
+  const SizeContent = () => {
+    return (
+      <div className="size-content">
+        {data?.sizes?.map((size) => {
+          let cls = "size-item";
+          size._id === sizeSelected && (cls = "size-item active");
+          const { qty } = data?.stock.find(
+            (item) =>
+              item.color._id === colorsSelected && item.size._id === size._id,
+          );
+          qty <= 0 && (cls = "size-item disabled");
+
+          return (
+            <button
+              onClick={() => handleSelectedSize(size._id)}
+              key={size._id}
+              className={cls}
+            >
+              {size.name}
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const ColorContent = () => {
+    return (
+      <div className="color-content">
+        {data?.media?.map((item, idx) => (
+          <div
+            onClick={() => setColorsSelected(item.color._id)}
+            key={idx}
+            className={
+              item.color._id === colorsSelected
+                ? "color-item-product active"
+                : "color-item-product"
+            }
+            style={{ backgroundImage: `url(${item.thumbnail})` }}
+          />
+        ))}
+      </div>
+    );
+  };
   return (
     <>
-      <FixTop>
+      <FixTop className={showFixTop && "active"}>
         <Row>
           <Col sm="4" className="fixtop-left">
             <div className="image">
@@ -70,7 +135,15 @@ const Product = () => {
             </div>
             <div className="infor">
               <h1 className="name">{data?.name}</h1>
-              {data?.price && <h1 className="price">{data?.price}&nbsp;₫</h1>}
+              <div className="price-container">
+                <h1 className="price">{price}&nbsp;₫</h1>
+                <h1 className="price-sale">
+                  <div className="old-price">{price}&nbsp;₫</div>
+                  <div className="percent-price">
+                    <span>{data?.sale}%</span>
+                  </div>
+                </h1>
+              </div>
             </div>
           </Col>
           <Col sm="8" className="fixtop-right">
@@ -78,16 +151,26 @@ const Product = () => {
               <div className="option-title">
                 <span>Chọn màu:</span>
               </div>
+              <div className="option-content">
+                <ColorContent />
+              </div>
             </div>
             <div className="option">
               <div className="option-title">
                 <span>Chọn size:</span>
+              </div>
+              <div className="option-content">
+                <SizeContent />
               </div>
             </div>
             <div className="option">
               <div className="option-title">
                 <span>Chọn SL:</span>
               </div>
+              <Option className="fixtop-option">
+                <Quantity className="qty" getValue={(e) => setQty(e)} />
+                <Button border>Thêm vào giỏ hàng</Button>
+              </Option>
             </div>
           </Col>
         </Row>
@@ -142,7 +225,7 @@ const Product = () => {
                 <h1>{data?.name}</h1>
               </div>
               <div className="price">
-                {data?.price && <span>{data?.price}&nbsp;₫</span>}
+                <span>{price}&nbsp;₫</span>
               </div>
               <div className="color">
                 <div className="color-option span-option">
@@ -154,20 +237,7 @@ const Product = () => {
                       ).color.name}
                   </span>
                 </div>
-                <div className="color-content">
-                  {data?.media?.map((item, idx) => (
-                    <div
-                      onClick={() => setColorsSelected(item.color._id)}
-                      key={idx}
-                      className={
-                        item.color._id === colorsSelected
-                          ? "color-item active"
-                          : "color-item"
-                      }
-                      style={{ backgroundImage: `url(${item.thumbnail})` }}
-                    />
-                  ))}
-                </div>
+                <ColorContent />
               </div>
               <div className="size">
                 <div className="size-option span-option">
@@ -178,20 +248,7 @@ const Product = () => {
                         ?.name}
                   </span>
                 </div>
-                <div className="size-content">
-                  {data?.sizes?.map((size) => (
-                    <button
-                      onClick={() => setSizeSelected(size._id)}
-                      key={size._id}
-                      className={
-                        (size._id === sizeSelected && "size-item active") ||
-                        "size-item"
-                      }
-                    >
-                      {size.name}
-                    </button>
-                  ))}
-                </div>
+                <SizeContent />
               </div>
               <div className="quantity">
                 <div className="quantity-option span-option">
@@ -396,6 +453,7 @@ const Product = () => {
 };
 
 const FixTop = styled.div`
+  display: none;
   width: 100%;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -406,6 +464,12 @@ const FixTop = styled.div`
   background-color: #fff;
   padding: 15px 50px;
   justify-content: space-between;
+  box-shadow: 0px -4px 4px rgba(199, 199, 199, 0.25);
+
+  &.active {
+    display: block;
+  }
+
   .fixtop-left {
     display: flex;
     .image {
@@ -416,6 +480,8 @@ const FixTop = styled.div`
       }
     }
     .infor {
+      line-height: 1.5;
+
       h1 {
         display: block;
         color: #000;
@@ -425,12 +491,7 @@ const FixTop = styled.div`
           font-size: 16px;
           line-height: 19px;
           text-transform: capitalize;
-        }
-        &.price {
-          font-weight: 700;
-          font-size: 18px;
-          line-height: 28px;
-          margin: 20px 0 !important;
+          line-height: 1.5;
         }
       }
     }
@@ -442,8 +503,73 @@ const FixTop = styled.div`
       padding-right: 5px;
       padding-bottom: 5px;
       margin-right: 20px;
+      padding-left: 20px;
       + .option {
-        border-left: 1px solid #666;
+        border-left: 1px solid #d0d0d0;
+      }
+      .fixtop-option {
+        button {
+          line-height: 1;
+          max-width: 160px;
+          padding: 25px 30px;
+          margin-right: 0;
+        }
+      }
+      .option-title {
+        font-size: 14px;
+      }
+
+      .option-content {
+        display: flex;
+        .color-item-product {
+          width: 36px !important;
+          height: 48px !important;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          margin: 15px 15px 0 0;
+          border: 1px solid #dadada;
+          cursor: pointer;
+          &.active {
+            border: 1px solid #474747;
+          }
+        }
+        .size-item {
+          text-align: center;
+          border: 1px solid #bfbfbf;
+          background-color: #fff;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 19px;
+          color: #000;
+          padding: 14px 4px;
+          height: 48px;
+          min-width: 48px;
+          text-transform: uppercase;
+          margin: 15px 15px 0 0;
+          position: relative;
+
+          &.active {
+            background-color: #000;
+            color: #fff;
+          }
+          &.disabled {
+            color: #e5e5e5;
+            cursor: default;
+            &::before {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              translate: -50%;
+              transform: 30px 20px;
+              background: #e5e5e5;
+              content: "";
+              width: 66px;
+              height: 2px;
+              transform: rotate(135deg);
+            }
+          }
+        }
       }
     }
   }
@@ -457,12 +583,12 @@ const Infor = styled.div`
     .color-content {
       display: flex;
     }
-    .color-item {
+    .color-item-product {
       width: 48px !important;
       height: 64px !important;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: initial;
+      background-size: cover;
       margin: 15px 15px 0 0;
       border: 1px solid #dadada;
       cursor: pointer;
