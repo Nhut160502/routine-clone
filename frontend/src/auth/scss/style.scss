@@ -138,7 +138,7 @@ body {
 }
 ol,
 ul {
-  list-style: none;
+  // list-style: none;
 }
 blockquote,
 q {
@@ -169,9 +169,9 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-li {
-  list-style: none;
-}
+// li {
+//   list-style: none;
+// }
 a {
   text-decoration: none;
   color: #000;

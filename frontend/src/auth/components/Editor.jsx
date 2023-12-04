@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import JoditEditor from "jodit-react";
 import { editorConfig } from "../configs";
 import { PropTypes } from "prop-types";
 const Editor = (props) => {
-  const { handleGetData, value } = props;
-  const [data, setData] = useState(value || "");
+  const { handleGetData, data } = props;
 
   return (
     <div
@@ -12,10 +11,9 @@ const Editor = (props) => {
       style={{ maxWidth: editorConfig.width, margin: "0 auto" }}
     >
       <JoditEditor
-        value={data}
+        value={data || ""}
         config={editorConfig}
         onChange={(value) => {
-          setData(value);
           handleGetData(value);
         }}
       />
@@ -25,7 +23,7 @@ const Editor = (props) => {
 
 Editor.propTypes = {
   handleGetData: PropTypes.func,
-  value: PropTypes.string,
+  data: PropTypes.string,
 };
 
 export default Editor;

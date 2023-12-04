@@ -206,7 +206,6 @@ const Store = () => {
   const handleGetFilesDesc = (files) => {
     setFilesDesc(files);
   };
-
   const handleSubmit = async (values) => {
     dispatch(activeLoading());
     try {

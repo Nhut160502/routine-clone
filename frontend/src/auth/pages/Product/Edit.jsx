@@ -639,13 +639,17 @@ const Edit = () => {
           </Col>
         </Row>
         <Uploads
+          data={data?.descImage}
           label="Description Image"
           multiple
           onGetFiles={handleGetFilesDesc}
         />
 
         <Form.Item label="Description" name="description">
-          <Editor value={"ok"} handleGetData={(values) => setDesc(values)} />
+          <Editor
+            data={data?.description !== "null" ? data?.description : ""}
+            handleGetData={(values) => setDesc(values)}
+          />
         </Form.Item>
 
         <Button type="primary" htmlType="submit">

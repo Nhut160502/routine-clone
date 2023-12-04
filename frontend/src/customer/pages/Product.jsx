@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styled from "styled-components";
 import Slider from "react-slick";
+import parse from "html-react-parser";
+
 import Quantity from "../components/Quantity";
 import Button from "../components/Button";
 import { IconHeartBlack } from "../components/Icon";
@@ -345,87 +347,12 @@ const Product = () => {
                     height={showDesc === true ? "auto" : 247}
                   >
                     <div className="content">
-                      <p
-                        className="page-title"
-                        style={{ textAlign: "justify" }}
-                      >
-                        <b>
-                          <span
-                            className="base"
-                            data-ui-id="page-title-wrapper"
-                          >
-                            Quần Sweatpants Nữ Nỉ Túi Ốp Trước Ống Rộng Form
-                            Wide Leg - 10F23PKNW002&nbsp;
-                          </span>
-                        </b>
-                        <span className="base" data-ui-id="page-title-wrapper">
-                          mang thiết kế đơn giản, sành điệu kết hợp cùng chất
-                          vải ấm áp:
-                        </span>
-                      </p>
-                      <ul style={{ textAlign: "justify" }}>
-                        <li className="page-title">
-                          <span
-                            className="base"
-                            data-ui-id="page-title-wrapper"
-                          >
-                            Chất vải nỉ mềm mại, giữ ấm tốt và có độ bền cao
-                          </span>
-                        </li>
-                        <li className="page-title">
-                          <span
-                            className="base"
-                            data-ui-id="page-title-wrapper"
-                          >
-                            Form quần ống rộng thoải mái, dễ dàng che đi khuyết
-                            điểm
-                          </span>
-                        </li>
-                        <li className="page-title">
-                          <span
-                            className="base"
-                            data-ui-id="page-title-wrapper"
-                          >
-                            Lưng quần thiết kế lưng thun kèm theo dây tiện dụng,
-                            dễ dàng thay đổi độ rộng
-                          </span>
-                        </li>
-                        <li className="page-title">
-                          <span
-                            className="base"
-                            data-ui-id="page-title-wrapper"
-                          >
-                            Túi quần may ẩn đa năng
-                          </span>
-                        </li>
-                        <li className="page-title">
-                          <span
-                            className="base"
-                            data-ui-id="page-title-wrapper"
-                          >
-                            Tag Be Together bé xinh, tạo điểm nhấn cho quần
-                          </span>
-                        </li>
-                        <li className="page-title">
-                          <span
-                            className="base"
-                            data-ui-id="page-title-wrapper"
-                          >
-                            Sử dụng diện đi chơi, đi học hay đi làm đều thích
-                            hợp.&nbsp;
-                          </span>
-                        </li>
-                      </ul>
-                      <p style={{ textAlign: "justify" }}>&nbsp;</p>
+                      {parse(data?.description + "")}
                       <p style={{ textAlign: "justify" }}>
                         <span className="base" data-ui-id="page-title-wrapper">
-                          <img
-                            src="https://routine.vn/media/amasty/webp/wysiwyg/Mo_ta_sp_1/Mo-ta-1016-10F23PKNW002-01_jpg.webp"
-                            data-amsrc="https://routine.vn/media/amasty/webp/wysiwyg/Mo_ta_sp_1/Mo-ta-1016-10F23PKNW002-01_jpg.webp"
-                            alt="Thông tin sản phẩm 10F23PKNW002"
-                            width="1150"
-                            data-loaded="true"
-                          />
+                          {data?.descImage?.map((file) => (
+                            <img key={file} src={file} alt="" />
+                          ))}
                         </span>
                       </p>
                     </div>
@@ -676,6 +603,12 @@ const Descripton = styled.div`
   font-size: 15px;
   position: relative;
   .content {
+    img {
+      margin-bottom: 1rem;
+    }
+    strong {
+      font-weight: 700;
+    }
   }
   .btn-option {
     margin-top: 30px;
@@ -690,11 +623,12 @@ const Descripton = styled.div`
   }
   ul {
     padding-inline-start: 40px;
+    margin-bottom: 20px;
     li {
       list-style-type: disc;
       font-weight: 400;
       font-size: 15px;
-      line-height: 1.27;
+      line-height: 1.5;
     }
   }
 `;

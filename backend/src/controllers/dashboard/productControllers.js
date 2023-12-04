@@ -169,6 +169,8 @@ const show = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
+  console.log(req.body);
+  console.log(req.files);
   try {
     const media = [];
     const oldMedia = [];
@@ -242,10 +244,17 @@ const update = async (req, res, next) => {
     attribute.collarType = req.body?.collarType;
 
     if (req.body.filesDesc) {
-      let j = req.body.filesDesc.length - 1;
-      for (let idx = j; idx < req.files.length; idx++) {
+      let j = req.body.filesDesc.length;
+      for (let idx = i; idx < j; idx++) {
+        console.log(req.files[idx].filename);
         filesDesc.push(req.files[idx].filename);
       }
+      data.descImage.map(
+        (file) =>
+          fs.existsSync(`public/Products/${file}`) &&
+          fs.unlinkSync(`public/Products/${file}`)
+      );
+      data.descImage = filesDesc;
     }
 
     data.sizes = sizes;
@@ -255,7 +264,6 @@ const update = async (req, res, next) => {
     data.sale = req.body.sale;
     data.name = req.body.name;
     data.attribute = attribute;
-    data.descImage = filesDesc;
     data.price = req.body.price;
     data.category = req.body.category;
     data.collection = req.body.collection;
